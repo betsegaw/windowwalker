@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WindowWalker.Components
 {
+    /// <summary>
+    /// Interop calls with helper layers 
+    /// </summary>
     class InteropAndHelpers
     {
     }

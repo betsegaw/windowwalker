@@ -11,6 +11,11 @@ namespace WindowWalker.Components
     /// </summary>
     class OpenWindows
     {
+        /// <summary>
+        /// Gets all the currently open windows
+        /// </summary>
+        /// <returns>A list containing a collection of Window objects that mirror the open
+        /// windows </returns>
         public static List<Window> GetAllOpenWindows()
         {
             throw new NotImplementedException();

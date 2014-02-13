@@ -45,9 +45,14 @@ namespace WindowWalker.Components
         #endregion
 
         #region Constructors
-
+        
+        /// <summary>
+        /// Initializes a new Window representation
+        /// </summary>
+        /// <param name="hwnd">the handle to the window we are representing</param>
         public Window(IntPtr hwnd)
         {
+            // TODO: Add verification as to whether the window handle is valid
             this.hwnd = hwnd;
         }
 
