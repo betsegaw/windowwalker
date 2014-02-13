@@ -32,7 +32,20 @@ namespace WindowWalker.Components
         /// </summary>
         public string Title
         {
-            get { return title; }
+            get 
+            {
+                int sizeOfTitle = InteropAndHelpers.GetWindowTextLength(this.hwnd);
+                if (sizeOfTitle++ > 0)
+                {
+                    StringBuilder titleBuffer = new StringBuilder(sizeOfTitle);
+                    InteropAndHelpers.GetWindowText(this.hwnd, titleBuffer, sizeOfTitle);
+                    return titleBuffer.ToString();
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
         /// <summary>
@@ -73,7 +86,7 @@ namespace WindowWalker.Components
         /// </summary>
         public void SwitchToWindow()
         {
-            throw new NotImplementedException();
+            InteropAndHelpers.SetForegroundWindow(this.hwnd);
         }
 
         #endregion

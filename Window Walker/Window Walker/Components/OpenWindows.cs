@@ -7,18 +7,80 @@ using System.Threading.Tasks;
 namespace WindowWalker.Components
 {
     /// <summary>
-    /// Class containing static methods for accessing
+    /// Class containing static methods for accessing all open windows
     /// </summary>
     class OpenWindows
     {
+        #region Members
+
         /// <summary>
-        /// Gets all the currently open windows
+        /// List of all the open windows
         /// </summary>
-        /// <returns>A list containing a collection of Window objects that mirror the open
-        /// windows </returns>
-        public static List<Window> GetAllOpenWindows()
+        private List<Window> windows;
+
+        private static OpenWindows instance;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the list of all open windows
+        /// </summary>
+        public List<Window> Windows
         {
-            throw new NotImplementedException();
+            get { return new List<Window>(windows); }
         }
+
+        public OpenWindows Instance
+        {
+            get 
+            { 
+                if (instance == null)
+                {
+                    instance = new OpenWindows();
+                }
+
+                return instance;
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Private constructor to make sure there is never
+        /// more than one instance of this class
+        /// </summary>
+        private OpenWindows()
+        {
+
+        }
+
+        /// <summary>
+        /// Updates the list of open windows
+        /// </summary>
+        public void UpdateOpenWindowsList()
+        {
+            this.windows.Clear();
+            InteropAndHelpers.CallBackPtr callbackptr = new InteropAndHelpers.CallBackPtr(WindowEnumerationCallBack);
+            InteropAndHelpers.EnumWindows(callbackptr, 0);
+        }
+
+        /// <summary>
+        /// Call back method for window enumeration
+        /// </summary>
+        /// <param name="hwnd">The handle to the current window being enumerated</param>
+        /// <param name="lParam">Value being passed from the caller (we don't use this but might come in handy
+        /// in the future</param>
+        /// <returns>true to make sure to contiue enumeration</returns>
+        public bool WindowEnumerationCallBack(IntPtr hwnd, IntPtr lParam)
+        {
+            this.windows.Add(new Window(hwnd));
+            return true;
+        }
+
+        #endregion
     }
 }

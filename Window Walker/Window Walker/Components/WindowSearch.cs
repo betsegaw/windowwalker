@@ -17,7 +17,7 @@ namespace WindowWalker.Components
         /// </summary>
         public WindowSearchController()
         {
-
+            
         }
     }
 }

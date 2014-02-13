@@ -103,16 +103,19 @@ namespace WindowWalker.Components
         #region Interop Calls
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int EnumWindows(CallBackPtr callPtr, int lPar);
+        public static extern int EnumWindows(CallBackPtr callPtr, int lPar);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        protected static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        protected static extern int GetWindowTextLength(IntPtr hWnd);
+        public static extern int GetWindowTextLength(IntPtr hWnd);
         [DllImport("user32.dll")]
-        protected static extern bool IsWindowVisible(IntPtr hWnd);
+        public static extern bool IsWindowVisible(IntPtr hWnd);
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         #endregion
     }
