@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Window_Walker
+namespace WindowWalker
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

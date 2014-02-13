@@ -7,7 +7,7 @@
     <ProjectGuid>{B9BDF8BE-FED7-49B5-A7AE-DD4D1CA2D9EB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Window_Walker</RootNamespace>
+    <RootNamespace>WindowWalker</RootNamespace>
     <AssemblyName>Window Walker</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -61,6 +61,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Components\InteropAndHelpers.cs" />
+    <Compile Include="Components\OpenWindows.cs" />
+    <Compile Include="Components\Window.cs" />
+    <Compile Include="Components\WindowSearch.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
