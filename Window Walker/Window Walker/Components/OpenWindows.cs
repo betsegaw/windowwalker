@@ -32,7 +32,7 @@ namespace WindowWalker.Components
             get { return new List<Window>(windows); }
         }
 
-        public OpenWindows Instance
+        public static OpenWindows Instance
         {
             get 
             { 
