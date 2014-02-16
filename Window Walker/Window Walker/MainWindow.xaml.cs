@@ -12,17 +12,35 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WindowWalker.Components;
 
 namespace WindowWalker
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public void UpdateWindowList()
+        {
+            var windows = WindowSearchController.Instance.SearchMatches;
+
+            this.OpenWindowsCombo.Items.Clear();
+
+            foreach(var window in windows)
+            {
+                this.OpenWindowsCombo.Items.Add(window.Title);
+            }
+        }
+
+        private void update_Click(object sender, RoutedEventArgs e)
+        {
+            this.UpdateWindowList();
         }
     }
 }

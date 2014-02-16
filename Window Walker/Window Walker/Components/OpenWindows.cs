@@ -16,7 +16,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// List of all the open windows
         /// </summary>
-        private List<Window> windows;
+        private List<Window> windows = new List<Window>();
 
         private static OpenWindows instance;
 

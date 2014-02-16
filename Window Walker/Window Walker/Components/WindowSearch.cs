@@ -23,7 +23,12 @@ namespace WindowWalker.Components
         /// Open window search results
         /// </summary>
         private List<Window> searchMatches;
-        
+
+        /// <summary>
+        /// Singleton pattern
+        /// </summary>
+        private static WindowSearchController instance;
+
         #endregion
 
         #region Properties
@@ -49,14 +54,31 @@ namespace WindowWalker.Components
             get { return new List<Window>(searchMatches); }
         }
 
+        /// <summary>
+        /// Singleton Pattern
+        /// </summary>
+        public static WindowSearchController Instance
+        {
+            get
+            {
+                if (WindowSearchController.instance == null)
+                {
+                    WindowSearchController.instance = new WindowSearchController();
+                }
+
+                return WindowSearchController.instance;
+            }
+
+        }
+
         #endregion
 
         /// <summary>
         /// Initializes the search controller object
         /// </summary>
-        public WindowSearchController(string searchString = "")
+        public WindowSearchController()
         {
-            this.SearchText = searchString;
+            this.SearchText = string.Empty;
         }
 
         /// <summary>
@@ -67,10 +89,19 @@ namespace WindowWalker.Components
             OpenWindows.Instance.UpdateOpenWindowsList();
             List<Window> snapshotOfOpenWindows = OpenWindows.Instance.Windows;
 
-            this.searchMatches =    (List<Window>)
-                                    from singleWindow in snapshotOfOpenWindows 
-                                    where singleWindow.Title.Contains(this.searchText) 
-                                    select singleWindow;
+            if (this.SearchText == string.Empty)
+            {
+                this.searchMatches = (from singleWindow in snapshotOfOpenWindows
+                                      where singleWindow.Title != string.Empty
+                                      select singleWindow).ToList<Window>();
+            }
+            else
+            {
+                this.searchMatches =    (List<Window>)
+                                        from singleWindow in snapshotOfOpenWindows
+                                        where singleWindow.Title.Contains(this.searchText)
+                                        select singleWindow;
+            }
         }
     }
 }
