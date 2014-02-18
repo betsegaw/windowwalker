@@ -24,23 +24,24 @@ namespace WindowWalker
         public MainWindow()
         {
             InitializeComponent();
+
+            WindowSearchController.Instance.OnSearchResultUpdate += this.SearchResultUpdateHandler;
+            WindowSearchController.Instance.SearchTextUpdated();
         }
 
-        public void UpdateWindowList()
+        private void TextChangedEvent(object sender, TextChangedEventArgs e)
         {
-            var windows = WindowSearchController.Instance.SearchMatches;
+            WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
+        }
 
-            this.OpenWindowsCombo.Items.Clear();
+        public void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
+        {
+            resultsListBox.Items.Clear();
 
-            foreach(var window in windows)
+            foreach(var window in WindowSearchController.Instance.SearchMatches)
             {
-                this.OpenWindowsCombo.Items.Add(window.Title);
+                resultsListBox.Items.Add(window.Title);
             }
-        }
-
-        private void update_Click(object sender, RoutedEventArgs e)
-        {
-            this.UpdateWindowList();
         }
     }
 }

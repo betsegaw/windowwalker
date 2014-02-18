@@ -31,6 +31,20 @@ namespace WindowWalker.Components
 
         #endregion
 
+        #region Events
+
+        /// <summary>
+        /// Delegate handler for open windows updates
+        /// </summary>
+        public delegate void SearchResultUpdateHandler(object sender, Window.WindowListUpdateEventArgs e);
+
+        /// <summary>
+        /// Event raised when there is an update to the list of open windows
+        /// </summary>
+        public event SearchResultUpdateHandler OnSearchResultUpdate;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -79,7 +93,7 @@ namespace WindowWalker.Components
         /// </summary>
         private WindowSearchController()
         {
-            this.SearchText = string.Empty;
+            this.searchText = string.Empty;
             OpenWindows.Instance.OnOpenWindowsUpdate += OpenWindowsUpdateHandler;
         }
 
@@ -89,6 +103,22 @@ namespace WindowWalker.Components
         public void SearchTextUpdated()
         {
             OpenWindows.Instance.UpdateOpenWindowsList();
+
+            this.SyncOpenWindowsWithModel();
+        }
+
+        #region Event Handlers
+
+        public void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e)
+        {
+            this.SyncOpenWindowsWithModel();
+        }
+
+        /// <summary>
+        /// Syncs the open windows with the OpenWindows Model
+        /// </summary>
+        private void SyncOpenWindowsWithModel()
+        {
             List<Window> snapshotOfOpenWindows = OpenWindows.Instance.Windows;
 
             if (this.SearchText == string.Empty)
@@ -99,18 +129,15 @@ namespace WindowWalker.Components
             }
             else
             {
-                this.searchMatches =    (List<Window>)
-                                        from singleWindow in snapshotOfOpenWindows
-                                        where singleWindow.Title.Contains(this.searchText)
-                                        select singleWindow;
+                this.searchMatches = (from singleWindow in snapshotOfOpenWindows
+                                      where singleWindow.Title.ToLower().Contains(this.searchText.ToLower())
+                                      select singleWindow).ToList<Window>();
             }
-        }
 
-        #region Event Handlers
-
-        public void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e)
-        {
-            this.SearchTextUpdated();
+            if (this.OnSearchResultUpdate != null)
+            {
+                this.OnSearchResultUpdate(this, new Window.WindowListUpdateEventArgs());
+            }
         }
 
         #endregion

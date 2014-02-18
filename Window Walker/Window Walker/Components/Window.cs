@@ -9,14 +9,9 @@ namespace WindowWalker.Components
     /// <summary>
     /// Represents a specific open window
     /// </summary>
-    class Window
+    public class Window
     {
         #region Private Members
-
-        /// <summary>
-        /// The title of the window (the string displayed at the top of the window)
-        /// </summary>
-        private string title;
 
         /// <summary>
         /// The handle to the window

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WindowWalker.Components
 {
     /// <summary>
-    /// Class containing static methods for accessing all open windows
+    /// Class that represents the state of the desktops windows
     /// </summary>
     class OpenWindows
     {
@@ -92,14 +92,16 @@ namespace WindowWalker.Components
         /// <returns>true to make sure to contiue enumeration</returns>
         public bool WindowEnumerationCallBack(IntPtr hwnd, IntPtr lParam)
         {
-            if (InteropAndHelpers.IsWindowVisible(hwnd))
+            bool isWindowVisible = InteropAndHelpers.IsWindowVisible(hwnd);
+            
+            if (isWindowVisible)
             {
                 this.windows.Add(new Window(hwnd));
-            }
 
-            if (OnOpenWindowsUpdate != null)
-            {
-                this.OnOpenWindowsUpdate(this, new Window.WindowListUpdateEventArgs());
+                if (OnOpenWindowsUpdate != null)
+                {
+                    this.OnOpenWindowsUpdate(this, new Window.WindowListUpdateEventArgs());
+                }
             }
 
             return true;
