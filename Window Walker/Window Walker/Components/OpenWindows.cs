@@ -11,6 +11,21 @@ namespace WindowWalker.Components
     /// </summary>
     class OpenWindows
     {
+        #region Delegates
+
+        /// <summary>
+        /// Delegate handler for open windows updates
+        /// </summary>
+        public delegate void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e);
+
+        /// <summary>
+        /// Event raised when there is an update to the list of open windows
+        /// </summary>
+        public event OpenWindowsUpdateHandler OnOpenWindowsUpdate;
+
+        #endregion
+
+
         #region Members
 
         /// <summary>
@@ -77,7 +92,16 @@ namespace WindowWalker.Components
         /// <returns>true to make sure to contiue enumeration</returns>
         public bool WindowEnumerationCallBack(IntPtr hwnd, IntPtr lParam)
         {
-            this.windows.Add(new Window(hwnd));
+            if (InteropAndHelpers.IsWindowVisible(hwnd))
+            {
+                this.windows.Add(new Window(hwnd));
+            }
+
+            if (OnOpenWindowsUpdate != null)
+            {
+                this.OnOpenWindowsUpdate(this, new Window.WindowListUpdateEventArgs());
+            }
+
             return true;
         }
 

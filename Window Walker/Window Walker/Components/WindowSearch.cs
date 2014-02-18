@@ -21,7 +21,7 @@ namespace WindowWalker.Components
 
         /// <summary>
         /// Open window search results
-        /// </summary>
+        /// </summary
         private List<Window> searchMatches;
 
         /// <summary>
@@ -51,7 +51,8 @@ namespace WindowWalker.Components
         /// </summary>
         public List<Window> SearchMatches
         {
-            get { return new List<Window>(searchMatches); }
+            get 
+            { return new List<Window>(searchMatches); }
         }
 
         /// <summary>
@@ -76,9 +77,10 @@ namespace WindowWalker.Components
         /// <summary>
         /// Initializes the search controller object
         /// </summary>
-        public WindowSearchController()
+        private WindowSearchController()
         {
             this.SearchText = string.Empty;
+            OpenWindows.Instance.OnOpenWindowsUpdate += OpenWindowsUpdateHandler;
         }
 
         /// <summary>
@@ -103,5 +105,14 @@ namespace WindowWalker.Components
                                         select singleWindow;
             }
         }
+
+        #region Event Handlers
+
+        public void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e)
+        {
+            this.SearchTextUpdated();
+        }
+
+        #endregion
     }
 }
