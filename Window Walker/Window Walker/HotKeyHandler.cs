@@ -13,7 +13,7 @@ namespace WindowWalker
     /// <summary>
     /// This class handles all hotkey related activities
     /// </summary>
-    /// <remarks>Large pieces of this code were retrived from 
+    /// <remarks>Large pieces of this class were retrived from 
     /// http://www.dreamincode.net/forums/topic/323708-global-hotkeys-for-wpf-applications-c%23/
     /// </remarks>
     class HotKeyHandler
@@ -47,7 +47,11 @@ namespace WindowWalker
 
             source.AddHook(WndProc);
 
-            bool result = Components.InteropAndHelpers.RegisterHotKey(this.hwnd, 1, (int)Components.InteropAndHelpers.Modifiers.Ctrl, (int)Keys.Right);
+            bool result = Components.InteropAndHelpers.RegisterHotKey(
+                this.hwnd, 
+                1, 
+                (int)Components.InteropAndHelpers.Modifiers.Ctrl | (int)Components.InteropAndHelpers.Modifiers.Win,
+                (int)Keys.None);
         }
 
         /// <summary>
