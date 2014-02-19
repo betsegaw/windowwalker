@@ -61,7 +61,7 @@ namespace WindowWalker
         {
             if (e.Key == Key.Escape)
             {
-                App.Current.Shutdown();
+                this.EnterWaitState();
             }
             else if (e.Key == Key.Down && this.resultsListBox.SelectedIndex != this.resultsListBox.Items.Count)
             {
@@ -73,8 +73,10 @@ namespace WindowWalker
             }
             else if (e.Key == Key.Enter && resultsListBox.SelectedIndex >= 0)
             {
-                InteropAndHelpers.SetForegroundWindow(((Components.Window)this.resultsListBox.SelectedItem).Hwnd);
-                App.Current.Shutdown();
+                IntPtr hwndOfSelectedWindow = ((Components.Window)this.resultsListBox.SelectedItem).Hwnd;
+                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Restore);
+                InteropAndHelpers.SetForegroundWindow(hwndOfSelectedWindow);
+                this.EnterWaitState();
             }
 
             this.UpdateWindowSize();
@@ -103,7 +105,16 @@ namespace WindowWalker
 
         public void HotKeyPressedHandler(object sender, EventArgs e)
         {
+            this.Show();
             InteropAndHelpers.SetForegroundWindow(new WindowInteropHelper(this).Handle);
+        }
+
+        /// <summary>
+        /// Makes the window invisible and wait for the hotkey to be pressed
+        /// </summary>
+        public void EnterWaitState()
+        {
+            this.Hide();
         }
     }
 }

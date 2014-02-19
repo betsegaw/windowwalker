@@ -47,7 +47,7 @@ namespace WindowWalker
 
             source.AddHook(WndProc);
 
-            bool result = Components.InteropAndHelpers.RegisterHotKey(this.hwnd, 1, (int)Components.InteropAndHelpers.Modifiers.Ctrl, (int)Keys.J);
+            bool result = Components.InteropAndHelpers.RegisterHotKey(this.hwnd, 1, (int)Components.InteropAndHelpers.Modifiers.Ctrl, (int)Keys.Right);
         }
 
         /// <summary>
