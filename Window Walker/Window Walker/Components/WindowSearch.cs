@@ -123,11 +123,13 @@ namespace WindowWalker.Components
 
             if (this.SearchText == string.Empty)
             {
-                this.searchMatches = snapshotOfOpenWindows.Where(x => !string.IsNullOrEmpty(x.Title)).ToList();
+                this.searchMatches = 
+                    (snapshotOfOpenWindows.Where(x => !string.IsNullOrEmpty(x.Title)).ToList()).OrderBy(x => x.Title).ToList();
             }
             else
             {
-                this.searchMatches = snapshotOfOpenWindows.Where(x => x.Title.ToLower().Contains(this.searchText.ToLower())).ToList<Window>();
+                this.searchMatches = 
+                    (snapshotOfOpenWindows.Where(x => x.Title.ToLower().Contains(this.searchText.ToLower())).ToList<Window>()).OrderBy(x => x.Title).ToList();
             }
 
             if (this.OnSearchResultUpdate != null)
