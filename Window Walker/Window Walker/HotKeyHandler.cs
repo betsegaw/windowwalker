@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -20,6 +21,16 @@ namespace WindowWalker
         private IntPtr hwnd;
 
         /// <summary>
+        /// Delegate handler for Hotkey being called
+        /// </summary>
+        public delegate void HotKeyPressedHandler(object sender, EventArgs e);
+
+        /// <summary>
+        /// Event raised when there is an update to the list of open windows
+        /// </summary>
+        public event HotKeyPressedHandler OnHotKeyPressed;
+
+        /// <summary>
         /// Constructor for the class
         /// </summary>
         /// <param name="hwnd">The handle to the window we are registering the key for</param>
@@ -34,7 +45,9 @@ namespace WindowWalker
                 throw new Exception("Could not create hWnd source from window.");  
             }
 
-            source.AddHook(WndProc);  
+            source.AddHook(WndProc);
+
+            bool result = Components.InteropAndHelpers.RegisterHotKey(this.hwnd, 1, (int)Components.InteropAndHelpers.Modifiers.Ctrl, (int)Keys.J);
         }
 
         /// <summary>
@@ -47,8 +60,11 @@ namespace WindowWalker
         /// <param name="handled"></param>
         /// <returns></returns>
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)  
-
-        {  
+        {
+            if (msg == 0x0312 && OnHotKeyPressed != null)
+            {
+                OnHotKeyPressed(this, new EventArgs()); 
+            }
 
             return IntPtr.Zero;  
         } 

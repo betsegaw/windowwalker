@@ -98,6 +98,19 @@ namespace WindowWalker.Components
             SWP_SHOWWINDOW = 0x0040,
         }
 
+        /// <summary>
+        /// Flags for setting hotkeys
+        /// </summary>
+        [Flags]
+        public enum Modifiers
+        {
+            NoMod = 0x0000,
+            Alt = 0x0001,
+            Ctrl = 0x0002,
+            Shift = 0x0004,
+            Win = 0x0008
+        }
+
         #endregion
 
         #region Interop Calls

@@ -89,6 +89,7 @@ namespace WindowWalker
             this.UpdateWindowSize();
 
             this.hotKeyHandler = new HotKeyHandler(this);
+            this.hotKeyHandler.OnHotKeyPressed += this.HotKeyPressedHandler;
         }
 
         private void UpdateWindowSize()
@@ -98,6 +99,11 @@ namespace WindowWalker
                 this.searchTextBox.ActualHeight +
                 this.windowBorder.BorderThickness.Top * 2  +
                 this.separator.ActualHeight;
+        }
+
+        public void HotKeyPressedHandler(object sender, EventArgs e)
+        {
+            InteropAndHelpers.SetForegroundWindow(new WindowInteropHelper(this).Handle);
         }
     }
 }
