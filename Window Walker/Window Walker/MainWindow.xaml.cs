@@ -79,13 +79,9 @@ namespace WindowWalker
             {
                 this.resultsListBox.SelectedIndex--;
             }
-            else if (e.Key == Key.Enter && resultsListBox.SelectedIndex >= 0)
+            else if (e.Key == Key.Enter)
             {
-                IntPtr hwndOfSelectedWindow = ((Components.Window)this.resultsListBox.SelectedItem).Hwnd;
-                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Maximize);
-                InteropAndHelpers.SetForegroundWindow(hwndOfSelectedWindow);
-                this.EnterWaitState();
-                InteropAndHelpers.FlashWindow(hwndOfSelectedWindow, true);
+                this.SwitchToSelectedWindow();
             }
 
             this.UpdateWindowSize();
@@ -116,6 +112,7 @@ namespace WindowWalker
         {
             this.Show();
             InteropAndHelpers.SetForegroundWindow(new WindowInteropHelper(this).Handle);
+            this.searchTextBox.Focus();
         }
 
         /// <summary>
@@ -131,6 +128,23 @@ namespace WindowWalker
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
         {
             this.EnterWaitState();
+        }
+
+        private void WindowSelectedByMouseEvent(object sender, MouseButtonEventArgs e)
+        {
+            this.SwitchToSelectedWindow();   
+        }
+
+        private void SwitchToSelectedWindow()
+        {
+            if (resultsListBox.SelectedIndex >= 0)
+            {
+                IntPtr hwndOfSelectedWindow = ((Components.Window)this.resultsListBox.SelectedItem).Hwnd;
+                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Maximize);
+                InteropAndHelpers.SetForegroundWindow(hwndOfSelectedWindow);
+                this.EnterWaitState();
+                InteropAndHelpers.FlashWindow(hwndOfSelectedWindow, true);
+            }
         }
     }
 }

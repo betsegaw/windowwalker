@@ -7,7 +7,7 @@
             <StackPanel>
                 <TextBox x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" />
                 <Grid Height="5" Background="Gray" x:Name="separator" />
-                <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="WindowSelectedByMouseEvent" />
             </StackPanel>
         </Border>
     </Grid>
