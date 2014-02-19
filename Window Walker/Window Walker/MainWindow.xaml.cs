@@ -37,6 +37,12 @@ namespace WindowWalker
 
         private void TextChangedEvent(object sender, TextChangedEventArgs e)
         {
+            if (this.searchTextBox.Text == ":quit")
+            {
+                App.Current.Shutdown();
+                return;
+            }
+
             WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
         }
 
