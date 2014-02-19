@@ -88,7 +88,7 @@ namespace WindowWalker
             this.Top = 0;
             this.UpdateWindowSize();
 
-            this.hotKeyHandler = new HotKeyHandler(new WindowInteropHelper(this).Handle);
+            this.hotKeyHandler = new HotKeyHandler(this);
         }
 
         private void UpdateWindowSize()
