@@ -212,7 +212,8 @@ namespace WindowWalker.Components
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommands nCmdShow);
-
+        [DllImport("user32.dll")]
+        public static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
         #endregion
     }
 }

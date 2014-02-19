@@ -44,7 +44,9 @@ namespace WindowWalker
         {
             resultsListBox.Items.Clear();
 
-            foreach(var window in WindowSearchController.Instance.SearchMatches)
+            var windows = WindowSearchController.Instance.SearchMatches.Where(x => x.Hwnd != new WindowInteropHelper(this).Handle);
+
+            foreach (var window in windows)
             {
                 resultsListBox.Items.Add(window);
             }
@@ -74,9 +76,10 @@ namespace WindowWalker
             else if (e.Key == Key.Enter && resultsListBox.SelectedIndex >= 0)
             {
                 IntPtr hwndOfSelectedWindow = ((Components.Window)this.resultsListBox.SelectedItem).Hwnd;
-                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Restore);
+                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Maximize);
                 InteropAndHelpers.SetForegroundWindow(hwndOfSelectedWindow);
                 this.EnterWaitState();
+                InteropAndHelpers.FlashWindow(hwndOfSelectedWindow, true);
             }
 
             this.UpdateWindowSize();
@@ -114,7 +117,14 @@ namespace WindowWalker
         /// </summary>
         public void EnterWaitState()
         {
+            this.searchTextBox.Text = string.Empty;
+            this.TextChangedEvent(null, null);
             this.Hide();
+        }
+
+        private void WindowLostFocusEventHandler(object sender, EventArgs e)
+        {
+            this.EnterWaitState();
         }
     }
 }

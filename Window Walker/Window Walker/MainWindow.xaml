@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WindowWalker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" ResizeMode="NoResize" WindowStyle="None" Loaded="SetWindowLocation">
+        Title="MainWindow" Height="350" Width="525" ResizeMode="NoResize" Topmost="False" WindowStyle="None" Loaded="SetWindowLocation" Deactivated="WindowLostFocusEventHandler">
     <Grid>
         <Border BorderThickness="5" BorderBrush="Gray" x:Name="windowBorder">
             <StackPanel>
