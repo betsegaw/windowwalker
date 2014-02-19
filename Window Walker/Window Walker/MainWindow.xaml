@@ -1,13 +1,11 @@
 ﻿<Window x:Class="WindowWalker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" MaxHeight="350">
+        Title="MainWindow" Height="350" Width="525" MaxHeight="350" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="SetWindowLocation">
     <Grid>
-        <ScrollViewer>
-            <StackPanel>
-                <TextBox x:Name="searchTextBox" TextChanged="TextChangedEvent" />
-                <ListBox x:Name="resultsListBox" />
-            </StackPanel>
-        </ScrollViewer>
+        <StackPanel>
+            <TextBox x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" />
+            <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+        </StackPanel>
     </Grid>
 </Window>

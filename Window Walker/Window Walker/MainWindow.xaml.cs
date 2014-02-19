@@ -27,6 +27,9 @@ namespace WindowWalker
 
             WindowSearchController.Instance.OnSearchResultUpdate += this.SearchResultUpdateHandler;
             WindowSearchController.Instance.SearchTextUpdated();
+
+            this.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            this.searchTextBox.Focus();
         }
 
         private void TextChangedEvent(object sender, TextChangedEventArgs e)
@@ -40,8 +43,52 @@ namespace WindowWalker
 
             foreach(var window in WindowSearchController.Instance.SearchMatches)
             {
-                resultsListBox.Items.Add(window.Title);
+                resultsListBox.Items.Add(window);
             }
+
+            if (resultsListBox.Items.Count != 0)
+            {
+                resultsListBox.SelectedIndex = 0;
+            }
+
+            this.UpdateWindowSize();
+        }
+
+        private void KeyPressActionHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                App.Current.Shutdown();
+            }
+            else if (e.Key == Key.Down && this.resultsListBox.SelectedIndex != this.resultsListBox.Items.Count)
+            {
+                this.resultsListBox.SelectedIndex++;
+            }
+            else if (e.Key == Key.Up && this.resultsListBox.SelectedIndex > 0)
+            {
+                this.resultsListBox.SelectedIndex--;
+            }
+            else if (e.Key == Key.Enter && resultsListBox.SelectedIndex >= 0)
+            {
+                InteropAndHelpers.SetForegroundWindow(((Components.Window)this.resultsListBox.SelectedItem).Hwnd);
+                App.Current.Shutdown();
+            }
+
+            this.UpdateWindowSize();
+        }
+
+        private void SetWindowLocation(object sender, RoutedEventArgs e)
+        {
+            double left = this.Left;
+            this.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
+            this.Left = left;
+            this.Top = 0;
+            this.UpdateWindowSize();
+        }
+
+        private void UpdateWindowSize()
+        {
+            this.Height = this.resultsListBox.ActualHeight + this.searchTextBox.ActualHeight;
         }
     }
 }

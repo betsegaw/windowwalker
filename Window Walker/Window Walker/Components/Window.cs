@@ -84,6 +84,11 @@ namespace WindowWalker.Components
             InteropAndHelpers.SetForegroundWindow(this.hwnd);
         }
 
+        public override string ToString()
+        {
+            return this.Title;
+        }
+
         #endregion
 
         #region Classes
