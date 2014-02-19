@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -21,6 +22,8 @@ namespace WindowWalker
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        private HotKeyHandler hotKeyHandler;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -84,11 +87,17 @@ namespace WindowWalker
             this.Left = left;
             this.Top = 0;
             this.UpdateWindowSize();
+
+            this.hotKeyHandler = new HotKeyHandler(new WindowInteropHelper(this).Handle);
         }
 
         private void UpdateWindowSize()
         {
-            this.Height = this.resultsListBox.ActualHeight + this.searchTextBox.ActualHeight;
+            this.Height = 
+                this.resultsListBox.ActualHeight + 
+                this.searchTextBox.ActualHeight +
+                this.windowBorder.BorderThickness.Top * 2  +
+                this.separator.ActualHeight;
         }
     }
 }
