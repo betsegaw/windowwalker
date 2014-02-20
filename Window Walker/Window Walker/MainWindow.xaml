@@ -5,7 +5,7 @@
     <Grid>
         <Border BorderThickness="5" BorderBrush="Gray" x:Name="windowBorder">
             <StackPanel>
-                <TextBox x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" ToolTip="If you want to quit, type &quot;:quit&quot;" />
+                <TextBox x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" ToolTip="If you want to quit, type &quot;:quit&quot; and press enter" />
                 <Grid Height="5" Background="Gray" x:Name="separator" />
                 <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="WindowSelectedByMouseEvent" />
             </StackPanel>

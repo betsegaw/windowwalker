@@ -37,12 +37,6 @@ namespace WindowWalker
 
         private void TextChangedEvent(object sender, TextChangedEventArgs e)
         {
-            if (this.searchTextBox.Text == ":quit")
-            {
-                App.Current.Shutdown();
-                return;
-            }
-
             WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
         }
 
@@ -81,7 +75,15 @@ namespace WindowWalker
             }
             else if (e.Key == Key.Enter)
             {
-                this.SwitchToSelectedWindow();
+                if (this.searchTextBox.Text == ":quit")
+                {
+                    App.Current.Shutdown();
+                    return;
+                }
+                else
+                {
+                    this.SwitchToSelectedWindow();
+                }
             }
 
             this.UpdateWindowSize();
