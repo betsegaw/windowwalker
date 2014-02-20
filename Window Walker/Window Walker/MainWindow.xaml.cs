@@ -114,6 +114,8 @@ namespace WindowWalker
         {
             this.Show();
             InteropAndHelpers.SetForegroundWindow(new WindowInteropHelper(this).Handle);
+            this.searchTextBox.Text = string.Empty;
+            this.TextChangedEvent(null, null);
             this.searchTextBox.Focus();
         }
 
@@ -122,8 +124,6 @@ namespace WindowWalker
         /// </summary>
         public void EnterWaitState()
         {
-            this.searchTextBox.Text = string.Empty;
-            this.TextChangedEvent(null, null);
             this.Hide();
         }
 
