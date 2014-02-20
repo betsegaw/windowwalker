@@ -112,6 +112,7 @@ namespace WindowWalker
 
         public void HotKeyPressedHandler(object sender, EventArgs e)
         {
+            WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
             this.Show();
             InteropAndHelpers.SetForegroundWindow(new WindowInteropHelper(this).Handle);
             this.searchTextBox.Text = string.Empty;
