@@ -130,7 +130,7 @@ namespace WindowWalker.Components
             {
                 this.searchMatches =
                     (snapshotOfOpenWindows.Where(
-                    x => (WindowSearchController.IsFuzzyMatch(this.searchText, x.Title) || WindowSearchController.IsFuzzyMatch(this.searchText, x.ProcessName)) &&
+                    x => (WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.Title.ToLower()) || WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.ProcessName.ToLower())) &&
                         x.Title.Length != 0
                     ).ToList<Window>()).OrderBy(x => x.Title).ToList();
             }

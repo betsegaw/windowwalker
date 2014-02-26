@@ -43,7 +43,7 @@ namespace WindowWalker.Components
                 {
                     StringBuilder titleBuffer = new StringBuilder(sizeOfTitle);
                     InteropAndHelpers.GetWindowText(this.hwnd, titleBuffer, sizeOfTitle);
-                    return titleBuffer.ToString().ToLower();
+                    return titleBuffer.ToString();
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace WindowWalker.Components
                 StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
                 InteropAndHelpers.GetProcessImageFileName(processHandle, processName, Window.MaximumFileNameLength);
 
-                return processName.ToString().Split('\\').Reverse().ToArray()[0].ToLower();
+                return processName.ToString().Split('\\').Reverse().ToArray()[0];
             }
         }
         #endregion
