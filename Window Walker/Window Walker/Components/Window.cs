@@ -112,7 +112,7 @@ namespace WindowWalker.Components
 
         public override string ToString()
         {
-            return this.Title;
+            return this.Title + " (" + this.ProcessName.ToUpper() + ")";
         }
 
         #endregion
