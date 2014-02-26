@@ -55,7 +55,7 @@ namespace WindowWalker.Components
             get { return searchText; }
             set 
             { 
-                searchText = value;
+                searchText = value.ToLower();
                 this.SearchTextUpdated();
             }
         }
@@ -128,14 +128,40 @@ namespace WindowWalker.Components
             }
             else
             {
-                this.searchMatches = 
-                    (snapshotOfOpenWindows.Where(x => x.Title.ToLower().Contains(this.searchText.ToLower())).ToList<Window>()).OrderBy(x => x.Title).ToList();
+                this.searchMatches =
+                    (snapshotOfOpenWindows.Where(
+                    x => (WindowSearchController.IsFuzzyMatch(this.searchText, x.Title) || WindowSearchController.IsFuzzyMatch(this.searchText, x.ProcessName)) &&
+                        x.Title.Length != 0
+                    ).ToList<Window>()).OrderBy(x => x.Title).ToList();
             }
 
             if (this.OnSearchResultUpdate != null)
             {
                 this.OnSearchResultUpdate(this, new Window.WindowListUpdateEventArgs());
             }
+        }
+
+        #endregion
+
+        #region Static Methods
+
+        private static bool IsFuzzyMatch(string searchText, string text)
+        {
+            if (searchText.Length > 0 && text.Length > 0)
+            {
+                int indexOfLetterMatch = text.IndexOf(searchText[0]);
+
+                if (indexOfLetterMatch != -1)
+                {
+                    return IsFuzzyMatch(searchText.Substring(1), text.Substring(indexOfLetterMatch));
+                }
+            }
+            else if (searchText.Length == 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

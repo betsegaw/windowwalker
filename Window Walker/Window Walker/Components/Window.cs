@@ -11,6 +11,15 @@ namespace WindowWalker.Components
     /// </summary>
     public class Window
     {
+        #region Constants
+
+        /// <summary>
+        /// Maximum size of a file name
+        /// </summary>
+        private const int MaximumFileNameLength = 1000;
+
+        #endregion
+
         #region Private Members
 
         /// <summary>
@@ -34,7 +43,7 @@ namespace WindowWalker.Components
                 {
                     StringBuilder titleBuffer = new StringBuilder(sizeOfTitle);
                     InteropAndHelpers.GetWindowText(this.hwnd, titleBuffer, sizeOfTitle);
-                    return titleBuffer.ToString();
+                    return titleBuffer.ToString().ToLower();
                 }
                 else
                 {
@@ -49,6 +58,23 @@ namespace WindowWalker.Components
         public IntPtr Hwnd
         {
             get { return hwnd; }
+        }
+
+        /// <summary>
+        /// Returns the name of the process
+        /// </summary>
+        public String ProcessName
+        {
+            get
+            {
+                uint processId = 0;
+                InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
+                IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
+                StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
+                InteropAndHelpers.GetProcessImageFileName(processHandle, processName, Window.MaximumFileNameLength);
+
+                return processName.ToString().Split('\\').Reverse().ToArray()[0].ToLower();
+            }
         }
         #endregion
 
