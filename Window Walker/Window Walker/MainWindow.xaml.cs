@@ -48,7 +48,7 @@ namespace WindowWalker
 
             foreach (var window in windows)
             {
-                resultsListBox.Items.Add(window + " (" + window.ProcessName.ToUpper() + ")");
+                resultsListBox.Items.Add(window);
             }
 
             if (resultsListBox.Items.Count != 0)
