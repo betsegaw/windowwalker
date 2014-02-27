@@ -124,7 +124,7 @@ namespace WindowWalker.Components
             if (this.SearchText == string.Empty)
             {
                 this.searchMatches = 
-                    (snapshotOfOpenWindows.Where(x => !string.IsNullOrEmpty(x.Title)).ToList()).OrderBy(x => x.Title).ToList();
+                    (snapshotOfOpenWindows.Where(x => !string.IsNullOrEmpty(x.Title)).ToList());
             }
             else
             {
@@ -132,7 +132,7 @@ namespace WindowWalker.Components
                     (snapshotOfOpenWindows.Where(
                     x => (WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.Title.ToLower()) || WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.ProcessName.ToLower())) &&
                         x.Title.Length != 0
-                    ).ToList<Window>()).OrderBy(x => x.Title).ToList();
+                    ).ToList<Window>());
             }
 
             if (this.OnSearchResultUpdate != null)
