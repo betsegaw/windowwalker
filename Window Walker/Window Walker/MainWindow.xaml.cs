@@ -24,6 +24,13 @@ namespace WindowWalker
     {
         private HotKeyHandler hotKeyHandler;
 
+        private IntPtr handleToMainWindow;
+
+        /// <summary>
+        /// An flag indicating if the window has finished loading
+        /// </summary>
+        private bool windowIsLoaded = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -44,7 +51,7 @@ namespace WindowWalker
         {
             resultsListBox.Items.Clear();
 
-            var windows = WindowSearchController.Instance.SearchMatches.Where(x => x.Hwnd != new WindowInteropHelper(this).Handle);
+            var windows = WindowSearchController.Instance.SearchMatches.Where(x => x.Hwnd != this.handleToMainWindow);
 
             foreach (var window in windows)
             {
@@ -89,7 +96,7 @@ namespace WindowWalker
             this.UpdateWindowSize();
         }
 
-        private void SetWindowLocation(object sender, RoutedEventArgs e)
+        private void WindowFinishedLoading(object sender, RoutedEventArgs e)
         {
             double left = this.Left;
             this.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
@@ -99,6 +106,10 @@ namespace WindowWalker
 
             this.hotKeyHandler = new HotKeyHandler(this);
             this.hotKeyHandler.OnHotKeyPressed += this.HotKeyPressedHandler;
+
+            this.handleToMainWindow = new WindowInteropHelper(this).Handle;
+            LivePreview.SetWindowExlusionFromLivePreview(this.handleToMainWindow);
+            this.windowIsLoaded = true;
         }
 
         private void UpdateWindowSize()
@@ -114,7 +125,7 @@ namespace WindowWalker
         {
             WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
             this.Show();
-            InteropAndHelpers.SetForegroundWindow(new WindowInteropHelper(this).Handle);
+            InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);
             this.searchTextBox.Text = string.Empty;
             this.TextChangedEvent(null, null);
             this.searchTextBox.Focus();
@@ -126,6 +137,7 @@ namespace WindowWalker
         public void EnterWaitState()
         {
             this.Hide();
+            Components.LivePreview.DeactivateLivePreview();
         }
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
@@ -143,10 +155,20 @@ namespace WindowWalker
             if (resultsListBox.SelectedIndex >= 0)
             {
                 IntPtr hwndOfSelectedWindow = ((Components.Window)this.resultsListBox.SelectedItem).Hwnd;
-                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Maximize);
+                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Show);
                 InteropAndHelpers.SetForegroundWindow(hwndOfSelectedWindow);
                 this.EnterWaitState();
                 InteropAndHelpers.FlashWindow(hwndOfSelectedWindow, true);
+            }
+        }
+
+        private void WindowSelectionChangedEvent(object sender, SelectionChangedEventArgs e)
+        {
+            if (windowIsLoaded && this.resultsListBox.SelectedItem != null)
+            {
+                Components.LivePreview.ActivateLivePreview(
+                    ((Components.Window)this.resultsListBox.SelectedItem).Hwnd,
+                    this.handleToMainWindow);
             }
         }
     }

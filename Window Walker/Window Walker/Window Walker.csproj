@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -63,6 +63,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\InteropAndHelpers.cs" />
+    <Compile Include="Components\LivePreview.cs" />
     <Compile Include="Components\OpenWindows.cs" />
     <Compile Include="Components\Window.cs" />
     <Compile Include="Components\WindowSearch.cs" />

@@ -112,6 +112,42 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
+        /// Options for DwmpActivateLivePreview
+        /// </summary>
+        public enum LivePreviewTrigger
+        {
+            /// <summary>
+            /// Show Desktop button
+            /// </summary>
+            ShowDesktop = 1,
+
+            /// <summary>
+            /// WIN+SPACE hotkey
+            /// </summary>
+            WinSpace,
+
+            /// <summary>
+            /// Hover-over Superbar thumbnails
+            /// </summary>
+            Superbar,
+
+            /// <summary>
+            /// Alt-Tab
+            /// </summary>
+            AltTab,
+
+            /// <summary>
+            /// Press and hold on Superbar thumbnails
+            /// </summary>
+            SuperbarTouch,
+
+            /// <summary>
+            /// Press and hold on Show desktop
+            /// </summary>
+            ShowDesktopTouch
+        };
+
+        /// <summary>
         /// Show Window Enums
         /// </summary>
         public enum ShowWindowCommands
@@ -185,6 +221,35 @@ namespace WindowWalker.Components
             /// </summary>
             ForceMinimize = 11
         }
+
+        [Flags]
+        public enum DwmNCRenderingPolicy
+        {
+            UseWindowStyle,
+            Disabled,
+            Enabled,
+            Last
+        }
+
+
+        [Flags]
+        public enum DwmWindowAttribute
+        {
+            NCRenderingEnabled = 1,
+            NCRenderingPolicy,
+            TransitionsForceDisabled,
+            AllowNCPaint,
+            CaptionButtonBounds,
+            NonClientRtlLayout,
+            ForceIconicRepresentation,
+            Flip3DPolicy,
+            ExtendedFrameBounds,
+            HasIconicBitmap,
+            DisallowPeek,
+            ExcludedFromPeek,
+            Last
+        }
+
 
         [Flags]
         public enum ProcessAccessFlags
@@ -316,6 +381,11 @@ namespace WindowWalker.Components
         public static extern uint GetProcessImageFileName(IntPtr hProcess, [Out] StringBuilder lpImageFileName, [In] [MarshalAs(UnmanagedType.U4)] int nSize);
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(ProcessAccessFlags dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, int dwProcessId);
+        [DllImport("dwmapi.dll", EntryPoint = "#113",CallingConvention = CallingConvention.StdCall)]
+        public static extern int DwmpActivateLivePreview([MarshalAs(UnmanagedType.Bool)]bool fActivate, IntPtr hWndExclude, IntPtr hWndInsertBefore, LivePreviewTrigger lpt, IntPtr prcFinalRect);
+        [DllImport("dwmapi.dll", PreserveSig = false)]
+        public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
         #endregion
     }
 }
