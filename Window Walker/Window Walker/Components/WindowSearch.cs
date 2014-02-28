@@ -147,21 +147,31 @@ namespace WindowWalker.Components
 
         private static bool IsFuzzyMatch(string searchText, string text)
         {
-            if (searchText.Length > 0 && text.Length > 0)
-            {
-                int indexOfLetterMatch = text.IndexOf(searchText[0]);
+            int searchStartIndex = 0;
+            int letterIndex;
 
-                if (indexOfLetterMatch != -1)
+            foreach (char letter in searchText)
+            {
+                if (searchStartIndex >= text.Length)
                 {
-                    return IsFuzzyMatch(searchText.Substring(1), text.Substring(indexOfLetterMatch));
+                    return false;
+                }
+                else
+                {
+                    letterIndex = text.Substring(searchStartIndex).IndexOf(letter);
+
+                    if (letterIndex != -1)
+                    {
+                        searchStartIndex = letterIndex + 1;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
-            else if (searchText.Length == 0)
-            {
-                return true;
-            }
 
-            return false;
+            return true;
         }
 
         #endregion

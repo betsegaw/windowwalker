@@ -155,7 +155,7 @@ namespace WindowWalker
             if (resultsListBox.SelectedIndex >= 0)
             {
                 IntPtr hwndOfSelectedWindow = ((Components.Window)this.resultsListBox.SelectedItem).Hwnd;
-                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.Show);
+                InteropAndHelpers.ShowWindow(hwndOfSelectedWindow, InteropAndHelpers.ShowWindowCommands.ShowMaximized);
                 InteropAndHelpers.SetForegroundWindow(hwndOfSelectedWindow);
                 this.EnterWaitState();
                 InteropAndHelpers.FlashWindow(hwndOfSelectedWindow, true);
