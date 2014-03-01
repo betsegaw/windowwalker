@@ -104,20 +104,20 @@ namespace WindowWalker.Components
         {
             OpenWindows.Instance.UpdateOpenWindowsList();
 
-            this.SyncOpenWindowsWithModel();
+            this.SyncOpenWindowsWithModelAsync();
         }
 
         #region Event Handlers
 
         public void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e)
         {
-            this.SyncOpenWindowsWithModel();
+            this.SyncOpenWindowsWithModelAsync();
         }
 
         /// <summary>
         /// Syncs the open windows with the OpenWindows Model
         /// </summary>
-        private void SyncOpenWindowsWithModel()
+        private async void SyncOpenWindowsWithModelAsync()
         {
             List<Window> snapshotOfOpenWindows = OpenWindows.Instance.Windows;
 
@@ -128,17 +128,24 @@ namespace WindowWalker.Components
             }
             else
             {
-                this.searchMatches =
-                    (snapshotOfOpenWindows.Where(
-                    x => (WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.Title.ToLower()) || WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.ProcessName.ToLower())) &&
-                        x.Title.Length != 0
-                    ).ToList<Window>());
+                this.searchMatches = await FuzzySearchOpenWindows(snapshotOfOpenWindows);                    
             }
 
             if (this.OnSearchResultUpdate != null)
             {
                 this.OnSearchResultUpdate(this, new Window.WindowListUpdateEventArgs());
             }
+        }
+
+        private Task<List<Window>> FuzzySearchOpenWindows(List<Window> openWindows)
+        {
+            return Task.Run(
+                () =>
+                    openWindows.Where(
+                     x => (WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.Title.ToLower()) || WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.ProcessName.ToLower())) &&
+                         x.Title.Length != 0
+                     ).ToList<Window>()
+                );
         }
 
         #endregion
@@ -158,7 +165,7 @@ namespace WindowWalker.Components
                 }
                 else
                 {
-                    letterIndex = text.Substring(searchStartIndex).IndexOf(letter);
+                    letterIndex = text.IndexOf(letter, searchStartIndex);
 
                     if (letterIndex != -1)
                     {
