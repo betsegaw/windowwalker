@@ -76,6 +76,28 @@ namespace WindowWalker.Components
                 return processName.ToString().Split('\\').Reverse().ToArray()[0];
             }
         }
+
+        /// <summary>
+        /// Returns the name of the class for the window represented
+        /// </summary>
+        public String ClassName
+        {
+            get
+            {
+                StringBuilder WindowClassName = new StringBuilder(300);
+                InteropAndHelpers.GetClassName(this.Hwnd, WindowClassName, WindowClassName.MaxCapacity);
+
+                return WindowClassName.ToString();
+            }
+        }
+
+        public bool Visible
+        {
+            get
+            {
+                return InteropAndHelpers.IsWindowVisible(this.Hwnd);
+            }
+        }
         #endregion
 
         #region Constructors

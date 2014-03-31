@@ -385,7 +385,8 @@ namespace WindowWalker.Components
         public static extern int DwmpActivateLivePreview([MarshalAs(UnmanagedType.Bool)]bool fActivate, IntPtr hWndExclude, IntPtr hWndInsertBefore, LivePreviewTrigger lpt, IntPtr prcFinalRect);
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
+        [DllImport("user32.dll")]
+        public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
         #endregion
     }
 }

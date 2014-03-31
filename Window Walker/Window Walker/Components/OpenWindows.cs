@@ -92,11 +92,12 @@ namespace WindowWalker.Components
         /// <returns>true to make sure to contiue enumeration</returns>
         public bool WindowEnumerationCallBack(IntPtr hwnd, IntPtr lParam)
         {
-            bool isWindowVisible = InteropAndHelpers.IsWindowVisible(hwnd);
-            
-            if (isWindowVisible)
+            Window newWindow = new Window(hwnd);
+
+            if (newWindow.Visible && !newWindow.ProcessName.ToLower().Equals("iexplore.exe") ||
+                (newWindow.ProcessName.ToLower().Equals("iexplore.exe") && newWindow.ClassName == "TabThumbnailWindow")) 
             {
-                this.windows.Add(new Window(hwnd));
+                this.windows.Add(newWindow);
 
                 if (OnOpenWindowsUpdate != null)
                 {
