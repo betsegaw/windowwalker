@@ -119,6 +119,8 @@ namespace WindowWalker.Components
         /// </summary>
         private async void SyncOpenWindowsWithModelAsync()
         {
+            System.Diagnostics.Debug.Print("Syncing WindowSearch result with OpenWindows Model");
+
             List<Window> snapshotOfOpenWindows = OpenWindows.Instance.Windows;
 
             if (this.SearchText == string.Empty)

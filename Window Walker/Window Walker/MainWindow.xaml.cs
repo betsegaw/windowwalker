@@ -63,6 +63,8 @@ namespace WindowWalker
                 resultsListBox.SelectedIndex = 0;
             }
 
+            System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
+
             this.UpdateWindowSize();
         }
 
@@ -93,6 +95,8 @@ namespace WindowWalker
                 }
             }
 
+            System.Diagnostics.Debug.Print("Keypress handled");
+
             this.UpdateWindowSize();
         }
 
@@ -119,14 +123,15 @@ namespace WindowWalker
                 this.searchTextBox.ActualHeight +
                 this.windowBorder.BorderThickness.Top * 2  +
                 this.separator.ActualHeight;
+
+            System.Diagnostics.Debug.Print("Window Size getting Updated");
         }
 
         public void HotKeyPressedHandler(object sender, EventArgs e)
         {
-            WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
+            this.searchTextBox.Text = string.Empty;
             this.Show();
             InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);
-            this.searchTextBox.Text = string.Empty;
             this.TextChangedEvent(null, null);
             this.searchTextBox.Focus();
         }
@@ -142,7 +147,7 @@ namespace WindowWalker
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
         {
-            this.EnterWaitState();
+            //this.EnterWaitState();
         }
 
         private void WindowSelectedByMouseEvent(object sender, MouseButtonEventArgs e)
@@ -161,12 +166,12 @@ namespace WindowWalker
 
         private void WindowSelectionChangedEvent(object sender, SelectionChangedEventArgs e)
         {
-            if (windowIsLoaded && this.resultsListBox.SelectedItem != null)
-            {
-                Components.LivePreview.ActivateLivePreview(
-                    ((Components.Window)this.resultsListBox.SelectedItem).Hwnd,
-                    this.handleToMainWindow);
-            }
+            //if (windowIsLoaded && this.resultsListBox.SelectedItem != null)
+            //{
+            //    Components.LivePreview.ActivateLivePreview(
+            //        ((Components.Window)this.resultsListBox.SelectedItem).Hwnd,
+            //        this.handleToMainWindow);
+            //}
         }
     }
 }
