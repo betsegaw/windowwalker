@@ -120,6 +120,13 @@ namespace WindowWalker
                 this.windowBorder.BorderThickness.Top * 2 +
                 this.separator.ActualHeight;
             
+            var screen = System.Windows.Forms.Screen.FromHandle(this.handleToMainWindow);
+
+            if (this.Height > screen.Bounds.Height)
+            {
+                this.Height = screen.Bounds.Height;
+            }
+
             System.Diagnostics.Debug.Print("Window Size getting Updated");
         }
 
