@@ -7,7 +7,7 @@
             <StackPanel>
                 <TextBox x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" ToolTip="If you want to quit, type &quot;:quit&quot; and press enter" />
                 <Grid Height="5" Background="Gray" x:Name="separator" />
-                <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="WindowSelectedByMouseEvent" SelectionChanged="WindowSelectionChangedEvent" />
+                <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="WindowSelectedByMouseEvent" SelectionChanged="WindowSelectionChangedEvent" SizeChanged="ListViewSizeChanged"/>
             </StackPanel>
         </Border>
     </Grid>

@@ -64,8 +64,6 @@ namespace WindowWalker
             }
 
             System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
-
-            this.UpdateWindowSize();
         }
 
         private void KeyPressActionHandler(object sender, KeyEventArgs e)
@@ -96,8 +94,6 @@ namespace WindowWalker
             }
 
             System.Diagnostics.Debug.Print("Keypress handled");
-
-            this.UpdateWindowSize();
         }
 
         private void WindowFinishedLoading(object sender, RoutedEventArgs e)
@@ -118,12 +114,12 @@ namespace WindowWalker
 
         private void UpdateWindowSize()
         {
-            this.Height = 
-                this.resultsListBox.ActualHeight + 
+            this.Height =
+                this.resultsListBox.ActualHeight +
                 this.searchTextBox.ActualHeight +
-                this.windowBorder.BorderThickness.Top * 2  +
+                this.windowBorder.BorderThickness.Top * 2 +
                 this.separator.ActualHeight;
-
+            
             System.Diagnostics.Debug.Print("Window Size getting Updated");
         }
 
@@ -147,7 +143,7 @@ namespace WindowWalker
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
         {
-            //this.EnterWaitState();
+            this.EnterWaitState();
         }
 
         private void WindowSelectedByMouseEvent(object sender, MouseButtonEventArgs e)
@@ -166,12 +162,17 @@ namespace WindowWalker
 
         private void WindowSelectionChangedEvent(object sender, SelectionChangedEventArgs e)
         {
-            //if (windowIsLoaded && this.resultsListBox.SelectedItem != null)
-            //{
-            //    Components.LivePreview.ActivateLivePreview(
-            //        ((Components.Window)this.resultsListBox.SelectedItem).Hwnd,
-            //        this.handleToMainWindow);
-            //}
+            if (windowIsLoaded && this.resultsListBox.SelectedItem != null)
+            {
+                Components.LivePreview.ActivateLivePreview(
+                    ((Components.Window)this.resultsListBox.SelectedItem).Hwnd,
+                    this.handleToMainWindow);
+            }
+        }
+
+        private void ListViewSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.UpdateWindowSize();
         }
     }
 }
