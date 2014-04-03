@@ -158,6 +158,7 @@ namespace WindowWalker.Components
         {
             int searchStartIndex = 0;
             int letterIndex;
+            int lettersInBetween = 0;
 
             foreach (char letter in searchText)
             {
@@ -178,6 +179,8 @@ namespace WindowWalker.Components
                         return false;
                     }
                 }
+
+                lettersInBetween++;
             }
 
             return true;
