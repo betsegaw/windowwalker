@@ -125,6 +125,7 @@ namespace WindowWalker
             if (this.Height > screen.Bounds.Height)
             {
                 this.Height = screen.Bounds.Height;
+                this.resultsListBox.MaxHeight = screen.Bounds.Height - 30;
             }
 
             System.Diagnostics.Debug.Print("Window Size getting Updated");
