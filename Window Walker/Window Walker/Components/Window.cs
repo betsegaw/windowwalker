@@ -18,6 +18,12 @@ namespace WindowWalker.Components
         /// </summary>
         private const int MaximumFileNameLength = 1000;
 
+        /// <summary>
+        /// The list of owners of a window so that we don't have to
+        /// constantly query for the process owning a specific window
+        /// </summary>
+        private static Dictionary<IntPtr,string> handlesToProcessCache = new Dictionary<IntPtr,string>();
+
         #endregion
 
         #region Private Members
@@ -67,13 +73,18 @@ namespace WindowWalker.Components
         {
             get
             {
-                uint processId = 0;
-                InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
-                IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
-                StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
-                InteropAndHelpers.GetProcessImageFileName(processHandle, processName, Window.MaximumFileNameLength);
+                if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
+                {
+                    uint processId = 0;
+                    InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
+                    IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
+                    StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
+                    InteropAndHelpers.GetProcessImageFileName(processHandle, processName, Window.MaximumFileNameLength);
 
-                return processName.ToString().Split('\\').Reverse().ToArray()[0];
+                    Window.handlesToProcessCache.Add(this.Hwnd,processName.ToString().Split('\\').Reverse().ToArray()[0]);
+                }
+
+                return Window.handlesToProcessCache[this.hwnd];
             }
         }
 
