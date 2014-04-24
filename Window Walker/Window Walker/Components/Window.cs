@@ -73,6 +73,11 @@ namespace WindowWalker.Components
         {
             get
             {
+                if (Window.handlesToProcessCache.Count > 700)
+                {
+                    Window.handlesToProcessCache.Clear();
+                }
+
                 if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
                 {
                     uint processId = 0;
