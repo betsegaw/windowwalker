@@ -62,7 +62,7 @@ namespace WindowWalker
                 image.Margin = new Thickness(0,0,5,0);
                 tempStackPanel.Children.Add(image);
                 var tempTextBlock = new TextBlockWindow();
-                tempTextBlock.Text = window.Title;
+                tempTextBlock.Text = window.Title + " (" + window.ProcessName.ToUpper() + ")" ;
                 tempTextBlock.Window = window;
                 tempStackPanel.Children.Add(tempTextBlock);
                 image.Height = 15;
