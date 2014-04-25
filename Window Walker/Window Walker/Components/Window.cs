@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace WindowWalker.Components
 {
@@ -18,11 +24,21 @@ namespace WindowWalker.Components
         /// </summary>
         private const int MaximumFileNameLength = 1000;
 
+        #endregion
+
+        #region Static members
+
         /// <summary>
         /// The list of owners of a window so that we don't have to
         /// constantly query for the process owning a specific window
         /// </summary>
         private static Dictionary<IntPtr,string> handlesToProcessCache = new Dictionary<IntPtr,string>();
+
+        /// <summary>
+        /// The list of icons from process so that we don't have to keep
+        /// loading them from disk
+        /// </summary>
+        private static Dictionary<uint, ImageSource> processIdsToIconsCache = new Dictionary<uint, ImageSource>();
 
         #endregion
 
@@ -104,6 +120,35 @@ namespace WindowWalker.Components
                 InteropAndHelpers.GetClassName(this.Hwnd, WindowClassName, WindowClassName.MaxCapacity);
 
                 return WindowClassName.ToString();
+            }
+        }   
+
+        public ImageSource WindowIcon
+        {
+            get
+            {
+                uint processId = 0;
+                InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
+                
+                if (!Window.processIdsToIconsCache.ContainsKey(processId))
+                {
+                    try
+                    { 
+                        Process process = Process.GetProcessById((int)processId);
+                        Icon tempIcon = Icon.ExtractAssociatedIcon(process.Modules[0].FileName);
+                        Window.processIdsToIconsCache.Add(processId,Imaging.CreateBitmapSourceFromHIcon(
+                            tempIcon.Handle,
+                            Int32Rect.Empty,
+                            BitmapSizeOptions.FromEmptyOptions()));
+                    }
+                    catch
+                    {
+                        BitmapImage failedImage = new BitmapImage(new Uri(@"Images\failedIcon.jpg",UriKind.Relative));
+                        Window.processIdsToIconsCache.Add(processId, failedImage);
+                    }
+                }
+
+                return Window.processIdsToIconsCache[processId];
             }
         }
 

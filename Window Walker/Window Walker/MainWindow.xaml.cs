@@ -55,7 +55,18 @@ namespace WindowWalker
 
             foreach (var window in windows)
             {
-                resultsListBox.Items.Add(window);
+                var tempStackPanel = new StackPanel();
+                tempStackPanel.Orientation = Orientation.Horizontal;
+                var image = new Image();
+                image.Source = window.WindowIcon;
+                image.Margin = new Thickness(0,0,5,0);
+                tempStackPanel.Children.Add(image);
+                var tempTextBlock = new TextBlockWindow();
+                tempTextBlock.Text = window.Title;
+                tempTextBlock.Window = window;
+                tempStackPanel.Children.Add(tempTextBlock);
+                image.Height = 15;
+                this.resultsListBox.Items.Add(tempStackPanel);
             }
 
             if (resultsListBox.Items.Count != 0)
@@ -119,7 +130,7 @@ namespace WindowWalker
                 this.searchTextBox.ActualHeight +
                 this.windowBorder.BorderThickness.Top * 2 +
                 this.separator.ActualHeight;
-            
+
             var screen = System.Windows.Forms.Screen.FromHandle(this.handleToMainWindow);
 
             if (this.Height > screen.Bounds.Height)
@@ -156,14 +167,14 @@ namespace WindowWalker
 
         private void WindowSelectedByMouseEvent(object sender, MouseButtonEventArgs e)
         {
-            this.SwitchToSelectedWindow();   
+            this.SwitchToSelectedWindow();
         }
 
         private void SwitchToSelectedWindow()
         {
             if (resultsListBox.SelectedIndex >= 0)
             {
-                ((Components.Window)this.resultsListBox.SelectedItem).SwitchToWindow();
+                ((TextBlockWindow)(((StackPanel)this.resultsListBox.SelectedItem).Children[1])).Window.SwitchToWindow();
                 this.EnterWaitState();
             }
         }
@@ -173,7 +184,7 @@ namespace WindowWalker
             if (windowIsLoaded && this.resultsListBox.SelectedItem != null)
             {
                 Components.LivePreview.ActivateLivePreview(
-                    ((Components.Window)this.resultsListBox.SelectedItem).Hwnd,
+                    ((TextBlockWindow)(((StackPanel)this.resultsListBox.SelectedItem).Children[1])).Window.Hwnd,
                     this.handleToMainWindow);
             }
         }
@@ -181,6 +192,15 @@ namespace WindowWalker
         private void ListViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.UpdateWindowSize();
+        }
+    }
+
+    public class TextBlockWindow : TextBlock
+    {
+        public Components.Window Window
+        {
+            get;
+            set;
         }
     }
 }
