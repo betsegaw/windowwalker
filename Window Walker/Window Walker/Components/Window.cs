@@ -100,9 +100,14 @@ namespace WindowWalker.Components
                     InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
                     IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
                     StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
-                    InteropAndHelpers.GetProcessImageFileName(processHandle, processName, Window.MaximumFileNameLength);
-
-                    Window.handlesToProcessCache.Add(this.Hwnd,processName.ToString().Split('\\').Reverse().ToArray()[0]);
+                    if (InteropAndHelpers.GetProcessImageFileName(processHandle, processName, Window.MaximumFileNameLength) != 0)
+                    {
+                        Window.handlesToProcessCache.Add(this.Hwnd, processName.ToString().Split('\\').Reverse().ToArray()[0]);
+                    }
+                    else
+                    {
+                        Window.handlesToProcessCache.Add(this.Hwnd, string.Empty);
+                    }
                 }
 
                 return Window.handlesToProcessCache[this.hwnd];
