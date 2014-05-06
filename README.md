@@ -1,4 +1,4 @@
-windowwalker
+Window Walker
 ============
 
 > **"Why walk your dog when you can walk your Window?"** -Yuki
@@ -45,4 +45,7 @@ No. Once you start it up, you can always invoke it using the invoke Key combinat
 
 Bugs? Never! Of course, if you THINK you have found one, feel free to send me an email. I shall prove you wrong promptly!
 
+###6. Special thanks to...?
+
+Jose Moya for making sure the search is async
 
