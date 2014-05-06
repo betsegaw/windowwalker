@@ -1,5 +1,6 @@
 Window Walker
 ============
+![](screenshot.png)
 
 > **"Why walk your dog when you can walk your Window?"** -Yuki
 
@@ -19,33 +20,33 @@ You can simply start typing to filter through the windows and once you have the 
 
 ##FAQ
 
-###1. Why does this app exist?
+#####1. Why does this app exist?
 
 This App exists for the simple reason that I grew tired of trying to quickly switch windows when I usually have 30+ windows open on my dev machine. Do a quick Alt + Tab and hold to see if this is you. If you have only 5 windows open, this is not a really useful app for you.
 
-###2. What kind of matches do I get?
+#####2. What kind of matches do I get?
 
 You get results from matches in the window title AND the process name (eg. outlook.exe). 
 
 Also the search is kind of fuzzy so searching for "book" will also return "b blah blah oo blah k". 
 	
-###3. Can I search Internet Explorer Tabs?
+#####3. Can I search Internet Explorer Tabs?
 
 Yes :)
 
-###4. I think you did a terrible job. How can I show you the sheer awesomeness of my coding skills by contributing? 
+#####4. I think you did a terrible job. How can I show you the sheer awesomeness of my coding skills by contributing? 
 
 Sad to hear you hate the app but glad you want to improve it! Shoot me an email and I can add you to the visual studio online account where the code is being hosted. 
 
-###5. Do I need to start up the app every time I need to do a search?
+#####5. Do I need to start up the app every time I need to do a search?
 
 No. Once you start it up, you can always invoke it using the invoke Key combination (CTRL + WIN). However, this still means that you still need to start up the app every time you reboot your PC.
 	
-###6. Known bugs and issues?
+#####6. Known bugs and issues?
 
 Bugs? Never! Of course, if you THINK you have found one, feel free to send me an email. I shall prove you wrong promptly!
 
-###6. Special thanks to...?
+#####6. Special thanks to...?
 
 Jose Moya for making sure the search is async
 
