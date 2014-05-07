@@ -93,20 +93,33 @@ namespace WindowWalker.Components
                 {
                     Window.handlesToProcessCache.Clear();
                 }
-
                 if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
                 {
                     uint processId = 0;
                     InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
                     IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
                     StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
-                    if (InteropAndHelpers.GetProcessImageFileName(processHandle, processName, Window.MaximumFileNameLength) != 0)
+
+                    try
                     {
-                        Window.handlesToProcessCache.Add(this.Hwnd, processName.ToString().Split('\\').Reverse().ToArray()[0]);
+                        if (InteropAndHelpers.GetProcessImageFileName(processHandle, processName,
+                                Window.MaximumFileNameLength) != 0)
+                        {
+                            Window.handlesToProcessCache.Add(this.Hwnd,
+                                processName.ToString().Split('\\').Reverse().ToArray()[0]);
+                        }
+                        else
+                        {
+                            Window.handlesToProcessCache.Add(this.Hwnd, string.Empty);
+                        }
                     }
-                    else
+                    catch (ArgumentException e)
                     {
-                        Window.handlesToProcessCache.Add(this.Hwnd, string.Empty);
+                        // item already exists due to being added from other thread.
+                        if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
+                        {
+                            throw;
+                        }
                     }
                 }
 
