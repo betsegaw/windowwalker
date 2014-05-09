@@ -89,21 +89,23 @@ namespace WindowWalker.Components
         {
             get
             {
-                if (Window.handlesToProcessCache.Count > 700)
-                {
-                    Window.handlesToProcessCache.Clear();
-                }
-                if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
-                {
-                    uint processId = 0;
-                    InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
-                    IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
-                    StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
-
-                    try
+                lock (Window.handlesToProcessCache)
+                { 
+                    if (Window.handlesToProcessCache.Count > 7000)
                     {
-                        if (InteropAndHelpers.GetProcessImageFileName(processHandle, processName,
-                                Window.MaximumFileNameLength) != 0)
+                        System.Diagnostics.Debug.Print("Clearing Process Cache because it's size is " + Window.handlesToProcessCache.Count);
+                        Window.handlesToProcessCache.Clear();
+                    }
+                        
+                    if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
+                    {
+                        uint processId = 0;
+                        InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
+                        IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
+                        StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
+
+                        if (InteropAndHelpers.GetProcessImageFileName(processHandle, processName, 
+                            Window.MaximumFileNameLength) != 0)
                         {
                             Window.handlesToProcessCache.Add(this.Hwnd,
                                 processName.ToString().Split('\\').Reverse().ToArray()[0]);
@@ -113,17 +115,9 @@ namespace WindowWalker.Components
                             Window.handlesToProcessCache.Add(this.Hwnd, string.Empty);
                         }
                     }
-                    catch (ArgumentException e)
-                    {
-                        // item already exists due to being added from other thread.
-                        if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
-                        {
-                            throw;
-                        }
-                    }
-                }
 
-                return Window.handlesToProcessCache[this.hwnd];
+                    return Window.handlesToProcessCache[this.hwnd];
+                }
             }
         }
 
@@ -145,28 +139,31 @@ namespace WindowWalker.Components
         {
             get
             {
-                uint processId = 0;
-                InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
-                
-                if (!Window.processIdsToIconsCache.ContainsKey(processId))
+                lock(Window.processIdsToIconsCache)
                 {
-                    try
-                    { 
-                        Process process = Process.GetProcessById((int)processId);
-                        Icon tempIcon = Icon.ExtractAssociatedIcon(process.Modules[0].FileName);
-                        Window.processIdsToIconsCache.Add(processId,Imaging.CreateBitmapSourceFromHIcon(
-                            tempIcon.Handle,
-                            Int32Rect.Empty,
-                            BitmapSizeOptions.FromEmptyOptions()));
-                    }
-                    catch
+                    uint processId = 0;
+                    InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
+                
+                    if (!Window.processIdsToIconsCache.ContainsKey(processId))
                     {
-                        BitmapImage failedImage = new BitmapImage(new Uri(@"Images\failedIcon.jpg",UriKind.Relative));
-                        Window.processIdsToIconsCache.Add(processId, failedImage);
+                        try
+                        { 
+                            Process process = Process.GetProcessById((int)processId);
+                            Icon tempIcon = Icon.ExtractAssociatedIcon(process.Modules[0].FileName);
+                            Window.processIdsToIconsCache.Add(processId,Imaging.CreateBitmapSourceFromHIcon(
+                                tempIcon.Handle,
+                                Int32Rect.Empty,
+                                BitmapSizeOptions.FromEmptyOptions()));
+                        }
+                        catch
+                        {
+                            BitmapImage failedImage = new BitmapImage(new Uri(@"Images\failedIcon.jpg",UriKind.Relative));
+                            Window.processIdsToIconsCache.Add(processId, failedImage);
+                        }
                     }
-                }
 
-                return Window.processIdsToIconsCache[processId];
+                    return Window.processIdsToIconsCache[processId];
+                }
             }
         }
 
