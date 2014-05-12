@@ -55,6 +55,10 @@ namespace WindowWalker
 
             foreach (var window in windows)
             {
+                /// Each window is shown in a horizontal stack panel
+                /// that contains an image object on the left and 
+                /// a textblock with the window title on the right
+
                 var tempStackPanel = new StackPanel();
                 tempStackPanel.Orientation = Orientation.Horizontal;
                 var image = new Image();
