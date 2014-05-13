@@ -107,6 +107,7 @@ namespace WindowWalker
                     var r = new Run(windowText.Substring(boldIndex, 1));
                     r.Text = windowText.Substring(boldIndex, 1);
                     var b = new Bold(r);
+                    b.FontSize = 15;
                     textBlock.Inlines.Add(b);
                     start = boldIndex + 1;
                 }
