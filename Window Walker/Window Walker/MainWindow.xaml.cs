@@ -40,6 +40,8 @@ namespace WindowWalker
 
             this.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             this.searchTextBox.Focus();
+
+            OpenWindows.Instance.UpdateOpenWindowsList();
         }
 
 
@@ -183,7 +185,6 @@ namespace WindowWalker
             this.handleToMainWindow = new WindowInteropHelper(this).Handle;
             LivePreview.SetWindowExlusionFromLivePreview(this.handleToMainWindow);
             this.windowIsLoaded = true;
-
 #if DEBUG
             this.Topmost = false;
 #endif
@@ -210,6 +211,7 @@ namespace WindowWalker
 
         public void HotKeyPressedHandler(object sender, EventArgs e)
         {
+            OpenWindows.Instance.UpdateOpenWindowsList();
             this.searchTextBox.Text = string.Empty;
             this.Show();
             InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);

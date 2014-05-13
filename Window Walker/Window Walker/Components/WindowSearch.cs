@@ -102,8 +102,6 @@ namespace WindowWalker.Components
         /// </summary>
         public void SearchTextUpdated()
         {
-            OpenWindows.Instance.UpdateOpenWindowsList();
-
             this.SyncOpenWindowsWithModelAsync();
         }
 
