@@ -48,11 +48,13 @@ namespace WindowWalker
             WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
         }
 
-        public void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
+        public async void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
         {
             resultsListBox.Items.Clear();
 
             var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
+            Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
+
 
             foreach (WindowSearchResult windowResult in windowsResult)
             {
@@ -68,17 +70,18 @@ namespace WindowWalker
                 tempStackPanel.Children.Add(image);
                 var tempTextBlock = new TextBlockWindow();
 
-                this.UpdateTextWithHighlight(ref tempTextBlock, windowResult);
+                //this.UpdateTextWithHighlight(ref tempTextBlock, windowResult);
 
-                if (!windowResult.ResultWindow.ProcessName.ToUpper().Equals(string.Empty))
-                { 
-                    tempTextBlock.Inlines.Add(" (" + windowResult.ResultWindow.ProcessName.ToUpper() + ")" );
-                }
+                //if (!windowResult.ResultWindow.ProcessName.ToUpper().Equals(string.Empty))
+                //{ 
+                //    tempTextBlock.Inlines.Add(" (" + windowResult.ResultWindow.ProcessName.ToUpper() + ")" );
+                //}
 
                 tempTextBlock.Window = windowResult.ResultWindow;
                 tempStackPanel.Children.Add(tempTextBlock);
                 image.Height = 15;
                 this.resultsListBox.Items.Add(tempStackPanel);
+                highlightStack[tempTextBlock] = windowResult;
             }
 
             if (resultsListBox.Items.Count != 0)
@@ -86,41 +89,54 @@ namespace WindowWalker
                 resultsListBox.SelectedIndex = 0;
             }
 
+            Task.Run(
+                () =>
+                    this.UpdateTextWithHighlight(highlightStack)
+                );
+                
             System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
         }
 
-        private void UpdateTextWithHighlight(ref TextBlockWindow textBlock, WindowSearchResult windowResult)
+        private void UpdateTextWithHighlight(Dictionary<TextBlock, WindowSearchResult> highlightstack)
         {
-            var windowText = windowResult.ResultWindow.Title;
-            var listOfIndexes = windowResult.SearchMatchesInTitle.OrderBy(x => x);
-
-            int start = 0;
-            textBlock.Inlines.Clear();
-
-            if (listOfIndexes.Count() != 0)
+            this.Dispatcher.Invoke((Action)(() =>
             {
-                foreach (int boldIndex in listOfIndexes)
+                foreach (var key in highlightstack.Keys)
                 {
-                    textBlock.Inlines.Add(windowText.Substring(start, boldIndex - start));
+                    var textBlock = key;
+                    var windowResult = highlightstack[key];
+                    var windowText = windowResult.ResultWindow.Title;
+                    var listOfIndexes = windowResult.SearchMatchesInTitle.OrderBy(x => x);
 
-                    System.Diagnostics.Debug.Print(windowText + " " +windowText.Length+ " " +boldIndex);
-                    var r = new Run(windowText.Substring(boldIndex, 1));
-                    r.Text = windowText.Substring(boldIndex, 1);
-                    var b = new Bold(r);
-                    b.FontSize = 15;
-                    textBlock.Inlines.Add(b);
-                    start = boldIndex + 1;
-                }
+                    int start = 0;
+                    textBlock.Inlines.Clear();
 
-                if (start < windowText.Length)
-                {
-                    textBlock.Inlines.Add(windowText.Substring(start, windowText.Length - start ));
+                    if (listOfIndexes.Count() != 0)
+                    {
+                        foreach (int boldIndex in listOfIndexes)
+                        {
+                            textBlock.Inlines.Add(windowText.Substring(start, boldIndex - start));
+
+                            System.Diagnostics.Debug.Print(windowText + " " + windowText.Length + " " + boldIndex);
+                            var r = new Run(windowText.Substring(boldIndex, 1));
+                            r.Text = windowText.Substring(boldIndex, 1);
+                            var b = new Bold(r);
+                            b.FontSize = 15;
+                            textBlock.Inlines.Add(b);
+                            start = boldIndex + 1;
+                        }
+
+                        if (start < windowText.Length)
+                        {
+                            textBlock.Inlines.Add(windowText.Substring(start, windowText.Length - start));
+                        }
+                    }
+                    else
+                    {
+                        textBlock.Text = windowText;
+                    }
                 }
-            }
-            else
-            {
-                textBlock.Text = windowText;
-            }
+            }));
         }
 
         private void KeyPressActionHandler(object sender, KeyEventArgs e)
