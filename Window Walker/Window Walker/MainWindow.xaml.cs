@@ -42,6 +42,7 @@ namespace WindowWalker
             this.searchTextBox.Focus();
         }
 
+
         private void TextChangedEvent(object sender, TextChangedEventArgs e)
         {
             WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
@@ -51,9 +52,9 @@ namespace WindowWalker
         {
             resultsListBox.Items.Clear();
 
-            var windows = WindowSearchController.Instance.SearchMatches.Where(x => x.Hwnd != this.handleToMainWindow);
+            var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
 
-            foreach (var window in windows)
+            foreach (WindowSearchResult windowResult in windowsResult)
             {
                 /// Each window is shown in a horizontal stack panel
                 /// that contains an image object on the left and 
@@ -62,18 +63,19 @@ namespace WindowWalker
                 var tempStackPanel = new StackPanel();
                 tempStackPanel.Orientation = Orientation.Horizontal;
                 var image = new Image();
-                image.Source = window.WindowIcon;
+                image.Source = windowResult.ResultWindow.WindowIcon;
                 image.Margin = new Thickness(0,0,5,0);
                 tempStackPanel.Children.Add(image);
                 var tempTextBlock = new TextBlockWindow();
-                tempTextBlock.Text = window.Title;
 
-                if (!window.ProcessName.ToUpper().Equals(string.Empty))
+                this.UpdateTextWithHighlight(ref tempTextBlock, windowResult);
+
+                if (!windowResult.ResultWindow.ProcessName.ToUpper().Equals(string.Empty))
                 { 
-                    tempTextBlock.Text += " (" + window.ProcessName.ToUpper() + ")" ;
+                    tempTextBlock.Inlines.Add(" (" + windowResult.ResultWindow.ProcessName.ToUpper() + ")" );
                 }
 
-                tempTextBlock.Window = window;
+                tempTextBlock.Window = windowResult.ResultWindow;
                 tempStackPanel.Children.Add(tempTextBlock);
                 image.Height = 15;
                 this.resultsListBox.Items.Add(tempStackPanel);
@@ -85,6 +87,39 @@ namespace WindowWalker
             }
 
             System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
+        }
+
+        private void UpdateTextWithHighlight(ref TextBlockWindow textBlock, WindowSearchResult windowResult)
+        {
+            var windowText = windowResult.ResultWindow.Title;
+            var listOfIndexes = windowResult.SearchMatchesInTitle.OrderBy(x => x);
+
+            int start = 0;
+            textBlock.Inlines.Clear();
+
+            if (listOfIndexes.Count() != 0)
+            {
+                foreach (int boldIndex in listOfIndexes)
+                {
+                    textBlock.Inlines.Add(windowText.Substring(start, boldIndex - start));
+
+                    System.Diagnostics.Debug.Print(windowText + " " +windowText.Length+ " " +boldIndex);
+                    var r = new Run(windowText.Substring(boldIndex, 1));
+                    r.Text = windowText.Substring(boldIndex, 1);
+                    var b = new Bold(r);
+                    textBlock.Inlines.Add(b);
+                    start = boldIndex + 1;
+                }
+
+                if (start < windowText.Length)
+                {
+                    textBlock.Inlines.Add(windowText.Substring(start, windowText.Length - start ));
+                }
+            }
+            else
+            {
+                textBlock.Text = windowText;
+            }
         }
 
         private void KeyPressActionHandler(object sender, KeyEventArgs e)
@@ -131,6 +166,10 @@ namespace WindowWalker
             this.handleToMainWindow = new WindowInteropHelper(this).Handle;
             LivePreview.SetWindowExlusionFromLivePreview(this.handleToMainWindow);
             this.windowIsLoaded = true;
+
+#if DEBUG
+            this.Topmost = false;
+#endif
         }
 
         private void UpdateWindowSize()
@@ -172,7 +211,9 @@ namespace WindowWalker
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
         {
+#if !DEBUG
             this.EnterWaitState();
+#endif
         }
 
         private void WindowSelectedByMouseEvent(object sender, MouseButtonEventArgs e)
@@ -191,12 +232,15 @@ namespace WindowWalker
 
         private void WindowSelectionChangedEvent(object sender, SelectionChangedEventArgs e)
         {
+
+#if !DEBUG
             if (windowIsLoaded && this.resultsListBox.SelectedItem != null)
             {
                 Components.LivePreview.ActivateLivePreview(
                     ((TextBlockWindow)(((StackPanel)this.resultsListBox.SelectedItem).Children[1])).Window.Hwnd,
                     this.handleToMainWindow);
             }
+#endif
         }
 
         private void ListViewSizeChanged(object sender, SizeChangedEventArgs e)

@@ -23,7 +23,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// The list of indexes of the matching characters for the search in the title window
         /// </summary>
-        public int[] SearchMatchesInTitle
+        public List<int> SearchMatchesInTitle
         {
             get;
             private set;
@@ -32,7 +32,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        public WindowSearchResult(Window window, int[] matches)
+        public WindowSearchResult(Window window, List<int> matches)
         {
             this.ResultWindow = window;
             this.SearchMatchesInTitle = matches;

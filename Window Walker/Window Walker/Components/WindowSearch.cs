@@ -22,7 +22,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// Open window search results
         /// </summary
-        private List<Window> searchMatches;
+        private List<WindowSearchResult> searchMatches;
 
         /// <summary>
         /// Singleton pattern
@@ -63,10 +63,10 @@ namespace WindowWalker.Components
         /// <summary>
         /// Gets the open window search results
         /// </summary>
-        public List<Window> SearchMatches
+        public List<WindowSearchResult> SearchMatches
         {
             get 
-            { return new List<Window>(searchMatches); }
+            { return new List<WindowSearchResult>(searchMatches); }
         }
 
         /// <summary>
@@ -125,12 +125,19 @@ namespace WindowWalker.Components
 
             if (this.SearchText == string.Empty)
             {
-                this.searchMatches = 
+                var windows = 
                     (snapshotOfOpenWindows.Where(x => !string.IsNullOrEmpty(x.Title)).ToList());
+
+                this.searchMatches = new List<WindowSearchResult>();
+
+                foreach(var window in windows)
+                {
+                    this.searchMatches.Add(new WindowSearchResult(window, new List<int>()));
+                }
             }
             else
             {
-                this.searchMatches = await FuzzySearchOpenWindows(snapshotOfOpenWindows);                    
+                this.searchMatches = await FuzzySearchOpenWindowsAsync(snapshotOfOpenWindows);                    
             }
 
             if (this.OnSearchResultUpdate != null)
@@ -139,32 +146,46 @@ namespace WindowWalker.Components
             }
         }
 
-        private Task<List<Window>> FuzzySearchOpenWindows(List<Window> openWindows)
+        private Task<List<WindowSearchResult>> FuzzySearchOpenWindowsAsync(List<Window> openWindows)
         {
             return Task.Run(
                 () =>
-                    openWindows.Where(
-                     x => (WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.Title.ToLower()) || WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), x.ProcessName.ToLower())) &&
-                         x.Title.Length != 0
-                     ).ToList<Window>()
+                    this.FuzzySearchOpenWindows(openWindows)
                 );
+        }
+
+        private List<WindowSearchResult> FuzzySearchOpenWindows(List<Window> openWindows)
+        {
+            List<WindowSearchResult> result = new List<WindowSearchResult>();
+
+            foreach(var window  in openWindows)
+            {
+                if ((WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.Title.ToLower()) != null || WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.ProcessName.ToLower()) != null) &&
+                         window.Title.Length != 0)
+                {
+                    var temp = new WindowSearchResult(window, WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.Title.ToLower()));
+                    result.Add(temp);
+                }
+            }
+
+            return result;
         }
 
         #endregion
 
         #region Static Methods
 
-        private static bool IsFuzzyMatch(string searchText, string text)
+        private static List<int> IsFuzzyMatch(string searchText, string text)
         {
             int searchStartIndex = 0;
             int letterIndex;
-            int lettersInBetween = 0;
+            List<int> matchIndexes = new List<int>();
 
             foreach (char letter in searchText)
             {
                 if (searchStartIndex >= text.Length)
                 {
-                    return false;
+                    return null;
                 }
                 else
                 {
@@ -173,17 +194,16 @@ namespace WindowWalker.Components
                     if (letterIndex != -1)
                     {
                         searchStartIndex = letterIndex + 1;
+                        matchIndexes.Add(letterIndex);
                     }
                     else
                     {
-                        return false;
+                        return null;
                     }
                 }
-
-                lettersInBetween++;
             }
 
-            return true;
+            return matchIndexes;
         }
 
         #endregion
