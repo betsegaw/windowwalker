@@ -119,7 +119,7 @@ namespace WindowWalker
                     {
                         var r = new Run(windowDisplayText.Substring(start, boldIndex - start));
                         r.FontSize = 13;
-                        r.Foreground = new SolidColorBrush(Colors.DarkGray);
+                        r.Foreground = new SolidColorBrush(Color.FromRgb(110,110,110));
                         textBlock.Inlines.Add(r);
 
                         System.Diagnostics.Debug.Print(windowDisplayText + " " + windowDisplayText.Length + " " + boldIndex);
@@ -135,7 +135,7 @@ namespace WindowWalker
                     {
                         var r = new Run(windowDisplayText.Substring(start, windowDisplayText.Length - start));
                         r.FontSize = 13;
-                        r.Foreground = new SolidColorBrush(Colors.DarkGray);
+                        r.Foreground = new SolidColorBrush(Color.FromRgb(110,110,110));
                         textBlock.Inlines.Add(r);
                     }
                 }
