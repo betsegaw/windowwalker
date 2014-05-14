@@ -40,6 +40,15 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
+        /// A score indicating how well this matches what we are looking for
+        /// </summary>
+        public int Score
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public WindowSearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName)
@@ -47,6 +56,34 @@ namespace WindowWalker.Components
             this.ResultWindow = window;
             this.SearchMatchesInTitle = matchesInTitle;
             this.SearchMatchesInProcessName = matchesInProcessName;
+        }
+
+        /// <summary>
+        /// Calculates the score for how closely this window matches the search string
+        /// </summary>
+        /// <remarks>
+        /// Higher Score is better
+        /// </remarks>
+        private void CalculateScore()
+        {
+            this.Score =
+                this.CalculateScoreForMatches(this.SearchMatchesInProcessName) +
+                this.CalculateScoreForMatches(this.SearchMatchesInTitle);
+        }
+
+        private int CalculateScoreForMatches(List<int> matches)
+        {
+            var score = 0;
+
+            for (int currentIndex = 1; currentIndex < SearchMatchesInTitle.Count; currentIndex++)
+            {
+                var previousIndex = currentIndex - 1;
+
+                score -= (matches[currentIndex] - matches[previousIndex]) *
+                    (matches[currentIndex] - matches[previousIndex]);
+            }
+
+            return score;
         }
     }
 }
