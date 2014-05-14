@@ -209,8 +209,8 @@ namespace WindowWalker
 
         public void HotKeyPressedHandler(object sender, EventArgs e)
         {
-            OpenWindows.Instance.UpdateOpenWindowsList();
             this.searchTextBox.Text = string.Empty;
+            OpenWindows.Instance.UpdateOpenWindowsList();
             this.Show();
             InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);
             this.TextChangedEvent(null, null);
