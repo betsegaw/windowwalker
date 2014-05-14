@@ -30,12 +30,23 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
+        /// The list of indexes of the matching characters for the search in the 
+        /// name of the process
+        /// </summary>
+        public List<int> SearchMatchesInProcessName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
-        public WindowSearchResult(Window window, List<int> matches)
+        public WindowSearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName)
         {
             this.ResultWindow = window;
-            this.SearchMatchesInTitle = matches;
+            this.SearchMatchesInTitle = matchesInTitle;
+            this.SearchMatchesInProcessName = matchesInProcessName;
         }
     }
 }

@@ -130,7 +130,7 @@ namespace WindowWalker.Components
 
                 foreach(var window in windows)
                 {
-                    this.searchMatches.Add(new WindowSearchResult(window, new List<int>()));
+                    this.searchMatches.Add(new WindowSearchResult(window, new List<int>(), new List<int>()));
                 }
             }
             else
@@ -158,10 +158,13 @@ namespace WindowWalker.Components
 
             foreach(var window  in openWindows)
             {
-                if ((WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.Title.ToLower()) != null || WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.ProcessName.ToLower()) != null) &&
+                var titleMatch = WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.Title.ToLower());
+                var processMatch = WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.ProcessName.ToLower());
+
+                if ((titleMatch.Count != 0 || processMatch.Count != 0) &&
                          window.Title.Length != 0)
                 {
-                    var temp = new WindowSearchResult(window, WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.Title.ToLower()));
+                    var temp = new WindowSearchResult(window, titleMatch, processMatch);
                     result.Add(temp);
                 }
             }
@@ -183,7 +186,7 @@ namespace WindowWalker.Components
             {
                 if (searchStartIndex >= text.Length)
                 {
-                    return null;
+                    return new List<int>();
                 }
                 else
                 {
@@ -196,7 +199,7 @@ namespace WindowWalker.Components
                     }
                     else
                     {
-                        return null;
+                        return new List<int>();
                     }
                 }
             }

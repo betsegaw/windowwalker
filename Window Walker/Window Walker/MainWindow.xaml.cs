@@ -72,13 +72,6 @@ namespace WindowWalker
                 tempStackPanel.Children.Add(image);
                 var tempTextBlock = new TextBlockWindow();
 
-                //this.UpdateTextWithHighlight(ref tempTextBlock, windowResult);
-
-                //if (!windowResult.ResultWindow.ProcessName.ToUpper().Equals(string.Empty))
-                //{ 
-                //    tempTextBlock.Inlines.Add(" (" + windowResult.ResultWindow.ProcessName.ToUpper() + ")" );
-                //}
-
                 tempTextBlock.Window = windowResult.ResultWindow;
                 tempStackPanel.Children.Add(tempTextBlock);
                 image.Height = 15;
@@ -91,54 +84,59 @@ namespace WindowWalker
                 resultsListBox.SelectedIndex = 0;
             }
 
-            Task.Run(
-                () =>
-                    this.UpdateTextWithHighlight(highlightStack)
-                );
+            this.UpdateTextWithHighlight(highlightStack);
                 
             System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
         }
 
         private void UpdateTextWithHighlight(Dictionary<TextBlock, WindowSearchResult> highlightstack)
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            foreach (var key in highlightstack.Keys)
             {
-                foreach (var key in highlightstack.Keys)
+                var textBlock = key;
+                var windowResult = highlightstack[key];
+                var windowDisplayText = windowResult.ResultWindow.Title;
+                var listOfBoldIndexesForDisplayText = windowResult.SearchMatchesInTitle.OrderBy(x => x).ToList();
+                var listOfIndexesForProcessName = windowResult.SearchMatchesInProcessName.OrderBy(x => x);
+
+                foreach(var i in listOfIndexesForProcessName)
                 {
-                    var textBlock = key;
-                    var windowResult = highlightstack[key];
-                    var windowText = windowResult.ResultWindow.Title;
-                    var listOfIndexes = windowResult.SearchMatchesInTitle.OrderBy(x => x);
+                    listOfBoldIndexesForDisplayText.Add(i + windowDisplayText.Length + 2);
+                }
 
-                    int start = 0;
-                    textBlock.Inlines.Clear();
+                if (!windowResult.ResultWindow.ProcessName.ToUpper().Equals(string.Empty))
+                {
+                    windowDisplayText += " (" + windowResult.ResultWindow.ProcessName.ToUpper() + ")";
+                }
 
-                    if (listOfIndexes.Count() != 0)
+                int start = 0;
+                textBlock.Inlines.Clear();
+
+                if (listOfBoldIndexesForDisplayText.Count() != 0)
+                {
+                    foreach (int boldIndex in listOfBoldIndexesForDisplayText)
                     {
-                        foreach (int boldIndex in listOfIndexes)
-                        {
-                            textBlock.Inlines.Add(windowText.Substring(start, boldIndex - start));
+                        textBlock.Inlines.Add(windowDisplayText.Substring(start, boldIndex - start));
 
-                            System.Diagnostics.Debug.Print(windowText + " " + windowText.Length + " " + boldIndex);
-                            var r = new Run(windowText.Substring(boldIndex, 1));
-                            r.Text = windowText.Substring(boldIndex, 1);
-                            var b = new Bold(r);
-                            b.FontSize = 15;
-                            textBlock.Inlines.Add(b);
-                            start = boldIndex + 1;
-                        }
-
-                        if (start < windowText.Length)
-                        {
-                            textBlock.Inlines.Add(windowText.Substring(start, windowText.Length - start));
-                        }
+                        System.Diagnostics.Debug.Print(windowDisplayText + " " + windowDisplayText.Length + " " + boldIndex);
+                        var r = new Run(windowDisplayText.Substring(boldIndex, 1));
+                        r.Text = windowDisplayText.Substring(boldIndex, 1);
+                        var b = new Bold(r);
+                        b.FontSize = 15;
+                        textBlock.Inlines.Add(b);
+                        start = boldIndex + 1;
                     }
-                    else
+
+                    if (start < windowDisplayText.Length)
                     {
-                        textBlock.Text = windowText;
+                        textBlock.Inlines.Add(windowDisplayText.Substring(start, windowDisplayText.Length - start));
                     }
                 }
-            }));
+                else
+                {
+                    textBlock.Text = windowDisplayText;
+                }
+            }
         }
 
         private void KeyPressActionHandler(object sender, KeyEventArgs e)
