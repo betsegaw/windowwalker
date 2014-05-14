@@ -57,7 +57,7 @@ namespace WindowWalker
             var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
             Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
 
-            windowsResult.OrderBy(x => x.Score);
+            windowsResult.OrderByDescending(x => x.Score);
 
             foreach (WindowSearchResult windowResult in windowsResult)
             {
@@ -117,10 +117,13 @@ namespace WindowWalker
                 {
                     foreach (int boldIndex in listOfBoldIndexesForDisplayText)
                     {
-                        textBlock.Inlines.Add(windowDisplayText.Substring(start, boldIndex - start));
+                        var r = new Run(windowDisplayText.Substring(start, boldIndex - start));
+                        r.FontSize = 13;
+                        r.Foreground = new SolidColorBrush(Colors.DarkGray);
+                        textBlock.Inlines.Add(r);
 
                         System.Diagnostics.Debug.Print(windowDisplayText + " " + windowDisplayText.Length + " " + boldIndex);
-                        var r = new Run(windowDisplayText.Substring(boldIndex, 1));
+                        r = new Run(windowDisplayText.Substring(boldIndex, 1));
                         r.Text = windowDisplayText.Substring(boldIndex, 1);
                         var b = new Bold(r);
                         b.FontSize = 15;
@@ -130,12 +133,17 @@ namespace WindowWalker
 
                     if (start < windowDisplayText.Length)
                     {
-                        textBlock.Inlines.Add(windowDisplayText.Substring(start, windowDisplayText.Length - start));
+                        var r = new Run(windowDisplayText.Substring(start, windowDisplayText.Length - start));
+                        r.FontSize = 13;
+                        r.Foreground = new SolidColorBrush(Colors.DarkGray);
+                        textBlock.Inlines.Add(r);
                     }
                 }
                 else
                 {
-                    textBlock.Text = windowDisplayText;
+                    var r = new Run(windowDisplayText);
+                    r.FontSize = 13;
+                    textBlock.Inlines.Add(r);
                 }
             }
         }
