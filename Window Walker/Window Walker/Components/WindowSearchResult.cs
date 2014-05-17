@@ -67,15 +67,15 @@ namespace WindowWalker.Components
         private void CalculateScore()
         {
             this.Score =
-                this.CalculateScoreForMatches(this.SearchMatchesInProcessName) +
-                this.CalculateScoreForMatches(this.SearchMatchesInTitle);
+                WindowSearchResult.CalculateScoreForMatches(this.SearchMatchesInProcessName) +
+                WindowSearchResult.CalculateScoreForMatches(this.SearchMatchesInTitle);
         }
 
-        private int CalculateScoreForMatches(List<int> matches)
+        public static int CalculateScoreForMatches(List<int> matches)
         {
             var score = 0;
 
-            for (int currentIndex = 1; currentIndex < SearchMatchesInTitle.Count; currentIndex++)
+            for (int currentIndex = 1; currentIndex < matches.Count; currentIndex++)
             {
                 var previousIndex = currentIndex - 1;
 

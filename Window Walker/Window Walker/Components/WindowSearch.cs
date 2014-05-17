@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace WindowWalker.Components
 {
@@ -158,8 +159,8 @@ namespace WindowWalker.Components
 
             foreach(var window  in openWindows)
             {
-                var titleMatch = WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.Title.ToLower());
-                var processMatch = WindowSearchController.IsFuzzyMatch(this.searchText.ToLower(), window.ProcessName.ToLower());
+                var titleMatch = FuzzyMatching.FindBestFuzzyMatch(window.Title, this.searchText);
+                var processMatch = FuzzyMatching.FindBestFuzzyMatch(window.ProcessName, this.searchText);
 
                 if ((titleMatch.Count != 0 || processMatch.Count != 0) &&
                          window.Title.Length != 0)
@@ -169,42 +170,9 @@ namespace WindowWalker.Components
                 }
             }
 
+            System.Diagnostics.Debug.Print("Found " + result.Count + " windows that match the search text");
+
             return result;
-        }
-
-        #endregion
-
-        #region Static Methods
-
-        private static List<int> IsFuzzyMatch(string searchText, string text)
-        {
-            int searchStartIndex = 0;
-            int letterIndex;
-            List<int> matchIndexes = new List<int>();
-
-            foreach (char letter in searchText)
-            {
-                if (searchStartIndex >= text.Length)
-                {
-                    return new List<int>();
-                }
-                else
-                {
-                    letterIndex = text.IndexOf(letter, searchStartIndex);
-
-                    if (letterIndex != -1)
-                    {
-                        searchStartIndex = letterIndex + 1;
-                        matchIndexes.Add(letterIndex);
-                    }
-                    else
-                    {
-                        return new List<int>();
-                    }
-                }
-            }
-
-            return matchIndexes;
         }
 
         #endregion
