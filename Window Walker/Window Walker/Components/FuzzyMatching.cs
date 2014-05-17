@@ -21,9 +21,8 @@ namespace WindowWalker.Components
         /// <param name="text">The text to search inside of</param>
         /// <param name="searchText">the text to search for</param>
         /// <returns></returns>
-        public static List<int> FindBestFuzzyMatch(string text, string searchText)
+        public static List<int> FindBestFuzzyMatch(string text, string searchText, int searchStartIndex = 0)
         {
-            int searchStartIndex = 0;
             int letterIndex;
             List<int> matchIndexes = new List<int>();
 
@@ -40,7 +39,6 @@ namespace WindowWalker.Components
                 {
                     letterIndex = text.IndexOf(letter, searchStartIndex);
 
-
                     if (letterIndex != -1)
                     {
                         searchStartIndex = letterIndex + 1;
@@ -54,7 +52,26 @@ namespace WindowWalker.Components
             }
 
             return matchIndexes;
+        }
 
+        /// <summary>
+        /// Calculates the score for a string
+        /// </summary>
+        /// <param name="matches">the index of the matches</param>
+        /// <returns>an integer representing the score</returns>
+        public static int CalculateScoreForMatches(List<int> matches)
+        {
+            var score = 0;
+
+            for (int currentIndex = 1; currentIndex < matches.Count; currentIndex++)
+            {
+                var previousIndex = currentIndex - 1;
+
+                score -= (matches[currentIndex] - matches[previousIndex]) *
+                    (matches[currentIndex] - matches[previousIndex]);
+            }
+
+            return score;
         }
     }
 

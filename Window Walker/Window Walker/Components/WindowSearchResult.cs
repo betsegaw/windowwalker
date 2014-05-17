@@ -67,23 +67,8 @@ namespace WindowWalker.Components
         private void CalculateScore()
         {
             this.Score =
-                WindowSearchResult.CalculateScoreForMatches(this.SearchMatchesInProcessName) +
-                WindowSearchResult.CalculateScoreForMatches(this.SearchMatchesInTitle);
-        }
-
-        public static int CalculateScoreForMatches(List<int> matches)
-        {
-            var score = 0;
-
-            for (int currentIndex = 1; currentIndex < matches.Count; currentIndex++)
-            {
-                var previousIndex = currentIndex - 1;
-
-                score -= (matches[currentIndex] - matches[previousIndex]) *
-                    (matches[currentIndex] - matches[previousIndex]);
-            }
-
-            return score;
+                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) +
+                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle);
         }
     }
 }
