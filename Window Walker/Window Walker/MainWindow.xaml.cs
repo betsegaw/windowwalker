@@ -57,7 +57,7 @@ namespace WindowWalker
             var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
             Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
 
-            windowsResult.OrderByDescending(x => x.Score);
+            windowsResult.OrderBy(x => x.Score);
 
             foreach (WindowSearchResult windowResult in windowsResult)
             {

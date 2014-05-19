@@ -23,35 +23,78 @@ namespace WindowWalker.Components
         /// <returns></returns>
         public static List<int> FindBestFuzzyMatch(string text, string searchText, int searchStartIndex = 0)
         {
-            int letterIndex;
             List<int> matchIndexes = new List<int>();
 
-            text = text.ToLower();
             searchText = searchText.ToLower();
+            text = text.ToLower();
 
-            foreach (char letter in searchText)
+            // Create a grid to march matches like
+            // eg.
+            //   a b c a d e c f g
+            // a x     x
+            // c     x       x
+            bool[,] matches = new bool[text.Length, searchText.Length];
+            for (int firstIndex = 0; firstIndex < text.Length; firstIndex++ )
             {
-                if (searchStartIndex >= text.Length)
+                for(int secondIndex = 0; secondIndex < searchText.Length; secondIndex++)
                 {
-                    return new List<int>();
-                }
-                else
-                {
-                    letterIndex = text.IndexOf(letter, searchStartIndex);
-
-                    if (letterIndex != -1)
-                    {
-                        searchStartIndex = letterIndex + 1;
-                        matchIndexes.Add(letterIndex);
-                    }
-                    else
-                    {
-                        return new List<int>();
-                    }
+                    matches[firstIndex, secondIndex] =
+                        searchText[secondIndex] == text[firstIndex] ?
+                        true :
+                        false;
                 }
             }
 
-            return matchIndexes;
+            // use this table to get all the possible matches
+            List<List<int>> allMatches = FuzzyMatching.GetAllMatchIndexes(matches);
+
+            // return the score that is the max 
+            int maxScore = allMatches.Count > 0 ? FuzzyMatching.CalculateScoreForMatches(allMatches[0]) : 0 ;
+            List<int> bestMatch = allMatches.Count > 0 ? allMatches[0] : new List<int>();
+
+            foreach(var match in allMatches)
+            {
+                int score = FuzzyMatching.CalculateScoreForMatches(match);
+                if (score > maxScore)
+                {
+                    bestMatch = match;
+                    maxScore = score;
+                }
+            }
+
+            return bestMatch;
+        }
+
+        public static List<List<int>> GetAllMatchIndexes(bool[,] matches)
+        {
+            List<List<int>> results = new List<List<int>>();
+
+            for (int secondIndex = 0; secondIndex < matches.GetLength(1); secondIndex++)
+            {
+                int p = 4;
+                for (int firstIndex = 0; firstIndex < matches.GetLength(0); firstIndex++)
+                {
+                    if (secondIndex == 0 && matches[firstIndex,secondIndex])
+                    {
+                        results.Add(new List<int> { firstIndex });
+                    }
+                    else if (matches[firstIndex, secondIndex])
+                    {
+                        var tempList = results.Where(x => x.Count == secondIndex && x[x.Count-1] < firstIndex).Select(x => x.ToList()).ToList();
+                        
+                        foreach(var pathSofar  in tempList)
+                        {
+                            pathSofar.Add(firstIndex);
+                        }
+
+                        results.AddRange(tempList);
+                    }
+                }
+
+                results.Where(x => x.Count == secondIndex + 1);
+            }
+
+            return results.Where(x => x.Count == matches.GetLength(1)).ToList();
         }
 
         /// <summary>
@@ -130,6 +173,15 @@ namespace WindowWalker.Components
         {
             List<int> result = FuzzyMatching.FindBestFuzzyMatch("aaacaab", "ab");
             List<int> expected = new List<int>() { 5, 6 };
+
+            Assert.IsTrue(FuzzyMatchingUnitTest.IsEqual(expected, result));
+        }
+
+        [TestMethod]
+        public void RealWorldProgramManager()
+        {
+            List<int> result = FuzzyMatching.FindBestFuzzyMatch("Program Manager", "pr");
+            List<int> expected = new List<int>() { 0, 1 };
 
             Assert.IsTrue(FuzzyMatchingUnitTest.IsEqual(expected, result));
         }
