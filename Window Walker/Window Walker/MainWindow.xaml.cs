@@ -50,14 +50,14 @@ namespace WindowWalker
             WindowSearchController.Instance.SearchText = this.searchTextBox.Text;
         }
 
-        public async void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
+        public void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
         {
             resultsListBox.Items.Clear();
 
             var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
             Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
 
-            windowsResult.OrderBy(x => x.Score);
+            windowsResult = windowsResult.OrderByDescending(x => x.Score);
 
             foreach (WindowSearchResult windowResult in windowsResult)
             {

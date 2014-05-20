@@ -56,6 +56,7 @@ namespace WindowWalker.Components
             this.ResultWindow = window;
             this.SearchMatchesInTitle = matchesInTitle;
             this.SearchMatchesInProcessName = matchesInProcessName;
+            this.CalculateScore();
         }
 
         /// <summary>
@@ -67,8 +68,11 @@ namespace WindowWalker.Components
         private void CalculateScore()
         {
             this.Score =
-                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) +
+                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) >
+                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle) ?
+                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) :
                 FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle);
+
         }
     }
 }
