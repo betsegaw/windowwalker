@@ -36,7 +36,7 @@ Yes :)
 
 #####4. I think you did a terrible job. How can I show you the sheer awesomeness of my coding skills by contributing? 
 
-Sad to hear you hate the app but glad you want to improve it! Shoot me an email and I can add you to the visual studio online account where the code is being hosted. 
+Sad to hear you hate the app but glad you want to improve it! Fork it and after applying liberal amounts of your talent, ping me for a pull request (or set yourself up as the TRUE Window Walker) 
 
 #####5. Do I need to start up the app every time I need to do a search?
 
