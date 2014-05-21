@@ -56,7 +56,7 @@ namespace WindowWalker.Components
             get { return searchText; }
             set 
             { 
-                searchText = value.ToLower();
+                searchText = value.ToLower().Trim();
                 this.SearchTextUpdated();
             }
         }
