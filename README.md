@@ -48,5 +48,5 @@ Bugs? Never! Of course, if you THINK you have found one, feel free to send me an
 
 #####6. Special thanks to...?
 
-Jose Moya for making sure the search is async
-
+@moyaftw for making sure the search is async
+@shuoshen2014 for doing a fix for a crashing bug
