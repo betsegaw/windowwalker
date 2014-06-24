@@ -52,42 +52,46 @@ namespace WindowWalker
 
         public void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
         {
-            resultsListBox.Items.Clear();
+            this.Dispatcher.Invoke(() =>
+                {
+                    resultsListBox.Items.Clear();
 
-            var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
-            Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
+                    var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
+                    Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock, WindowSearchResult>();
 
-            windowsResult = windowsResult.OrderByDescending(x => x.Score);
+                    windowsResult = windowsResult.OrderByDescending(x => x.Score);
 
-            foreach (WindowSearchResult windowResult in windowsResult)
-            {
-                /// Each window is shown in a horizontal stack panel
-                /// that contains an image object on the left and 
-                /// a textblock with the window title on the right
+                    foreach (WindowSearchResult windowResult in windowsResult)
+                    {
+                        /// Each window is shown in a horizontal stack panel
+                        /// that contains an image object on the left and 
+                        /// a textblock with the window title on the right
 
-                var tempStackPanel = new StackPanel();
-                tempStackPanel.Orientation = Orientation.Horizontal;
-                var image = new Image();
-                image.Source = windowResult.ResultWindow.WindowIcon;
-                image.Margin = new Thickness(0,0,5,0);
-                tempStackPanel.Children.Add(image);
-                var tempTextBlock = new TextBlockWindow();
+                        var tempStackPanel = new StackPanel();
+                        tempStackPanel.Orientation = Orientation.Horizontal;
+                        var image = new Image();
+                        image.Source = windowResult.ResultWindow.WindowIcon;
+                        image.Margin = new Thickness(0, 0, 5, 0);
+                        tempStackPanel.Children.Add(image);
+                        var tempTextBlock = new TextBlockWindow();
 
-                tempTextBlock.Window = windowResult.ResultWindow;
-                tempStackPanel.Children.Add(tempTextBlock);
-                image.Height = 15;
-                this.resultsListBox.Items.Add(tempStackPanel);
-                highlightStack[tempTextBlock] = windowResult;
-            }
+                        tempTextBlock.Window = windowResult.ResultWindow;
+                        tempStackPanel.Children.Add(tempTextBlock);
+                        image.Height = 15;
+                        this.resultsListBox.Items.Add(tempStackPanel);
+                        highlightStack[tempTextBlock] = windowResult;
+                    }
 
-            if (resultsListBox.Items.Count != 0)
-            {
-                resultsListBox.SelectedIndex = 0;
-            }
+                    if (resultsListBox.Items.Count != 0)
+                    {
+                        resultsListBox.SelectedIndex = 0;
+                    }
 
-            this.UpdateTextWithHighlight(highlightStack);
-                
-            System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
+                    this.UpdateTextWithHighlight(highlightStack);
+
+                    System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
+                }
+            );
         }
 
         private void UpdateTextWithHighlight(Dictionary<TextBlock, WindowSearchResult> highlightstack)

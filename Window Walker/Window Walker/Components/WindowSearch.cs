@@ -141,7 +141,7 @@ namespace WindowWalker.Components
 
             if (this.OnSearchResultUpdate != null)
             {
-                this.OnSearchResultUpdate(this, new Window.WindowListUpdateEventArgs());
+                new Task(() => this.OnSearchResultUpdate(this, new Window.WindowListUpdateEventArgs())).Start();
             }
         }
 

@@ -80,7 +80,12 @@ namespace WindowWalker.Components
         {
             this.windows.Clear();
             InteropAndHelpers.CallBackPtr callbackptr = new InteropAndHelpers.CallBackPtr(WindowEnumerationCallBack);
-            InteropAndHelpers.EnumWindows(callbackptr, 0);
+
+            new Task(() => 
+                {
+                    InteropAndHelpers.EnumWindows(callbackptr, 0);
+                }
+            ).Start();
         }
 
         /// <summary>
