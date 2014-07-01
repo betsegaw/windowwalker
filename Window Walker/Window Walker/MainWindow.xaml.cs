@@ -52,42 +52,46 @@ namespace WindowWalker
 
         public void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
         {
-            resultsListBox.Items.Clear();
-
-            var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
-            Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
-
-            windowsResult = windowsResult.OrderByDescending(x => x.Score);
-
-            foreach (WindowSearchResult windowResult in windowsResult)
+            this.Dispatcher.Invoke(() =>
             {
-                /// Each window is shown in a horizontal stack panel
-                /// that contains an image object on the left and 
-                /// a textblock with the window title on the right
+            
+                resultsListBox.Items.Clear();
 
-                var tempStackPanel = new StackPanel();
-                tempStackPanel.Orientation = Orientation.Horizontal;
-                var image = new Image();
-                image.Source = windowResult.ResultWindow.WindowIcon;
-                image.Margin = new Thickness(0,0,5,0);
-                tempStackPanel.Children.Add(image);
-                var tempTextBlock = new TextBlockWindow();
+                var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
+                Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
 
-                tempTextBlock.Window = windowResult.ResultWindow;
-                tempStackPanel.Children.Add(tempTextBlock);
-                image.Height = 15;
-                this.resultsListBox.Items.Add(tempStackPanel);
-                highlightStack[tempTextBlock] = windowResult;
-            }
+                windowsResult = windowsResult.OrderByDescending(x => x.Score);
 
-            if (resultsListBox.Items.Count != 0)
-            {
-                resultsListBox.SelectedIndex = 0;
-            }
+                foreach (WindowSearchResult windowResult in windowsResult)
+                {
+                    /// Each window is shown in a horizontal stack panel
+                    /// that contains an image object on the left and 
+                    /// a textblock with the window title on the right
 
-            this.UpdateTextWithHighlight(highlightStack);
+                    var tempStackPanel = new StackPanel();
+                    tempStackPanel.Orientation = Orientation.Horizontal;
+                    var image = new Image();
+                    image.Source = windowResult.ResultWindow.WindowIcon;
+                    image.Margin = new Thickness(0,0,5,0);
+                    tempStackPanel.Children.Add(image);
+                    var tempTextBlock = new TextBlockWindow();
+
+                    tempTextBlock.Window = windowResult.ResultWindow;
+                    tempStackPanel.Children.Add(tempTextBlock);
+                    image.Height = 15;
+                    this.resultsListBox.Items.Add(tempStackPanel);
+                    highlightStack[tempTextBlock] = windowResult;
+                }
+
+                if (resultsListBox.Items.Count != 0)
+                {
+                    resultsListBox.SelectedIndex = 0;
+                }
+
+                this.UpdateTextWithHighlight(highlightStack);
                 
-            System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
+                System.Diagnostics.Debug.Print("Search result updated in Main Window. There are now " + this.resultsListBox.Items.Count + " windows that match the search term");
+            });
         }
 
         private void UpdateTextWithHighlight(Dictionary<TextBlock, WindowSearchResult> highlightstack)
