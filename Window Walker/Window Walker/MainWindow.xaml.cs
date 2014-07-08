@@ -26,6 +26,10 @@ namespace WindowWalker
 
         private IntPtr handleToMainWindow;
 
+        private bool waitState = false;
+
+        private object hotkeyLock = new object();
+
         /// <summary>
         /// An flag indicating if the window has finished loading
         /// </summary>
@@ -222,12 +226,19 @@ namespace WindowWalker
 
         public void HotKeyPressedHandler(object sender, EventArgs e)
         {
-            this.searchTextBox.Text = string.Empty;
-            OpenWindows.Instance.UpdateOpenWindowsList();
-            this.Show();
-            InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);
-            this.TextChangedEvent(null, null);
-            this.searchTextBox.Focus();
+            lock(this.hotkeyLock)
+            {
+                if (this.waitState)
+                {
+                    this.waitState = false;
+                    this.searchTextBox.Text = string.Empty;
+                    OpenWindows.Instance.UpdateOpenWindowsList();
+                    this.Show();
+                    InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);
+                    this.TextChangedEvent(null, null);
+                    this.searchTextBox.Focus();
+                }
+            }
         }
 
         /// <summary>
@@ -237,6 +248,7 @@ namespace WindowWalker
         {
             this.Hide();
             Components.LivePreview.DeactivateLivePreview();
+            this.waitState = true;
         }
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
