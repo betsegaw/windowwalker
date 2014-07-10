@@ -49,6 +49,15 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
+        /// The source of where the best score was found
+        /// </summary>
+        public TextType BestScoreSource
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public WindowSearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName)
@@ -67,12 +76,26 @@ namespace WindowWalker.Components
         /// </remarks>
         private void CalculateScore()
         {
-            this.Score =
-                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) >
-                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle) ?
-                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) :
-                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle);
+            if (FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) >
+                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle))
+            {
+                this.Score = FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName);
+                this.BestScoreSource = TextType.ProcessName;
+            }
+            else
+            {
+                this.Score = FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle);
+                this.BestScoreSource = TextType.WindowTitle;
+            }
+        }
 
+        /// <summary>
+        /// The type of text that a string represents
+        /// </summary>
+        public enum TextType
+        {
+            ProcessName,
+            WindowTitle
         }
     }
 }

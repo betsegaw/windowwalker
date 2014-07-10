@@ -106,8 +106,20 @@ namespace WindowWalker
                 var textBlock = key;
                 var windowResult = highlightstack[key];
                 var windowDisplayText = windowResult.ResultWindow.Title;
-                var listOfBoldIndexesForDisplayText = windowResult.SearchMatchesInTitle.OrderBy(x => x).ToList();
-                var listOfIndexesForProcessName = windowResult.SearchMatchesInProcessName.OrderBy(x => x);
+
+                List<int> listOfBoldIndexesForDisplayText;
+                IOrderedEnumerable<int> listOfIndexesForProcessName;
+
+                if (windowResult.BestScoreSource == WindowSearchResult.TextType.ProcessName)
+                {
+                    listOfBoldIndexesForDisplayText = new List<int>();
+                    listOfIndexesForProcessName = windowResult.SearchMatchesInProcessName.OrderBy(x => x);
+                }
+                else
+                {
+                    listOfBoldIndexesForDisplayText = windowResult.SearchMatchesInTitle.OrderBy(x => x).ToList();
+                    listOfIndexesForProcessName = new List<int>().OrderBy(x => x);
+                }
 
                 foreach(var i in listOfIndexesForProcessName)
                 {
