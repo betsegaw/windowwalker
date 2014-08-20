@@ -3,11 +3,36 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       Title="MainWindow" Height="350" Width="700" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" TitlebarHeight="0">
-    <Grid>
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <VisualBrush x:Key="SettingsBrushLight" Visual="{StaticResource appbar_settings}" Opacity="0.5"/>
+            <VisualBrush x:Key="SettingsBrushDark" Visual="{StaticResource appbar_settings}" Opacity="0.8" />
+
+            <Style x:Key="SettingsRectangle" TargetType="Rectangle">
+                <Setter Property="Fill" Value="{StaticResource SettingsBrushLight}" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Fill" Value="{StaticResource SettingsBrushDark}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
         <Border BorderThickness="5" BorderBrush="#41B1E1" x:Name="windowBorder">
             <StackPanel>
-                <TextBox controls:TextboxHelper.Watermark="Search" controls:TextboxHelper.ClearTextButton="True" x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" ToolTip="If you want to quit, type &quot;:quit&quot; and press enter" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox controls:TextboxHelper.Watermark="Search" controls:TextboxHelper.ClearTextButton="True" x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" ToolTip="If you want to quit, type &quot;:quit&quot; and press enter" Width="665" />
+                    <Button x:Name="Settings" Style="{StaticResource ButtonStyle}" Width="25px" Height="26px" BorderThickness="0" Click="SettingsButtonClicked" Margin="0" Padding="0">
+                        <Rectangle Width="15" Height="15" Style="{StaticResource SettingsRectangle}" />
+                    </Button>
+
+                </StackPanel>
                 <Grid Height="5" Background="#41B1E1" x:Name="separator" />
                 <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="WindowSelectedByMouseEvent" SelectionChanged="WindowSelectionChangedEvent" SizeChanged="ListViewSizeChanged"/>
             </StackPanel>
