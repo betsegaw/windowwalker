@@ -157,10 +157,13 @@ namespace WindowWalker.Components
         {
             List<WindowSearchResult> result = new List<WindowSearchResult>();
 
+            string shortcut = ShortcutManager.Instance.GetShortcut(this.SearchText);
+            string searchString = (shortcut != null) ? shortcut : this.searchText;
+
             foreach(var window  in openWindows)
             {
-                var titleMatch = FuzzyMatching.FindBestFuzzyMatch(window.Title, this.searchText);
-                var processMatch = FuzzyMatching.FindBestFuzzyMatch(window.ProcessName, this.searchText);
+                var titleMatch = FuzzyMatching.FindBestFuzzyMatch(window.Title, searchString);
+                var processMatch = FuzzyMatching.FindBestFuzzyMatch(window.ProcessName, searchString);
 
                 if ((titleMatch.Count != 0 || processMatch.Count != 0) &&
                          window.Title.Length != 0)
