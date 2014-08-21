@@ -49,6 +49,13 @@ namespace WindowWalker
             OpenWindows.Instance.UpdateOpenWindowsList();
         }
 
+        void SettingsButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
+
+            this.Close();
+        }
 
         private void TextChangedEvent(object sender, TextChangedEventArgs e)
         {
