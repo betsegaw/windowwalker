@@ -76,24 +76,22 @@ namespace WindowWalker
             beforeTextBlock.Text = before;
             beforeTextBlock.Width = 220;
             beforeTextBlock.Margin = new Thickness(100, 0, 20, 0);
+            beforeTextBlock.Padding = new Thickness(5);
             container.Children.Add(beforeTextBlock);
 
             var afterTextBlock = new TextBlock();
             afterTextBlock.Text = after;
             afterTextBlock.Width = 220;
             afterTextBlock.Margin = new Thickness(0, 0, 15, 0);
+            afterTextBlock.Padding = new Thickness(5);
             container.Children.Add(afterTextBlock);
 
-            var rectangle = new Rectangle();
-            rectangle.Style = this.FindResource("DeleteRectangle") as Style;
-            rectangle.Width = 15;
-            rectangle.Height = 15;
-
             var deleteButton = new Button();
+            deleteButton.Style = this.FindResource("ButtonStyle") as Style;
             deleteButton.Width = 25;
             deleteButton.Height = 25;
             deleteButton.Click += new RoutedEventHandler(DeleteShortcutClicked);
-            deleteButton.Content = rectangle;
+            deleteButton.Background = this.FindResource("DeleteBrush") as Brush;
             container.Children.Add(deleteButton);
 
             return container;
