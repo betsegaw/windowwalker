@@ -51,20 +51,6 @@ namespace WindowWalker.Components
             }
         }
 
-        ~ShortcutManager()
-        {
-            if (this.shortcuts.Count > 0)
-            {
-                using (StreamWriter writer = new StreamWriter(ShortcutsFile, false))
-                {
-                    foreach (var shortcut in this.shortcuts)
-                    {
-                        writer.WriteLine(shortcut.Key + "|" + shortcut.Value);
-                    }
-                }
-            }
-        }
-
         Dictionary<string, string> shortcuts;
 
         public Dictionary<string, string> Shortcuts
@@ -80,6 +66,10 @@ namespace WindowWalker.Components
             }
 
             shortcuts.Add(before, after);
+            
+            // Write the updated shortcuts list to a file
+            WriteShortcutsToFile();
+            
             return true;
         }
 
@@ -91,6 +81,10 @@ namespace WindowWalker.Components
             }
 
             shortcuts.Remove(input);
+
+            // Write the updated shortcuts list to a file
+            WriteShortcutsToFile();
+
             return true;
         }
 
@@ -99,5 +93,20 @@ namespace WindowWalker.Components
             return (shortcuts.ContainsKey(input) ? shortcuts[input] : null);
         }
        
+        /// <summary>
+        /// Writes the current shortcuts to the shortcuts file.
+        /// Note: We are writing the file even if there are no shortcuts. This handles
+        /// the case where the user deletes their last shortcut.
+        /// </summary>
+        private void WriteShortcutsToFile()
+        {
+            using (StreamWriter writer = new StreamWriter(ShortcutsFile, false))
+            {
+                foreach (var shortcut in this.shortcuts)
+                {
+                    writer.WriteLine(shortcut.Key + "|" + shortcut.Value);
+                }
+            }
+        }
     }
 }
