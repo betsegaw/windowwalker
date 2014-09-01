@@ -51,6 +51,11 @@ namespace WindowWalker
 
         void SettingsButtonClicked(object sender, RoutedEventArgs e)
         {
+            this.SwitchToSettingsPage();
+        }
+
+        private void SwitchToSettingsPage()
+        {
             SettingsWindow settingsWindow = new SettingsWindow();
             settingsWindow.Show();
 
@@ -196,6 +201,11 @@ namespace WindowWalker
                 {
                     App.Current.Shutdown();
                     return;
+                }
+                else if (this.searchTextBox.Text == ":s")
+                {
+                    this.searchTextBox.Text = string.Empty;
+                    this.SwitchToSettingsPage();
                 }
                 else
                 {

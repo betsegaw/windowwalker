@@ -34,6 +34,7 @@ namespace WindowWalker
             }
 
             this.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            this.shortcutBefore.Focus();
         }
 
         void BackButtonClicked(object sender, RoutedEventArgs e)
@@ -56,6 +57,11 @@ namespace WindowWalker
         }
 
         void DoneClicked(object sender, RoutedEventArgs e)
+        {
+            this.AddNewShortcut();
+        }
+
+        private void AddNewShortcut()
         {
             string before = shortcutBefore.Text;
             string after = shortcutAfter.Text;
@@ -150,6 +156,14 @@ namespace WindowWalker
         private void ListViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.UpdateWindowSize();
+        }
+
+        private void KeyPressedOnShortcutAfterBox(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.AddNewShortcut();
+            }
         }
     }
 }
