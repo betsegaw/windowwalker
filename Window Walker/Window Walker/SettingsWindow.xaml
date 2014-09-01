@@ -6,7 +6,7 @@
                       Title="SettingsWindow" ResizeMode="NoResize" Width="700" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" TitlebarHeight="0">
     <Window.Resources>
         <ResourceDictionary>
-            <VisualBrush x:Key="HomeBrush" Visual="{StaticResource appbar_home}"/>
+            <VisualBrush x:Key="HomeBrush" Visual="{StaticResource appbar_magnify}"/>
             <VisualBrush x:Key="DeleteBrush" Visual="{StaticResource appbar_delete}" />
             <VisualBrush x:Key="AddBrush" Visual="{StaticResource appbar_add}" />
 
