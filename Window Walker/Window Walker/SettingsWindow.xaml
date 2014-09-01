@@ -18,7 +18,7 @@
     <Grid>
         <Border BorderThickness="5" BorderBrush="#41B1E1" x:Name="windowBorder">
             <StackPanel>
-                <Grid x:Name="TitleLabels" Width="690">
+                <Grid x:Name="TitleLabels" Width="690" Margin="4,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="322.5" />
                         <ColumnDefinition Width="10" />
