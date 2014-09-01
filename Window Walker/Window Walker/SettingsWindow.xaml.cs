@@ -163,6 +163,7 @@ namespace WindowWalker
             if (e.Key == Key.Enter)
             {
                 this.AddNewShortcut();
+                this.shortcutBefore.Focus();
             }
         }
     }
