@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using WindowWalker.Components;
+using System.Windows.Interop;
 
 namespace WindowWalker
 {
@@ -21,13 +22,15 @@ namespace WindowWalker
     /// </summary>
     public partial class SettingsWindow : MetroWindow
     {
+        private IntPtr handleToMainWindow;
+
         public SettingsWindow()
         {
             InitializeComponent();
 
             foreach (var shortcut in ShortcutManager.Instance.Shortcuts)
             {
-                shortcutsPanel.Children.Add(BuildShortcutEntryUI(shortcut.Key, shortcut.Value));
+                shortcutsPanel.Items.Add(BuildShortcutEntryUI(shortcut.Key, shortcut.Value));
             }
 
             this.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -44,12 +47,12 @@ namespace WindowWalker
         void DeleteShortcutClicked(object sender, RoutedEventArgs e)
         {
             UIElement source = (UIElement)e.Source;
-            StackPanel entry = source.TryFindParent<StackPanel>();
+            Grid entry = source.TryFindParent<Grid>();
 
             var before = (TextBlock)entry.Children[0];
             ShortcutManager.Instance.RemoveShortcut(before.Text);
 
-            shortcutsPanel.Children.Remove(entry);
+            shortcutsPanel.Items.Remove(entry);
         }
 
         void DoneClicked(object sender, RoutedEventArgs e)
@@ -60,7 +63,7 @@ namespace WindowWalker
             if (!String.IsNullOrWhiteSpace(before) && !String.IsNullOrWhiteSpace(after) &&
                 ShortcutManager.Instance.AddShortcut(before, after))
             {
-                shortcutsPanel.Children.Add(BuildShortcutEntryUI(before, after));
+                shortcutsPanel.Items.Add(BuildShortcutEntryUI(before, after));
 
                 shortcutBefore.Text = String.Empty;
                 shortcutAfter.Text = String.Empty;
@@ -69,22 +72,32 @@ namespace WindowWalker
 
         private UIElement BuildShortcutEntryUI(string before, string after)
         {
-            var container = new StackPanel();
-            container.Orientation = Orientation.Horizontal;
+            var container = new Grid();
+            ColumnDefinition colFrom = new ColumnDefinition() { Width = new GridLength(322.5) };
+            ColumnDefinition colSpacing = new ColumnDefinition() { Width = new GridLength(10) };
+            ColumnDefinition colTo = new ColumnDefinition() { Width = new GridLength(322.5) };
+            ColumnDefinition colSpacing2 = new ColumnDefinition() { Width = new GridLength(10) };
+            ColumnDefinition colDeleteButtonForShortcut = new ColumnDefinition() { Width = new GridLength(25) };
+
+            container.ColumnDefinitions.Add(colFrom);
+            container.ColumnDefinitions.Add(colSpacing);
+            container.ColumnDefinitions.Add(colTo);
+            container.ColumnDefinitions.Add(colSpacing2);
+            container.ColumnDefinitions.Add(colDeleteButtonForShortcut);
 
             var beforeTextBlock = new TextBlock();
             beforeTextBlock.Text = before;
-            beforeTextBlock.Width = 220;
-            beforeTextBlock.Margin = new Thickness(100, 0, 20, 0);
-            beforeTextBlock.Padding = new Thickness(5);
+            beforeTextBlock.FontSize = 13;
+            beforeTextBlock.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             container.Children.Add(beforeTextBlock);
+            beforeTextBlock.SetValue(Grid.ColumnProperty, 0);
 
             var afterTextBlock = new TextBlock();
             afterTextBlock.Text = after;
-            afterTextBlock.Width = 220;
-            afterTextBlock.Margin = new Thickness(0, 0, 15, 0);
-            afterTextBlock.Padding = new Thickness(5);
+            afterTextBlock.FontSize = 13;
+            afterTextBlock.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             container.Children.Add(afterTextBlock);
+            afterTextBlock.SetValue(Grid.ColumnProperty, 2);
 
             var deleteButton = new Button();
             deleteButton.Style = this.FindResource("ButtonStyle") as Style;
@@ -92,17 +105,51 @@ namespace WindowWalker
             deleteButton.Height = 25;
             deleteButton.Click += new RoutedEventHandler(DeleteShortcutClicked);
             deleteButton.Background = this.FindResource("DeleteBrush") as Brush;
+            deleteButton.SetValue(Grid.ColumnProperty, 4);
+
             container.Children.Add(deleteButton);
+
+            container.Margin = new Thickness(0, 0, 0, 4);
 
             return container;
         }
 
         private void WindowFinishedLoading(object sender, RoutedEventArgs e)
         {
+            double left = this.Left;
+            this.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
+            this.Left = left;
+            this.Top = 0;
+
+            this.handleToMainWindow = new WindowInteropHelper(this).Handle;
         }
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
         {
+        }
+
+        private void UpdateWindowSize()
+        {
+            this.Height =
+                this.shortcutsPanel.ActualHeight +
+                this.TitleLabels.ActualHeight +
+                this.windowBorder.BorderThickness.Top * 2 +
+                this.separator.ActualHeight;
+
+            var screen = System.Windows.Forms.Screen.FromHandle(this.handleToMainWindow);
+
+            if (this.Height > screen.Bounds.Height)
+            {
+                this.Height = screen.Bounds.Height;
+                this.shortcutsPanel.MaxHeight = screen.Bounds.Height - 30;
+            }
+
+            System.Diagnostics.Debug.Print("Window Size getting Updated");
+        }
+
+        private void ListViewSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.UpdateWindowSize();
         }
     }
 }
