@@ -40,8 +40,8 @@
                             <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="25"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="shortcutBefore" controls:TextboxHelper.Watermark="Example: i" Width="220px"  HorizontalAlignment="Left"/>
-                        <TextBox x:Name="shortcutAfter" controls:TextboxHelper.Watermark="Example: internet" Width="220px" Grid.Column="2" HorizontalAlignment="Left" KeyUp="KeyPressedOnShortcutAfterBox"/>
+                        <TextBox x:Name="shortcutBefore" controls:TextboxHelper.Watermark="Example: i" Width="313"  HorizontalAlignment="Left"/>
+                        <TextBox x:Name="shortcutAfter" controls:TextboxHelper.Watermark="Example: internet" Width="313" Grid.Column="2" HorizontalAlignment="Left" KeyUp="KeyPressedOnShortcutAfterBox"/>
                         <Button Style="{StaticResource ButtonStyle}" x:Name="shortcutDone" Width="25px" Height="25px" Background="{DynamicResource AddBrush}" Click="DoneClicked" Grid.Column="4"/>
                     </Grid>
                 </ListBox>
