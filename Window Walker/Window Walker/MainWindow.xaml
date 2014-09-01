@@ -17,7 +17,7 @@
         <Border BorderThickness="5" BorderBrush="#41B1E1" x:Name="windowBorder">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox controls:TextboxHelper.Watermark="Search" controls:TextboxHelper.ClearTextButton="True" x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" ToolTip="If you want to quit, type &quot;:quit&quot; and press enter" Width="665" />
+                    <TextBox controls:TextboxHelper.Watermark="Search" controls:TextboxHelper.ClearTextButton="True" x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" ToolTip="If you want to quit, type &quot;:quit&quot; and press enter. Also, to switch to the settings page, type  &quot;:s &quot; and press enter" Width="665" />
                     <Button x:Name="Settings" Style="{StaticResource ButtonStyle}" Width="25px" Height="25px" BorderThickness="0" Click="SettingsButtonClicked" Background="{StaticResource SettingsBrush}" />
 
                 </StackPanel>
