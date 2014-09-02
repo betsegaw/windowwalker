@@ -14,14 +14,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindowWalker.Components;
-using MahApps.Metro.Controls;
 
 namespace WindowWalker
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : System.Windows.Window
     {
         private HotKeyHandler hotKeyHandler;
 

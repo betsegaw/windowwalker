@@ -1,8 +1,8 @@
-﻿<controls:MetroWindow x:Class="WindowWalker.MainWindow"
+<Window x:Class="WindowWalker.MainWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                      Title="MainWindow" Height="350" Width="700" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" TitlebarHeight="0">
+                      Title="MainWindow" Height="350" Width="700" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -26,5 +26,4 @@
             </StackPanel>
         </Border>
     </Grid>
-</controls:MetroWindow>
-
+</Window>
