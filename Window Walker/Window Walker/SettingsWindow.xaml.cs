@@ -20,9 +20,15 @@ namespace WindowWalker
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : MetroWindow
+    public partial class SettingsWindow : System.Windows.Window
     {
         private IntPtr handleToMainWindow;
+
+        public MainWindow mainWindow
+        {
+            get;
+            set;
+        }
 
         public SettingsWindow()
         {
@@ -39,9 +45,7 @@ namespace WindowWalker
 
         void BackButtonClicked(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-
+            this.mainWindow.Show();
             this.Close();
         }
 

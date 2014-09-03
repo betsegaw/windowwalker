@@ -1,9 +1,9 @@
-﻿<controls:MetroWindow x:Class="WindowWalker.SettingsWindow"
+﻿<Window x:Class="WindowWalker.SettingsWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       SizeToContent="WidthAndHeight"
-                      Title="SettingsWindow" ResizeMode="NoResize" Width="700" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" TitlebarHeight="0">
+                      Title="SettingsWindow" ResizeMode="NoResize" Width="700" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" >
     <Window.Resources>
         <ResourceDictionary>
             <VisualBrush x:Key="HomeBrush" Visual="{StaticResource appbar_magnify}"/>
@@ -50,6 +50,6 @@
     </Grid>
 
 
-</controls:MetroWindow>
+</Window>
 
 
