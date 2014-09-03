@@ -56,9 +56,10 @@ namespace WindowWalker
         private void SwitchToSettingsPage()
         {
             SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.mainWindow = this;
             settingsWindow.Show();
 
-            this.Close();
+            this.Hide();
         }
 
         private void TextChangedEvent(object sender, TextChangedEventArgs e)
