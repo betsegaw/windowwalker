@@ -132,6 +132,10 @@ namespace WindowWalker
             this.Top = 0;
 
             this.handleToMainWindow = new WindowInteropHelper(this).Handle;
+
+#if DEBUG
+            this.Topmost = false;
+#endif
         }
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
