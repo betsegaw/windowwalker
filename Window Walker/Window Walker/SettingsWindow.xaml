@@ -32,7 +32,7 @@
                 </Grid>
                 <Grid Height="5"  x:Name="separator" />
                 <ListBox x:Name="shortcutsPanel" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SizeChanged="ListViewSizeChanged">
-                    <Grid Margin="0,0,0,4">
+                    <Grid Margin="0,4,0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="322.5" />
                             <ColumnDefinition Width="10" />
