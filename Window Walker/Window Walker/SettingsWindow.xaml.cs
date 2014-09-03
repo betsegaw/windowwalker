@@ -24,7 +24,7 @@ namespace WindowWalker
     {
         private IntPtr handleToMainWindow;
 
-        public MainWindow mainWindow
+        public MainWindow MainWindow
         {
             get;
             set;
@@ -45,8 +45,8 @@ namespace WindowWalker
 
         void BackButtonClicked(object sender, RoutedEventArgs e)
         {
-            this.mainWindow.Show();
-            this.Close();
+            this.Hide();
+            this.MainWindow.SwitchToSearchWindow(false);
         }
 
         void DeleteShortcutClicked(object sender, RoutedEventArgs e)
@@ -136,6 +136,10 @@ namespace WindowWalker
 
         private void WindowLostFocusEventHandler(object sender, EventArgs e)
         {
+#if !DEBUG
+            this.Hide();
+            this.MainWindow.EnterWaitState();
+#endif
         }
 
         private void UpdateWindowSize()

@@ -24,6 +24,8 @@ namespace WindowWalker
     {
         private HotKeyHandler hotKeyHandler;
 
+        private SettingsWindow settingsWindow;
+
         private IntPtr handleToMainWindow;
 
         private bool waitState = false;
@@ -55,9 +57,13 @@ namespace WindowWalker
 
         private void SwitchToSettingsPage()
         {
-            SettingsWindow settingsWindow = new SettingsWindow();
-            settingsWindow.mainWindow = this;
-            settingsWindow.Show();
+            if (this.settingsWindow == null)
+            {
+                this.settingsWindow = new SettingsWindow();
+            }
+
+            this.settingsWindow.MainWindow = this;
+            this.settingsWindow.Show();
 
             this.Hide();
         }
@@ -260,15 +266,20 @@ namespace WindowWalker
             {
                 if (this.waitState)
                 {
-                    this.waitState = false;
-                    this.searchTextBox.Text = string.Empty;
-                    OpenWindows.Instance.UpdateOpenWindowsList();
-                    this.Show();
-                    InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);
-                    this.TextChangedEvent(null, null);
-                    this.searchTextBox.Focus();
+                    this.SwitchToSearchWindow(true);
                 }
             }
+        }
+
+        public void SwitchToSearchWindow(bool clearSearchBox)
+        {
+            this.waitState = false;
+            this.searchTextBox.Text = clearSearchBox ? string.Empty : searchTextBox.Text;
+            OpenWindows.Instance.UpdateOpenWindowsList();
+            this.Show();
+            InteropAndHelpers.SetForegroundWindow(this.handleToMainWindow);
+            this.TextChangedEvent(null, null);
+            this.searchTextBox.Focus();
         }
 
         /// <summary>
