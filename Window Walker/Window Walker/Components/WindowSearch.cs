@@ -131,7 +131,7 @@ namespace WindowWalker.Components
 
                 foreach(var window in windows)
                 {
-                    this.searchMatches.Add(new WindowSearchResult(window, new List<int>(), new List<int>()));
+                    this.searchMatches.Add(new WindowSearchResult(window, new List<int>(), new List<int>(), WindowSearchResult.SearchType.Empty));
                 }
             }
             else
@@ -156,20 +156,30 @@ namespace WindowWalker.Components
         private List<WindowSearchResult> FuzzySearchOpenWindows(List<Window> openWindows)
         {
             List<WindowSearchResult> result = new List<WindowSearchResult>();
+            List<SearchString> searchStrings = new List<SearchString>();
 
             string shortcut = SettingsManager.Instance.GetShortcut(this.SearchText);
-            string searchString = (shortcut != null) ? shortcut : this.searchText;
 
-            foreach(var window  in openWindows)
+            if (shortcut != null)
             {
-                var titleMatch = FuzzyMatching.FindBestFuzzyMatch(window.Title, searchString);
-                var processMatch = FuzzyMatching.FindBestFuzzyMatch(window.ProcessName, searchString);
+                searchStrings.Add(new SearchString(shortcut, WindowSearchResult.SearchType.Shortcut));
+            }
 
-                if ((titleMatch.Count != 0 || processMatch.Count != 0) &&
-                         window.Title.Length != 0)
+            searchStrings.Add(new SearchString(this.searchText, WindowSearchResult.SearchType.Fuzzy));
+
+            foreach (var searchString in searchStrings)
+            {
+                foreach (var window in openWindows)
                 {
-                    var temp = new WindowSearchResult(window, titleMatch, processMatch);
-                    result.Add(temp);
+                    var titleMatch = FuzzyMatching.FindBestFuzzyMatch(window.Title, searchString.SearchText);
+                    var processMatch = FuzzyMatching.FindBestFuzzyMatch(window.ProcessName, searchString.SearchText);
+
+                    if ((titleMatch.Count != 0 || processMatch.Count != 0) &&
+                                window.Title.Length != 0)
+                    {
+                        var temp = new WindowSearchResult(window, titleMatch, processMatch, searchString.SearchType);
+                        result.Add(temp);
+                    }
                 }
             }
 
@@ -178,6 +188,43 @@ namespace WindowWalker.Components
             return result;
         }
 
+        /// <summary>
+        /// A class to represent a search string
+        /// </summary>
+        /// <remarks>Class was added inorder to be able to attach various context data to
+        /// a search string</remarks>
+        class SearchString
+        {
+            /// <summary>
+            /// Where is the search string coming from (is it a shortcut
+            /// or direct string, etc...)
+            /// </summary>
+            public WindowSearchResult.SearchType SearchType
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// The actual text we are searching for
+            /// </summary>
+            public string SearchText
+            {
+                get;
+                private set;
+            }
+            
+            /// <summary>
+            /// Constructor 
+            /// </summary>
+            /// <param name="searchText"></param>
+            /// <param name="searchType"></param>
+            public SearchString(string searchText, WindowSearchResult.SearchType searchType)
+            {
+                this.SearchText = searchText;
+                this.SearchType = searchType;
+            }
+        }
         #endregion
     }
 }

@@ -40,6 +40,15 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
+        /// The type of match (shortcut, fuzzy or nothing)
+        /// </summary>
+        public SearchType SearchResultMatchType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// A score indicating how well this matches what we are looking for
         /// </summary>
         public int Score
@@ -60,11 +69,12 @@ namespace WindowWalker.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        public WindowSearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName)
+        public WindowSearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName, SearchType matchType)
         {
             this.ResultWindow = window;
             this.SearchMatchesInTitle = matchesInTitle;
             this.SearchMatchesInProcessName = matchesInProcessName;
+            this.SearchResultMatchType = matchType;
             this.CalculateScore();
         }
 
@@ -96,6 +106,29 @@ namespace WindowWalker.Components
         {
             ProcessName,
             WindowTitle
+        }
+
+        /// <summary>
+        /// The type of search
+        /// </summary>
+        public enum SearchType
+        {
+            /// <summary>
+            /// the search string is empty, which means all open windows are
+            /// going to be returned
+            /// </summary>
+            Empty,
+
+            /// <summary>
+            /// Regular fuzzy match search
+            /// </summary>
+            Fuzzy,
+
+            /// <summary>
+            /// The user has entered text that has been matched to a shortcut
+            /// and the shortcut is now being searched
+            /// </summary>
+            Shortcut
         }
     }
 }
