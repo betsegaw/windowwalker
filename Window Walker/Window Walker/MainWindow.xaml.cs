@@ -81,31 +81,41 @@ namespace WindowWalker
                 resultsListBox.Items.Clear();
 
                 var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
-                Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock,WindowSearchResult>();
+                Dictionary<TextBlock, WindowSearchResult> highlightStack = new Dictionary<TextBlock, WindowSearchResult>();
+                
+                var windowResultsByType = new List<List<WindowSearchResult>>();
 
-                windowsResult = windowsResult.OrderByDescending(x => x.Score);
+                var windowNoSearchTextResults = windowsResult.Where(x => x.SearchResultMatchType == WindowSearchResult.SearchType.Empty).OrderByDescending(x => x.Score);
+                var windowsShortcutResults = windowsResult.Where(x => x.SearchResultMatchType == WindowSearchResult.SearchType.Shortcut).OrderByDescending(x => x.Score);
+                var windowsFuzzyResults = windowsResult.Where(x => x.SearchResultMatchType == WindowSearchResult.SearchType.Fuzzy).OrderByDescending(x => x.Score);
 
-                foreach (WindowSearchResult windowResult in windowsResult)
+                windowResultsByType.Add(windowNoSearchTextResults.ToList());
+                windowResultsByType.Add(windowsShortcutResults.ToList());
+                windowResultsByType.Add(windowsFuzzyResults.ToList());
+
+                foreach (var windowsResultForType in windowResultsByType)
                 {
-                    /// Each window is shown in a horizontal stack panel
-                    /// that contains an image object on the left and 
-                    /// a textblock with the window title on the right
+                    foreach (WindowSearchResult windowResult in windowsResultForType)
+                    {
+                        /// Each window is shown in a horizontal stack panel
+                        /// that contains an image object on the left and 
+                        /// a textblock with the window title on the right
 
-                    var tempStackPanel = new StackPanel();
-                    tempStackPanel.Orientation = Orientation.Horizontal;
-                    var image = new Image();
-                    image.Source = windowResult.ResultWindow.WindowIcon;
-                    image.Margin = new Thickness(0,0,5,0);
-                    tempStackPanel.Children.Add(image);
-                    var tempTextBlock = new TextBlockWindow();
+                        var tempStackPanel = new StackPanel();
+                        tempStackPanel.Orientation = Orientation.Horizontal;
+                        var image = new Image();
+                        image.Source = windowResult.ResultWindow.WindowIcon;
+                        image.Margin = new Thickness(0, 0, 5, 0);
+                        tempStackPanel.Children.Add(image);
+                        var tempTextBlock = new TextBlockWindow();
 
-                    tempTextBlock.Window = windowResult.ResultWindow;
-                    tempStackPanel.Children.Add(tempTextBlock);
-                    image.Height = 15;
-                    this.resultsListBox.Items.Add(tempStackPanel);
-                    highlightStack[tempTextBlock] = windowResult;
+                        tempTextBlock.Window = windowResult.ResultWindow;
+                        tempStackPanel.Children.Add(tempTextBlock);
+                        image.Height = 15;
+                        this.resultsListBox.Items.Add(tempStackPanel);
+                        highlightStack[tempTextBlock] = windowResult;
+                    }
                 }
-
                 if (resultsListBox.Items.Count != 0)
                 {
                     resultsListBox.SelectedIndex = 0;
