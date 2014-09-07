@@ -186,6 +186,13 @@ namespace WindowWalker
                         r.Text = windowDisplayText.Substring(boldIndex, 1);
                         var b = new Bold(r);
                         b.FontSize = 15;
+
+                        // Different coloring for shortcut results
+                        if (windowResult.SearchResultMatchType == WindowSearchResult.SearchType.Shortcut)
+                        {
+                            b.Foreground = new SolidColorBrush(Color.FromRgb(198, 61, 15));
+                        }
+
                         textBlock.Inlines.Add(b);
                         start = boldIndex + 1;
                     }
