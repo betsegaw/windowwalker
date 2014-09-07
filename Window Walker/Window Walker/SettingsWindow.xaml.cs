@@ -34,7 +34,7 @@ namespace WindowWalker
         {
             InitializeComponent();
 
-            foreach (var shortcut in ShortcutManager.Instance.Shortcuts)
+            foreach (var shortcut in SettingsManager.SettingsInstance.Shortcuts)
             {
                 shortcutsPanel.Items.Add(BuildShortcutEntryUI(shortcut.Key, shortcut.Value));
             }
@@ -55,7 +55,7 @@ namespace WindowWalker
             Grid entry = source.TryFindParent<Grid>();
 
             var before = (TextBlock)entry.Children[0];
-            ShortcutManager.Instance.RemoveShortcut(before.Text);
+            SettingsManager.Instance.RemoveShortcut(before.Text);
 
             shortcutsPanel.Items.Remove(entry);
         }
@@ -71,7 +71,7 @@ namespace WindowWalker
             string after = shortcutAfter.Text;
 
             if (!String.IsNullOrWhiteSpace(before) && !String.IsNullOrWhiteSpace(after) &&
-                ShortcutManager.Instance.AddShortcut(before, after))
+                SettingsManager.Instance.AddShortcut(before, after))
             {
                 shortcutsPanel.Items.Add(BuildShortcutEntryUI(before, after));
 

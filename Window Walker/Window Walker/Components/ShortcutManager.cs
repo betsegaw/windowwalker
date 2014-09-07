@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace WindowWalker.Components
 {
@@ -11,61 +12,49 @@ namespace WindowWalker.Components
     /// Class for managing shortcuts
     /// Example: When you type "i" we actually search for "internet"
     /// </summary>
-    class ShortcutManager
+    class SettingsManager
     {
-        private static readonly string ShortcutsFile = Path.GetTempPath() + "WindowWalkerShortcuts.txt";
+        private static readonly string ShortcutsFile = Path.GetTempPath() + "WindowWalkerShortcuts.ini";
 
-        private static ShortcutManager instance;
+        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
 
-        public static ShortcutManager Instance
+        public static Settings SettingsInstance = new Settings();
+
+        private static SettingsManager instance;
+
+        public static SettingsManager Instance
         {
             get 
             {
                 if (instance == null)
                 {
-                    instance = new ShortcutManager();
+                    instance = new SettingsManager();
                 }
 
                 return instance;
             }
         }
 
-        private ShortcutManager()
+        private SettingsManager()
         {
-            this.shortcuts = new Dictionary<string, string>();
-
             if (File.Exists(ShortcutsFile))
             {
                 using (StreamReader reader = new StreamReader(ShortcutsFile))
                 {
-                    string currentLine;
-                    while ((currentLine = reader.ReadLine()) != null)
-                    {
-                        string[] parts = currentLine.Split('|');
-                        if (parts.Length == 2 && !this.shortcuts.ContainsKey(parts[0]))
-                        {
-                            this.shortcuts.Add(parts[0], parts[1]);
-                        }
-                    }
+                    string jsonString = reader.ReadToEnd();
+                    SettingsManager.SettingsInstance = (Settings)SettingsManager.Serializer.Deserialize(jsonString, typeof(Settings));
                 }
             }
         }
 
-        Dictionary<string, string> shortcuts;
-
-        public Dictionary<string, string> Shortcuts
-        {
-            get { return shortcuts; }
-        }
-
         public bool AddShortcut(string before, string after)
         {
-            if (shortcuts.ContainsKey(before))
+            if (SettingsManager.SettingsInstance.Shortcuts.ContainsKey(before))
             {
                 return false;
             }
 
-            shortcuts.Add(before, after);
+            SettingsManager.SettingsInstance.Shortcuts.Add(before, after);
             
             // Write the updated shortcuts list to a file
             WriteShortcutsToFile();
@@ -75,12 +64,12 @@ namespace WindowWalker.Components
 
         public bool RemoveShortcut(string input)
         {
-            if (!shortcuts.ContainsKey(input))
+            if (!SettingsManager.SettingsInstance.Shortcuts.ContainsKey(input))
             {
                 return false;
             }
 
-            shortcuts.Remove(input);
+            SettingsManager.SettingsInstance.Shortcuts.Remove(input);
 
             // Write the updated shortcuts list to a file
             WriteShortcutsToFile();
@@ -90,7 +79,7 @@ namespace WindowWalker.Components
 
         public string GetShortcut(string input)
         {
-            return (shortcuts.ContainsKey(input) ? shortcuts[input] : null);
+            return (SettingsManager.SettingsInstance.Shortcuts.ContainsKey(input) ? SettingsManager.SettingsInstance.Shortcuts[input] : null);
         }
        
         /// <summary>
@@ -102,10 +91,7 @@ namespace WindowWalker.Components
         {
             using (StreamWriter writer = new StreamWriter(ShortcutsFile, false))
             {
-                foreach (var shortcut in this.shortcuts)
-                {
-                    writer.WriteLine(shortcut.Key + "|" + shortcut.Value);
-                }
+                writer.Write(SettingsManager.Serializer.Serialize(SettingsManager.SettingsInstance));
             }
         }
     }
