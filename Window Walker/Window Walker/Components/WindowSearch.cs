@@ -157,7 +157,7 @@ namespace WindowWalker.Components
         {
             List<WindowSearchResult> result = new List<WindowSearchResult>();
 
-            string shortcut = ShortcutManager.Instance.GetShortcut(this.SearchText);
+            string shortcut = SettingsManager.Instance.GetShortcut(this.SearchText);
             string searchString = (shortcut != null) ? shortcut : this.searchText;
 
             foreach(var window  in openWindows)
