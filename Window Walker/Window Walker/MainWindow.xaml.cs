@@ -76,8 +76,7 @@ namespace WindowWalker
         public void SearchResultUpdateHandler(object sender, WindowWalker.Components.Window.WindowListUpdateEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
-            {
-            
+            {   
                 resultsListBox.Items.Clear();
 
                 var windowsResult = WindowSearchController.Instance.SearchMatches.Where(x => x.ResultWindow.Hwnd != this.handleToMainWindow);
@@ -93,10 +92,21 @@ namespace WindowWalker
                 windowResultsByType.Add(windowsShortcutResults.ToList());
                 windowResultsByType.Add(windowsFuzzyResults.ToList());
 
+                Dictionary<IntPtr, bool> windowsAlreadyDisplayed = new Dictionary<IntPtr, bool>();
+
                 foreach (var windowsResultForType in windowResultsByType)
                 {
                     foreach (WindowSearchResult windowResult in windowsResultForType)
                     {
+                        if (windowsAlreadyDisplayed.ContainsKey(windowResult.ResultWindow.Hwnd))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            windowsAlreadyDisplayed[windowResult.ResultWindow.Hwnd] = true;
+                        }
+
                         /// Each window is shown in a horizontal stack panel
                         /// that contains an image object on the left and 
                         /// a textblock with the window title on the right
