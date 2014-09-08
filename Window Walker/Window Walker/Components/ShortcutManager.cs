@@ -49,12 +49,12 @@ namespace WindowWalker.Components
 
         public bool AddShortcut(string before, string after)
         {
-            if (SettingsManager.SettingsInstance.Shortcuts.ContainsKey(before))
+            if (!SettingsManager.SettingsInstance.Shortcuts.ContainsKey(before))
             {
-                return false;
+                SettingsManager.SettingsInstance.Shortcuts.Add(before, new List<string>());
             }
 
-            SettingsManager.SettingsInstance.Shortcuts.Add(before, after);
+            SettingsManager.SettingsInstance.Shortcuts[before].Add(after);
             
             // Write the updated shortcuts list to a file
             WriteShortcutsToFile();
@@ -77,9 +77,9 @@ namespace WindowWalker.Components
             return true;
         }
 
-        public string GetShortcut(string input)
+        public List<string> GetShortcut(string input)
         {
-            return (SettingsManager.SettingsInstance.Shortcuts.ContainsKey(input) ? SettingsManager.SettingsInstance.Shortcuts[input] : null);
+            return (SettingsManager.SettingsInstance.Shortcuts.ContainsKey(input) ? SettingsManager.SettingsInstance.Shortcuts[input] : new List<string>());
         }
        
         /// <summary>

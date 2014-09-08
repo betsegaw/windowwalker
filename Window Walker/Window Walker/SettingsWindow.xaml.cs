@@ -34,9 +34,12 @@ namespace WindowWalker
         {
             InitializeComponent();
 
-            foreach (var shortcut in SettingsManager.SettingsInstance.Shortcuts)
+            foreach (var shortcuts in SettingsManager.SettingsInstance.Shortcuts)
             {
-                shortcutsPanel.Items.Add(BuildShortcutEntryUI(shortcut.Key, shortcut.Value));
+                foreach(var shortcut in shortcuts.Value)
+                {
+                    shortcutsPanel.Items.Add(BuildShortcutEntryUI(shortcuts.Key, shortcut));
+                }
             }
 
             this.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;

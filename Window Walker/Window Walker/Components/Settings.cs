@@ -10,12 +10,12 @@ namespace WindowWalker.Components
     {
         public string Version { get; set; }
 
-        public Dictionary<string, string> Shortcuts { get; set; }
+        public Dictionary<string, List<string>> Shortcuts { get; set; }
 
         public Settings()
         {
             this.Version = string.Empty;
-            this.Shortcuts = new Dictionary<string,string>();
+            this.Shortcuts = new Dictionary<string,List<string>>();
         }
     }
 }

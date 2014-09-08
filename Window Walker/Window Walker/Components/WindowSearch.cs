@@ -158,9 +158,9 @@ namespace WindowWalker.Components
             List<WindowSearchResult> result = new List<WindowSearchResult>();
             List<SearchString> searchStrings = new List<SearchString>();
 
-            string shortcut = SettingsManager.Instance.GetShortcut(this.SearchText);
+            List<string> shortcuts = SettingsManager.Instance.GetShortcut(this.SearchText);
 
-            if (shortcut != null)
+            foreach(var shortcut in shortcuts)
             {
                 searchStrings.Add(new SearchString(shortcut, WindowSearchResult.SearchType.Shortcut));
             }
