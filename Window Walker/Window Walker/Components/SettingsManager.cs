@@ -35,7 +35,7 @@ namespace WindowWalker.Components
             }
         }
 
-        private SettingsManager()
+        static SettingsManager()
         {
             if (File.Exists(ShortcutsFile))
             {
@@ -45,6 +45,11 @@ namespace WindowWalker.Components
                     SettingsManager.SettingsInstance = (Settings)SettingsManager.Serializer.Deserialize(jsonString, typeof(Settings));
                 }
             }
+        }
+
+        private SettingsManager()
+        {
+            return;
         }
 
         public bool AddShortcut(string before, string after)
@@ -57,7 +62,7 @@ namespace WindowWalker.Components
             SettingsManager.SettingsInstance.Shortcuts[before].Add(after);
             
             // Write the updated shortcuts list to a file
-            WriteShortcutsToFile();
+            SaveSettings();
             
             return true;
         }
@@ -72,7 +77,7 @@ namespace WindowWalker.Components
             SettingsManager.SettingsInstance.Shortcuts.Remove(input);
 
             // Write the updated shortcuts list to a file
-            WriteShortcutsToFile();
+            SaveSettings();
 
             return true;
         }
@@ -87,7 +92,7 @@ namespace WindowWalker.Components
         /// Note: We are writing the file even if there are no shortcuts. This handles
         /// the case where the user deletes their last shortcut.
         /// </summary>
-        private void WriteShortcutsToFile()
+        public void SaveSettings()
         {
             using (StreamWriter writer = new StreamWriter(ShortcutsFile, false))
             {
