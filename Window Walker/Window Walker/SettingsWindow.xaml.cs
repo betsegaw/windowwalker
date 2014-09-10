@@ -131,8 +131,8 @@ namespace WindowWalker
         {
             double left = this.Left;
             this.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
-            this.Left = left;
-            this.Top = 0;
+            this.Left = SettingsManager.SettingsInstance.WindowLocation.X;
+            this.Top = SettingsManager.SettingsInstance.WindowLocation.Y;
 
             this.handleToMainWindow = new WindowInteropHelper(this).Handle;
 

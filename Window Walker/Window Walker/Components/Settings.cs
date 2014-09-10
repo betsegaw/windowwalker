@@ -12,10 +12,19 @@ namespace WindowWalker.Components
 
         public Dictionary<string, List<string>> Shortcuts { get; set; }
 
+        public Point WindowLocation { get; set; }
+
         public Settings()
         {
             this.Version = string.Empty;
             this.Shortcuts = new Dictionary<string,List<string>>();
+            this.WindowLocation = new Point() { X = 0, Y = 0 };
+        }
+
+        public class Point
+        {
+            public double X { get; set; }
+            public double Y { get; set; }
         }
     }
 }

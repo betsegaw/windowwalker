@@ -253,8 +253,8 @@ namespace WindowWalker
         {
             double left = this.Left;
             this.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
-            this.Left = left;
-            this.Top = 0;
+            this.Left = SettingsManager.SettingsInstance.WindowLocation.X;
+            this.Top = SettingsManager.SettingsInstance.WindowLocation.Y;
             this.UpdateWindowSize();
 
             this.hotKeyHandler = new HotKeyHandler(this);
@@ -361,6 +361,12 @@ namespace WindowWalker
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SettingsManager.SettingsInstance.WindowLocation = new Settings.Point() { X = this.Left, Y = this.Top };
+            SettingsManager.Instance.SaveSettings();
         }
     }
 
