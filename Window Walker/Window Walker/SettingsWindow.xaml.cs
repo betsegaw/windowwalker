@@ -186,5 +186,11 @@ namespace WindowWalker
         {
             DragMove();
         }
+
+        private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SettingsManager.SettingsInstance.WindowLocation = new Settings.Point() { X = this.Left, Y = this.Top };
+            SettingsManager.Instance.SaveSettings();
+        }
     }
 }
