@@ -357,6 +357,11 @@ namespace WindowWalker
         {
             this.UpdateWindowSize();
         }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 
     public class TextBlockWindow : TextBlock
