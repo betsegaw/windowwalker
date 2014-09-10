@@ -16,7 +16,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Border BorderThickness="5" BorderBrush="#41B1E1" x:Name="windowBorder">
+        <Border BorderThickness="5" BorderBrush="SteelBlue" x:Name="windowBorder">
             <StackPanel>
                 <Grid x:Name="TitleLabels" Width="690" Margin="4,0,0,0">
                     <Grid.ColumnDefinitions>
