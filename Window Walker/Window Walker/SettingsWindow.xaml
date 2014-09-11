@@ -3,7 +3,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       SizeToContent="WidthAndHeight"
-                      Title="SettingsWindow" ResizeMode="NoResize" Width="700" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp">
+                      Title="SettingsWindow" ResizeMode="NoResize" Width="700" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp" Activated="Window_Activated">
     <Window.Resources>
         <ResourceDictionary>
             <VisualBrush x:Key="HomeBrush" Visual="{StaticResource appbar_magnify}"/>

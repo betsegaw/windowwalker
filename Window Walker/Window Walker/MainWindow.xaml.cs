@@ -368,6 +368,12 @@ namespace WindowWalker
             SettingsManager.SettingsInstance.WindowLocation = new Settings.Point() { X = this.Left, Y = this.Top };
             SettingsManager.Instance.SaveSettings();
         }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            this.Left = SettingsManager.SettingsInstance.WindowLocation.X;
+            this.Top = SettingsManager.SettingsInstance.WindowLocation.Y;
+        }
     }
 
     public class TextBlockWindow : TextBlock
