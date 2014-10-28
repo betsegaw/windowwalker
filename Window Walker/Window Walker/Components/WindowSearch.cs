@@ -107,7 +107,11 @@ namespace WindowWalker.Components
         }
 
         #region Event Handlers
-
+        /// <summary>
+        /// Event handler called when the OpenWindows list changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e)
         {
             this.SyncOpenWindowsWithModelAsync();
@@ -145,6 +149,11 @@ namespace WindowWalker.Components
             }
         }
 
+        /// <summary>
+        /// Redirecting method for Fuzzy searching
+        /// </summary>
+        /// <param name="openWindows"></param>
+        /// <returns></returns>
         private Task<List<WindowSearchResult>> FuzzySearchOpenWindowsAsync(List<Window> openWindows)
         {
             return Task.Run(
@@ -153,6 +162,11 @@ namespace WindowWalker.Components
                 );
         }
 
+        /// <summary>
+        /// Search method that matches the title of windows with the user search text
+        /// </summary>
+        /// <param name="openWindows"></param>
+        /// <returns></returns>
         private List<WindowSearchResult> FuzzySearchOpenWindows(List<Window> openWindows)
         {
             List<WindowSearchResult> result = new List<WindowSearchResult>();

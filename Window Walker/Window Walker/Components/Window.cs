@@ -135,6 +135,9 @@ namespace WindowWalker.Components
             }
         }   
 
+        /// <summary>
+        /// Represents the Window Icon for the specified window
+        /// </summary>
         public ImageSource WindowIcon
         {
             get
@@ -236,11 +239,19 @@ namespace WindowWalker.Components
             InteropAndHelpers.FlashWindow(this.Hwnd, true);
         }
 
+        /// <summary>
+        /// Converts the window name to string along with the process name
+        /// </summary>
+        /// <returns>The title of the window</returns>
         public override string ToString()
         {
             return this.Title + " (" + this.ProcessName.ToUpper() + ")";
         }
 
+        /// <summary>
+        /// Returns what the window size is
+        /// </summary>
+        /// <returns>The state (minimized, maximized, etc..) of the window</returns>
         public WindowSizeState GetWindowSizeState()
         {
             InteropAndHelpers.WINDOWPLACEMENT placement = new InteropAndHelpers.WINDOWPLACEMENT();
@@ -277,6 +288,9 @@ namespace WindowWalker.Components
 
         #region Enums
 
+        /// <summary>
+        /// Enum to simplify the state of the window
+        /// </summary>
         public enum WindowSizeState
         {
             Normal,

@@ -222,6 +222,9 @@ namespace WindowWalker.Components
             ForceMinimize = 11
         }
 
+        /// <summary>
+        /// The rendering policy to use for set window attribute
+        /// </summary>
         [Flags]
         public enum DwmNCRenderingPolicy
         {
@@ -231,7 +234,9 @@ namespace WindowWalker.Components
             Last
         }
 
-
+        /// <summary>
+        /// Window attribute
+        /// </summary>
         [Flags]
         public enum DwmWindowAttribute
         {
@@ -250,7 +255,9 @@ namespace WindowWalker.Components
             Last
         }
 
-
+        /// <summary>
+        /// Flags for accessing the process in trying to get icon for the process
+        /// </summary>
         [Flags]
         public enum ProcessAccessFlags
         {
@@ -406,6 +413,9 @@ namespace WindowWalker.Components
             }
         }
 
+        /// <summary>
+        /// Required pointless variables that we don't use in making a windows show
+        /// </summary>
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -502,7 +512,9 @@ namespace WindowWalker.Components
             }
         }
 
-
+        /// <summary>
+        /// Same as the RECT struct above
+        /// </summary>
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
         {

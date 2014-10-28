@@ -33,6 +33,9 @@ namespace WindowWalker.Components
         /// </summary>
         private List<Window> windows = new List<Window>();
 
+        /// <summary>
+        /// An instance of the class OpenWindows
+        /// </summary>
         private static OpenWindows instance;
 
         #endregion
@@ -47,6 +50,11 @@ namespace WindowWalker.Components
             get { return new List<Window>(windows); }
         }
 
+        /// <summary>
+        /// An instance property of this class that makes sure that
+        /// the first instance gets created and that all the requests
+        /// end up at that one instance
+        /// </summary>
         public static OpenWindows Instance
         {
             get 
