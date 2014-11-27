@@ -1,5 +1,6 @@
 Window Walker
 ============
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/betsegaw/windowwalker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![](screenshot.png)
 
 > **"Why walk your dog when you can walk your Window?"** -Yuki
