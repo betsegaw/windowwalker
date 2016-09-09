@@ -1,112 +1,20 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+---
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Windowwalker : Keyboard Alternative to Alt-Tab on Windows" />
+<div class="home">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <h1>Posts</h1>
 
-    <title>Windowwalker</title>
-  </head>
+  <ul class="posts">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
 
-  <body>
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/betsegaw/windowwalker">View on GitHub</a>
-
-          <h1 id="project_title">Windowwalker</h1>
-          <h2 id="project_tagline">Keyboard Alternative to Alt-Tab on Windows</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/betsegaw/windowwalker/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/betsegaw/windowwalker/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="window-walker" class="anchor" href="#window-walker"><span class="octicon octicon-link"></span></a>Window Walker</h1>
-
-<p><img src="images/screenshot.png" alt=""></p>
-
-<blockquote>
-<p><strong>"Why walk your dog when you can walk your Window?"</strong> -Yuki</p>
-</blockquote>
-
-<p>Have you ever wasted a good 15 seconds trying to find a window you know you have open somewhere on your desktop? Are you a keyboard person who thinks that time using the mouse is time wasted? Waste no more, here is a solution with raving reviews!</p>
-
-<blockquote>
-<p><strong>"Why would I ever use this?"</strong> -- Yuki</p>
-
-<p><strong>"Isn't this what the taskbar is for?"</strong> -- Anonymous </p>
-</blockquote>
-
-<p>Window walker is an app that lets you search and switch between windows that you have open, all from the comfort of your keyboard. As you are searching for an app, you can use the keyboard up and down arrows to see an Alt-Tab style preview of the windows. </p>
-
-<p><strong>To Invoke</strong> :   <code>CTRL + WIN</code></p>
-
-<p><strong>To Quit Window Walker</strong> : type <code>:quit</code> and press <code>Enter</code></p>
-
-<p>You can simply start typing to filter through the windows and once you have the window that you want to switch to, you can select it using the keyboard up and down buttons (if there is more than one search result) and press Enter to make your selection. </p>
-
-<h2>
-<a name="faq" class="anchor" href="#faq"><span class="octicon octicon-link"></span></a>FAQ</h2>
-
-<h5>
-<a name="1-why-does-this-app-exist" class="anchor" href="#1-why-does-this-app-exist"><span class="octicon octicon-link"></span></a>1. Why does this app exist?</h5>
-
-<p>This App exists for the simple reason that I grew tired of trying to quickly switch windows when I usually have 30+ windows open on my dev machine. Do a quick Alt + Tab and hold to see if this is you. If you have only 5 windows open, this is not a really useful app for you.</p>
-
-<h5>
-<a name="2-what-kind-of-matches-do-i-get" class="anchor" href="#2-what-kind-of-matches-do-i-get"><span class="octicon octicon-link"></span></a>2. What kind of matches do I get?</h5>
-
-<p>You get results from matches in the window title AND the process name (eg. outlook.exe). </p>
-
-<p>Also the search is kind of fuzzy so searching for "book" will also return "b blah blah oo blah k". </p>
-
-<h5>
-<a name="3-can-i-search-internet-explorer-tabs" class="anchor" href="#3-can-i-search-internet-explorer-tabs"><span class="octicon octicon-link"></span></a>3. Can I search Internet Explorer Tabs?</h5>
-
-<p>Yes :)</p>
-
-<h5>
-<a name="4-i-think-you-did-a-terrible-job-how-can-i-show-you-the-sheer-awesomeness-of-my-coding-skills-by-contributing" class="anchor" href="#4-i-think-you-did-a-terrible-job-how-can-i-show-you-the-sheer-awesomeness-of-my-coding-skills-by-contributing"><span class="octicon octicon-link"></span></a>4. I think you did a terrible job. How can I show you the sheer awesomeness of my coding skills by contributing?</h5>
-
-<p>Sad to hear you hate the app but glad you want to improve it! Fork it and after applying liberal amounts of your talent, ping me for a pull request (or set yourself up as the TRUE Window Walker) </p>
-
-<h5>
-<a name="5-do-i-need-to-start-up-the-app-every-time-i-need-to-do-a-search" class="anchor" href="#5-do-i-need-to-start-up-the-app-every-time-i-need-to-do-a-search"><span class="octicon octicon-link"></span></a>5. Do I need to start up the app every time I need to do a search?</h5>
-
-<p>No. Once you start it up, you can always invoke it using the invoke Key combination (CTRL + WIN). However, this still means that you still need to start up the app every time you reboot your PC.</p>
-
-<h5>
-<a name="6-known-bugs-and-issues" class="anchor" href="#6-known-bugs-and-issues"><span class="octicon octicon-link"></span></a>6. Known bugs and issues?</h5>
-
-<p>Bugs? Never! Of course, if you THINK you have found one, feel free to send me an email. I shall prove you wrong promptly!</p>
-
-<h5>
-<a name="6-special-thanks-to" class="anchor" href="#6-special-thanks-to"><span class="octicon octicon-link"></span></a>6. Special thanks to...?</h5>
-
-<p>Jose Moya for making sure the search is async</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Windowwalker maintained by <a href="https://github.com/betsegaw">betsegaw</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
-</html>
+</div>
