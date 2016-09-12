@@ -180,6 +180,10 @@ namespace WindowWalker
                 this.AddNewShortcut();
                 this.shortcutBefore.Focus();
             }
+            else if (e.Key == Key.Escape)
+            {
+                BackButtonClicked(null, null);
+            }
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -197,6 +201,14 @@ namespace WindowWalker
         {
             this.Left = SettingsManager.SettingsInstance.WindowLocation.X;
             this.Top = SettingsManager.SettingsInstance.WindowLocation.Y;
+        }
+
+        private void CheckForEscape(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                BackButtonClicked(null, null);
+            }
         }
     }
 }
