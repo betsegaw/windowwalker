@@ -302,6 +302,17 @@
         }
         "Folder"
         {
+            "{1525181F-901A-416C-8A58-119130FE478E}:_018839B0FF5F4440BF22F957AB0FC9E3"
+            {
+            "Name" = "8:#1928"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:StartupFolder"
+                "Folders"
+                {
+                }
+            }
             "{1525181F-901A-416C-8A58-119130FE478E}:_6197F0A152A7450789AAB532D47475A7"
             {
             "Name" = "8:#1919"
@@ -364,7 +375,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Window Walker"
         "ProductCode" = "8:{70B854E3-C4D4-4E0E-B71A-458E8CE5E2D2}"
-        "PackageCode" = "8:{FA690108-C232-410C-9D26-1AB375C5E184}"
+        "PackageCode" = "8:{0614CEFE-2F7A-4202-9506-BA3EEA70C89E}"
         "UpgradeCode" = "8:{9E5BF54B-92E2-4474-94B6-376D2E1B4490}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -494,6 +505,20 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_3BDE967FCE904E6C8CF78C1E3791B6C2"
             "Folder" = "8:_408A8D790933447397077675BD4965C8"
+            "WorkingFolder" = "8:_BA8DABF9BA91481798EC642A48C3DB12"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F5CF358993A84E1AA6A54588D0461E91"
+            {
+            "Name" = "8:Window Walker"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_3BDE967FCE904E6C8CF78C1E3791B6C2"
+            "Folder" = "8:_018839B0FF5F4440BF22F957AB0FC9E3"
             "WorkingFolder" = "8:_BA8DABF9BA91481798EC642A48C3DB12"
             "Icon" = "8:"
             "Feature" = "8:"
