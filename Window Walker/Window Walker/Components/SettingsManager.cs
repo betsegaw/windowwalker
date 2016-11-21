@@ -56,14 +56,18 @@ namespace WindowWalker.Components
         /// <remarks>Not sure why we have this AND a singlton pattern</remarks>
         static SettingsManager()
         {
-            if (File.Exists(ShortcutsFile))
+            try
             {
-                using (StreamReader reader = new StreamReader(ShortcutsFile))
+                if (File.Exists(ShortcutsFile))
                 {
-                    string jsonString = reader.ReadToEnd();
-                    SettingsManager.SettingsInstance = (Settings)SettingsManager.Serializer.Deserialize(jsonString, typeof(Settings));
+                    using (StreamReader reader = new StreamReader(ShortcutsFile))
+                    {
+                        string jsonString = reader.ReadToEnd();
+                        SettingsManager.SettingsInstance = (Settings)SettingsManager.Serializer.Deserialize(jsonString, typeof(Settings));
+                    }
                 }
             }
+            catch {}
         }
 
         /// <summary>
