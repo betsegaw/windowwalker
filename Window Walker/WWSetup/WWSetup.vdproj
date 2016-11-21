@@ -110,6 +110,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
             }
         }
         "Release"
@@ -375,20 +383,20 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Window Walker"
         "ProductCode" = "8:{70B854E3-C4D4-4E0E-B71A-458E8CE5E2D2}"
-        "PackageCode" = "8:{0614CEFE-2F7A-4202-9506-BA3EEA70C89E}"
+        "PackageCode" = "8:{67D3E9E2-49E2-427E-98F2-BADFF5D05382}"
         "UpgradeCode" = "8:{9E5BF54B-92E2-4474-94B6-376D2E1B4490}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:Window Walker"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:WWSetup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:Window Walker"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
