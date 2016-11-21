@@ -2,8 +2,8 @@
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      
                       Title="MainWindow" Height="350" Width="700" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="WindowFinishedLoading" Deactivated="WindowLostFocusEventHandler" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp" Activated="Window_Activated">
-
     <Window.Resources>
         <ResourceDictionary>
             <VisualBrush x:Key="SettingsBrush" Visual="{StaticResource appbar_settings}"/>
@@ -14,14 +14,13 @@
     </Window.Resources>
 
     <Grid>
-        <Border BorderThickness="5" BorderBrush="SteelBlue" x:Name="windowBorder">
+        <Border BorderThickness="5" BorderBrush="#FAFAFA" x:Name="windowBorder">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox controls:TextboxHelper.Watermark="':quit' to exit, ':s' to go to settings, anything else to search" controls:TextboxHelper.ClearTextButton="True" x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" Width="665" />
+                    <TextBox controls:TextboxHelper.FocusBorderBrush="#E0E0E0" controls:TextboxHelper.Watermark="':quit' to exit, ':s' to go to settings, anything else to search" controls:TextboxHelper.ClearTextButton="True" x:Name="searchTextBox" TextChanged="TextChangedEvent" KeyUp="KeyPressActionHandler" Width="665" />
                     <Button x:Name="Settings" Style="{StaticResource ButtonStyle}" Width="25px" Height="25px" BorderThickness="0" Click="SettingsButtonClicked" Background="{StaticResource SettingsBrush}" />
-
                 </StackPanel>
-                <Grid Height="5" Background="SteelBlue" x:Name="separator" />
+                <Grid Height="5" Background="#FAFAFA" x:Name="separator" />
                 <ListBox x:Name="resultsListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="WindowSelectedByMouseEvent" SelectionChanged="WindowSelectionChangedEvent" SizeChanged="ListViewSizeChanged"/>
             </StackPanel>
         </Border>
