@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window Walker", "Window Walker\Window Walker.csproj", "{B9BDF8BE-FED7-49B5-A7AE-DD4D1CA2D9EB}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "WWSetup", "WWSetup\WWSetup.vdproj", "{E9634E83-F39B-49AC-B495-4020F2EDB28E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{B9BDF8BE-FED7-49B5-A7AE-DD4D1CA2D9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9BDF8BE-FED7-49B5-A7AE-DD4D1CA2D9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9BDF8BE-FED7-49B5-A7AE-DD4D1CA2D9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9634E83-F39B-49AC-B495-4020F2EDB28E}.Debug|Any CPU.ActiveCfg = Debug
+		{E9634E83-F39B-49AC-B495-4020F2EDB28E}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
