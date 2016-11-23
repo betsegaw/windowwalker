@@ -11,6 +11,12 @@ namespace WindowWalker.Components
     /// </summary>
     class OpenWindows
     {
+        IEnumerable<Tuple<string,string>> Blacklist = (new List<Tuple<string, string>> () { 
+            new Tuple<string, string> ( null, "ShellExperienceHost.EXE".ToUpper() ),
+            new Tuple<string, string> ( null, "ApplicationFrameHost.EXE".ToUpper() ),
+            new Tuple<string, string> ( "Program Manager".ToUpper(), "Explorer.EXE".ToUpper() )
+            }).AsEnumerable();
+
         #region Delegates
 
         /// <summary>
@@ -80,6 +86,8 @@ namespace WindowWalker.Components
         {
 
         }
+        
+        #endregion
 
         /// <summary>
         /// Updates the list of open windows
@@ -107,6 +115,11 @@ namespace WindowWalker.Components
         {
             Window newWindow = new Window(hwnd);
 
+            if (Blacklist.Any(x => (x.Item1 == newWindow.Title.ToUpper()) && (x.Item2 == newWindow.ProcessName.ToUpper()) ))
+            {
+                return true;
+            }
+
             if (newWindow.Visible && !newWindow.ProcessName.ToLower().Equals("iexplore.exe") ||
                 (newWindow.ProcessName.ToLower().Equals("iexplore.exe") && newWindow.ClassName == "TabThumbnailWindow")) 
             {
@@ -120,7 +133,5 @@ namespace WindowWalker.Components
 
             return true;
         }
-
-        #endregion
     }
 }
