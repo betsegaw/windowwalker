@@ -128,15 +128,7 @@ namespace WindowWalker.Components
 
             if (this.SearchText == string.Empty)
             {
-                var windows = 
-                    (snapshotOfOpenWindows.Where(x => !string.IsNullOrEmpty(x.Title)).ToList());
-
                 this.searchMatches = new List<WindowSearchResult>();
-
-                foreach(var window in windows)
-                {
-                    this.searchMatches.Add(new WindowSearchResult(window, new List<int>(), new List<int>(), WindowSearchResult.SearchType.Empty));
-                }
             }
             else
             {
