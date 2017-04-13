@@ -6,7 +6,7 @@ Window Walker
 
 Have you ever wasted a good 15 seconds trying to find a window you know you have open somewhere on your desktop? Are you a keyboard person who thinks that time using the mouse is time wasted? Waste no more, here is a solution with raving reviews!
 
-> **"Why would I ever use this?"** -- Yuki
+> **"Why would I ever use this?"** -- Yuki 
 
 > **"Isn't this what the taskbar is for?"** -- Anonymous 
 
