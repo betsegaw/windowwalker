@@ -15,8 +15,8 @@
 
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="40" Margin="10"/>
-            <ListBox ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedWindowResult}">
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="40" Margin="10" KeyUp="SearchBoxKeyUp"/>
+            <ListBox x:Name="results" ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedWindowResult}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding ResultWindow.Title}"></TextBlock>

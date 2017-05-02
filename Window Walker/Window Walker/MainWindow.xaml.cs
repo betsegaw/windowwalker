@@ -31,6 +31,48 @@ namespace WindowWalker
         {
             this.DataContext = new WindowWalker.ViewModels.WindowWalkerViewModel(this);
         }
+
+        private void SearchBoxKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                
+            }
+            else if (e.Key == Key.Down || e.Key == Key.Up)
+            {
+                if (results.Items.Count <= 1)
+                {
+                    return;
+                }
+
+                if ((e.Key == Key.Down && results.SelectedIndex + 1 == results.Items.Count) ||
+                    (e.Key == Key.Up && results.SelectedIndex == 0))
+                {
+                    return;
+                }
+                else
+                {
+                    results.SelectedIndex += e.Key == Key.Down ? 1 : -1;
+                }
+            }
+            else if (e.Key == Key.Enter)
+            {
+                //if (this.searchTextBox.Text == ":quit")
+                //{
+                //    App.Current.Shutdown();
+                //    return;
+                //}
+                //else if (this.searchTextBox.Text == ":s")
+                //{
+                //    this.searchTextBox.Text = string.Empty;
+                //    this.SwitchToSettingsPage();
+                //}
+                //else
+                //{
+                //    this.SwitchToSelectedWindow();
+                //}
+            }
+        }
     }
 
 }
