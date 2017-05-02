@@ -3,7 +3,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       
-                      Title="MainWindow" Height="350" Width="700" ResizeMode="NoResize" Topmost="True" WindowStyle="None">
+                      Title="MainWindow" Height="350" Width="700" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <ResourceDictionary>
             <VisualBrush x:Key="SettingsBrush" Visual="{StaticResource appbar_settings}"/>
@@ -16,7 +16,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
-            <ListBox ItemsSource="{Binding Results}">
+            <ListBox ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedWindowResult}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding ResultWindow.Title}"></TextBlock>

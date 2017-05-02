@@ -25,8 +25,11 @@ namespace WindowWalker
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            this.DataContext = WindowWalker.ViewModels.WindowWalkerViewModel.Instance;
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = new WindowWalker.ViewModels.WindowWalkerViewModel(this);
         }
     }
 
