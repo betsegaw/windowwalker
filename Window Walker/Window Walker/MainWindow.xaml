@@ -19,7 +19,7 @@
             <ListBox ItemsSource="{Binding Results}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="sfe"></TextBlock>
+                        <TextBlock Text="{Binding ResultWindow.Title}"></TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
