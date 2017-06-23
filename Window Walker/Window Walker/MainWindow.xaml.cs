@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,14 +30,14 @@ namespace WindowWalker
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = new WindowWalker.ViewModels.WindowWalkerViewModel(this);
+            this.DataContext = new ViewModels.WindowWalkerViewModel(this);
         }
 
         private void SearchBoxKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
-                
+                this.Hide();
             }
             else if (e.Key == Key.Down || e.Key == Key.Up)
             {
@@ -57,21 +58,23 @@ namespace WindowWalker
             }
             else if (e.Key == Key.Enter)
             {
-                //if (this.searchTextBox.Text == ":quit")
-                //{
-                //    App.Current.Shutdown();
-                //    return;
-                //}
-                //else if (this.searchTextBox.Text == ":s")
-                //{
-                //    this.searchTextBox.Text = string.Empty;
-                //    this.SwitchToSettingsPage();
-                //}
-                //else
-                //{
-                //    this.SwitchToSelectedWindow();
-                //}
+                ((ViewModels.WindowWalkerViewModel)this.DataContext).UserSelectionFinalized();
             }
+        }
+    }
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return (bool)value ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 

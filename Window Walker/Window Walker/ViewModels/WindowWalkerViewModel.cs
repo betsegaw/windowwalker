@@ -52,6 +52,11 @@ namespace WindowWalker.ViewModels
             }
         }
 
+        public bool WindowVisibility
+        {
+            get; set;
+        }
+
         private void WindowResultSelected()
         {
             Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.ResultWindow.Hwnd, this.Hwnd);
@@ -65,6 +70,11 @@ namespace WindowWalker.ViewModels
             OpenWindows.Instance.UpdateOpenWindowsList();
             this.Hwnd = new WindowInteropHelper(mainWindow).Handle;
             LivePreview.SetWindowExlusionFromLivePreview(this.Hwnd);
+        }
+
+        public void UserSelectionFinalized()
+        {
+            this.SelectedWindowResult.ResultWindow.SwitchToWindow();
         }
 
         private void SearchResultUpdated(object sender, Window.WindowListUpdateEventArgs e)
