@@ -8,8 +8,6 @@ using WindowWalker.Components;
 
 namespace WindowWalker.ViewModels
 {
-
-
     class WindowWalkerViewModel: MVVMHelpers.PropertyChangedBase
     {
         private string _searchText = string.Empty;
@@ -80,11 +78,6 @@ namespace WindowWalker.ViewModels
         private void SearchResultUpdated(object sender, Window.WindowListUpdateEventArgs e)
         {
             this.Results = WindowSearchController.Instance.SearchMatches;
-        }
-
-        private void WindowResultHighlighted()
-        {
-            Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.ResultWindow.Hwnd, this.Hwnd);
         }
     }
 }
