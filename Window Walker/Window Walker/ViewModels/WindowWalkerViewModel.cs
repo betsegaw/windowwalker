@@ -14,7 +14,7 @@ namespace WindowWalker.ViewModels
         private string _searchText = string.Empty;
         private List<WindowSearchResult> _results = new List<WindowSearchResult>();
         private WindowSearchResult _selectedWindow;
-        private bool _windowVisibility;
+        private bool _windowVisibility = true;
 
         private void WireCommands()
         {
