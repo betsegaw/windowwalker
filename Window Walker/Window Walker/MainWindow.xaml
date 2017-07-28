@@ -12,14 +12,6 @@
             </Style.Triggers>
         </Style>
     </Window.Style>
-    <Window.Resources>
-        <ResourceDictionary>
-            <VisualBrush x:Key="SettingsBrush" Visual="{StaticResource appbar_settings}"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Icons.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
             <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="40" Margin="10" KeyUp="SearchBoxKeyUp"/>
