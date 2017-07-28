@@ -15,6 +15,7 @@ namespace WindowWalker.ViewModels
         private List<WindowSearchResult> _results = new List<WindowSearchResult>();
         private WindowSearchResult _selectedWindow;
         private bool _windowVisibility = true;
+        private HotKeyHandler hotKeyHandler;
 
         private void WireCommands()
         {
@@ -26,6 +27,8 @@ namespace WindowWalker.ViewModels
             WindowNavigateToPreviousResultCommand.IsEnabled = true;
             WindowHideCommand = new RelayCommand(WindowHide);
             WindowHideCommand.IsEnabled = true;
+            WindowShowCommand = new RelayCommand(WindowShow);
+            WindowShowCommand.IsEnabled = true;
         }
 
         public string SearchText {
@@ -105,15 +108,30 @@ namespace WindowWalker.ViewModels
             private set;
         }
 
+        public RelayCommand WindowShowCommand
+        {
+            get;
+            private set;
+        }
+
         public WindowWalkerViewModel(System.Windows.Window mainWindow)
         {
             WindowSearchController.Instance.OnSearchResultUpdate += SearchResultUpdated;
             OpenWindows.Instance.UpdateOpenWindowsList();
             this.Hwnd = new WindowInteropHelper(mainWindow).Handle;
             LivePreview.SetWindowExlusionFromLivePreview(this.Hwnd);
+
+            this.hotKeyHandler = new HotKeyHandler(mainWindow);
+            this.hotKeyHandler.OnHotKeyPressed += this.HotKeyPressedHandler;
+
             WireCommands();
         }
-        
+
+        private void HotKeyPressedHandler(object sender, EventArgs e)
+        {
+            this.WindowShow();
+        }
+
         private void WindowResultSelected()
         {
             Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.ResultWindow.Hwnd, this.Hwnd);
@@ -151,6 +169,14 @@ namespace WindowWalker.ViewModels
         {
             Components.LivePreview.DeactivateLivePreview();
             this.WindowVisibility = false;
+        }
+
+        private void WindowShow()
+        {
+            this.SearchText = string.Empty;
+            Components.LivePreview.DeactivateLivePreview();
+            this.WindowVisibility = true;
+            InteropAndHelpers.SetForegroundWindow(this.Hwnd);
         }
 
         public void SwitchToSelectedWindow()
