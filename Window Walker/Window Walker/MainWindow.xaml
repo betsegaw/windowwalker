@@ -2,6 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Width="1000" MinHeight="10" Height="85" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" SizeToContent="Height">
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <!--<Style.Triggers>
+                <DataTrigger Binding="{Binding WindowVisibility}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>-->
+        </Style>
+    </Window.Style>
     <Window.Resources>
         <ResourceDictionary>
             <VisualBrush x:Key="SettingsBrush" Visual="{StaticResource appbar_settings}"/>
