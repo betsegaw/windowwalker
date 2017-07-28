@@ -35,30 +35,35 @@ namespace WindowWalker
 
         private void SearchBoxKeyUp(object sender, KeyEventArgs e)
         {
+            var viewModel = ((ViewModels.WindowWalkerViewModel)this.DataContext);
+
             if (e.Key == Key.Escape)
             {
-                this.Hide();
+                if(viewModel.WindowHideCommand.CanExecute(null))
+                {
+                    viewModel.WindowHideCommand.Execute(null);
+                }
             }
-            else if (e.Key == Key.Down || e.Key == Key.Up)
+            else if (e.Key == Key.Down)
             {
-                if (results.Items.Count <= 1)
+                if (viewModel.WindowNavigateToNextResultCommand.CanExecute(null))
                 {
-                    return;
+                    viewModel.WindowNavigateToNextResultCommand.Execute(null);
                 }
-
-                if ((e.Key == Key.Down && results.SelectedIndex + 1 == results.Items.Count) ||
-                    (e.Key == Key.Up && results.SelectedIndex == 0))
+            }
+            else if (e.Key == Key.Up)
+            {
+                if (viewModel.WindowNavigateToPreviousResultCommand.CanExecute(null))
                 {
-                    return;
-                }
-                else
-                {
-                    results.SelectedIndex += e.Key == Key.Down ? 1 : -1;
+                    viewModel.WindowNavigateToPreviousResultCommand.Execute(null);
                 }
             }
             else if (e.Key == Key.Enter)
             {
-                ((ViewModels.WindowWalkerViewModel)this.DataContext).UserSelectionFinalized();
+                if (viewModel.SwitchToSelectedWindowCommand.CanExecute(null))
+                {
+                    viewModel.SwitchToSelectedWindowCommand.Execute(null);
+                }
             }
         }
     }

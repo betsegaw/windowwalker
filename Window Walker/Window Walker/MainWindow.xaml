@@ -5,11 +5,11 @@
     <Window.Style>
         <Style TargetType="{x:Type Window}">
             <Setter Property="Visibility" Value="Collapsed"/>
-            <!--<Style.Triggers>
+            <Style.Triggers>
                 <DataTrigger Binding="{Binding WindowVisibility}" Value="True">
                     <Setter Property="Visibility" Value="Collapsed"/>
                 </DataTrigger>
-            </Style.Triggers>-->
+            </Style.Triggers>
         </Style>
     </Window.Style>
     <Window.Resources>

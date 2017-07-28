@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Interop;
 using WindowWalker.Components;
+using WindowWalker.MVVMHelpers;
 
 namespace WindowWalker.ViewModels
 {
@@ -13,7 +14,19 @@ namespace WindowWalker.ViewModels
         private string _searchText = string.Empty;
         private List<WindowSearchResult> _results = new List<WindowSearchResult>();
         private WindowSearchResult _selectedWindow;
-        private static WindowWalkerViewModel _instance;
+        private bool _windowVisibility;
+
+        private void WireCommands()
+        {
+            SwitchToSelectedWindowCommand = new RelayCommand(SwitchToSelectedWindow);
+            SwitchToSelectedWindowCommand.IsEnabled = true;
+            WindowNavigateToNextResultCommand = new RelayCommand(WindowNavigateToNextResult);
+            WindowNavigateToNextResultCommand.IsEnabled = true;
+            WindowNavigateToPreviousResultCommand = new RelayCommand(WindowNavigateToPreviousResult);
+            WindowNavigateToPreviousResultCommand.IsEnabled = true;
+            WindowHideCommand = new RelayCommand(WindowHide);
+            WindowHideCommand.IsEnabled = true;
+        }
 
         public string SearchText {
             get => _searchText;
@@ -50,17 +63,47 @@ namespace WindowWalker.ViewModels
             }
         }
 
+        public IntPtr Hwnd { get; private set; }
+
         public bool WindowVisibility
         {
-            get; set;
+            get
+            {
+                return _windowVisibility;
+            }
+            set
+            {
+                if (_windowVisibility != value)
+                {
+                    _windowVisibility = value;
+                    NotifyPropertyChanged("WindowVisibility");
+                }
+            }
         }
 
-        private void WindowResultSelected()
+        public RelayCommand SwitchToSelectedWindowCommand
         {
-            Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.ResultWindow.Hwnd, this.Hwnd);
+            get;
+            private set;
         }
 
-        public IntPtr Hwnd { get; private set; }
+        public RelayCommand WindowNavigateToNextResultCommand
+        {
+            get;
+            private set;
+        }
+
+        public RelayCommand WindowNavigateToPreviousResultCommand
+        {
+            get;
+            private set;
+        }
+
+        public RelayCommand WindowHideCommand
+        {
+            get;
+            private set;
+        }
 
         public WindowWalkerViewModel(System.Windows.Window mainWindow)
         {
@@ -68,11 +111,53 @@ namespace WindowWalker.ViewModels
             OpenWindows.Instance.UpdateOpenWindowsList();
             this.Hwnd = new WindowInteropHelper(mainWindow).Handle;
             LivePreview.SetWindowExlusionFromLivePreview(this.Hwnd);
+            WireCommands();
+        }
+        
+        private void WindowResultSelected()
+        {
+            Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.ResultWindow.Hwnd, this.Hwnd);
         }
 
-        public void UserSelectionFinalized()
+        private void WindowNavigateToPreviousResult()
         {
+            if(this.SelectedWindowResult == null && this.Results.Count > 0)
+            {
+                this.SelectedWindowResult = this.Results.Last();
+                return;
+            }
+
+            if (this.Results.Count > 0)
+            {
+                this.SelectedWindowResult = this.Results[(this.Results.IndexOf(this.SelectedWindowResult) + this.Results.Count - 1) % this.Results.Count];
+            }
+        }
+
+        private void WindowNavigateToNextResult()
+        {
+            if (this.SelectedWindowResult == null && this.Results.Count > 0)
+            {
+                this.SelectedWindowResult = this.Results.First();
+                return;
+            }
+
+            if (this.Results.Count > 0)
+            {
+                this.SelectedWindowResult = this.Results[(this.Results.IndexOf(this.SelectedWindowResult) + 1) % this.Results.Count];
+            }
+        }
+
+        private void WindowHide()
+        {
+            Components.LivePreview.DeactivateLivePreview();
+            this.WindowVisibility = false;
+        }
+
+        public void SwitchToSelectedWindow()
+        {
+            Components.LivePreview.DeactivateLivePreview();
             this.SelectedWindowResult.ResultWindow.SwitchToWindow();
+            this.WindowHide();
         }
 
         private void SearchResultUpdated(object sender, Window.WindowListUpdateEventArgs e)

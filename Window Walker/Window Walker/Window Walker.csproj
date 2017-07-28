@@ -90,6 +90,7 @@
     <Compile Include="Components\Settings.cs" />
     <Compile Include="Components\SettingsManager.cs" />
     <Compile Include="MVVMHelpers\PropertyChangedBase.cs" />
+    <Compile Include="MVVMHelpers\RelayCommand.cs" />
     <Compile Include="ViewModels\WindowWalkerViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
