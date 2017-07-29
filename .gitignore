@@ -157,3 +157,6 @@ $RECYCLE.BIN/
 
 # Random additional files
 .vs
+
+# Deployment file
+Deployment/Deployment
