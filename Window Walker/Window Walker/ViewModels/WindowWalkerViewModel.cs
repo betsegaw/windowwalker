@@ -187,6 +187,12 @@ namespace WindowWalker.ViewModels
                 this.SelectedWindowResult.ResultWindow.SwitchToWindow();
                 this.WindowHide();
             }
+            else if (this.Results != null)
+            {
+                Components.LivePreview.DeactivateLivePreview();
+                this.Results.First().ResultWindow.SwitchToWindow();
+                this.WindowHide();
+            }
         }
 
         private void SearchResultUpdated(object sender, Window.WindowListUpdateEventArgs e)
