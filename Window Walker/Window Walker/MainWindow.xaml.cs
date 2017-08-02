@@ -31,6 +31,7 @@ namespace WindowWalker
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = new ViewModels.WindowWalkerViewModel(this);
+            this.searchBox.Focus();
         }
 
         private void SearchBoxKeyUp(object sender, KeyEventArgs e)
