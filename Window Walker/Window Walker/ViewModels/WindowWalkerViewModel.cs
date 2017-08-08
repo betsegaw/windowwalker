@@ -174,6 +174,7 @@ namespace WindowWalker.ViewModels
         private void WindowShow()
         {
             this.SearchText = string.Empty;
+            OpenWindows.Instance.UpdateOpenWindowsList();
             Components.LivePreview.DeactivateLivePreview();
             this.WindowVisibility = true;
             InteropAndHelpers.SetForegroundWindow(this.Hwnd);
