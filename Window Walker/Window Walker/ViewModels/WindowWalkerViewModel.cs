@@ -17,6 +17,17 @@ namespace WindowWalker.ViewModels
         private bool _windowVisibility = true;
         private HotKeyHandler hotKeyHandler;
 
+        const string QuitCommand = ":quit";
+
+        private string _hint = string.Empty;
+        private int hintCounter = 0;
+        private string[] hints = new string[]
+        {
+            "search...",
+            "type \":quit\" to exit",
+            "you can reinvoke this app using CTRL + WIN"
+        };
+
         private void WireCommands()
         {
             SwitchToSelectedWindowCommand = new RelayCommand(SwitchToSelectedWindow);
@@ -31,13 +42,29 @@ namespace WindowWalker.ViewModels
             WindowShowCommand.IsEnabled = true;
         }
 
-        public string SearchText {
+        public string SearchText
+        {
             get => _searchText;
 
-            set {
+            set
+            {
                 _searchText = value;
                 WindowSearchController.Instance.SearchText = value;
                 NotifyPropertyChanged("SearchText");
+            }
+        }
+
+        public string Hint
+        {
+            get => _hint;
+
+            set
+            {
+                if (_hint != value)
+                {
+                    _hint = value;
+                    NotifyPropertyChanged("Hint");
+                }
             }
         }
 
@@ -124,6 +151,8 @@ namespace WindowWalker.ViewModels
             this.hotKeyHandler = new HotKeyHandler(mainWindow);
             this.hotKeyHandler.OnHotKeyPressed += this.HotKeyPressedHandler;
 
+            this.Hint = hints[hintCounter];
+
             WireCommands();
         }
 
@@ -173,6 +202,9 @@ namespace WindowWalker.ViewModels
 
         private void WindowShow()
         {
+            hintCounter = (hintCounter + 1) % hints.Length;
+            this.Hint = hints[hintCounter];
+
             this.SearchText = string.Empty;
             OpenWindows.Instance.UpdateOpenWindowsList();
             Components.LivePreview.DeactivateLivePreview();
@@ -182,13 +214,17 @@ namespace WindowWalker.ViewModels
 
         public void SwitchToSelectedWindow()
         {
-            if (this.SelectedWindowResult != null)
+            if (this.SearchText == QuitCommand)
+            {
+                System.Windows.Application.Current.Shutdown();
+            }
+            else if (this.SelectedWindowResult != null)
             {
                 Components.LivePreview.DeactivateLivePreview();
                 this.SelectedWindowResult.ResultWindow.SwitchToWindow();
                 this.WindowHide();
             }
-            else if (this.Results != null)
+            else if (this.Results != null && this.Results.Count > 0)
             {
                 Components.LivePreview.DeactivateLivePreview();
                 this.Results.First().ResultWindow.SwitchToWindow();
