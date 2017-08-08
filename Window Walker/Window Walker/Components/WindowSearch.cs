@@ -67,7 +67,7 @@ namespace WindowWalker.Components
         public List<WindowSearchResult> SearchMatches
         {
             get 
-            { return new List<WindowSearchResult>(searchMatches); }
+            { return (new List<WindowSearchResult>(searchMatches)).OrderByDescending(x => x.Score).ToList(); }
         }
 
         /// <summary>
