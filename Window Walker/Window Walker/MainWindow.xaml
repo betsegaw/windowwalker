@@ -27,7 +27,25 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding ResultWindow.Title}"/>
+                            <ListBox ItemsSource="{Binding TitleAsCharStringCollection}" Grid.Column="0">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="{x:Type ItemsControl}">
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="Padding" Value="0" />
+                                                </Style>
+                                            </StackPanel.Resources>
+                                        </StackPanel>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ResultStringPiece}" Margin="-8"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                             <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding ResultWindow.ProcessName}"/>
                         </Grid>
                     </DataTemplate>

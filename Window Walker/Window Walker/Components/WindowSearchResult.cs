@@ -20,6 +20,66 @@ namespace WindowWalker.Components
             private set;
         }
 
+
+        public List<ResultTextPiece> TitleAsCharStringCollection
+        {
+            get
+            {
+                var resultTextArray = this.ResultWindow.Title.ToCharArray();
+                var result = new List<ResultTextPiece>();
+                bool wasLastPieceAMatch = false;
+                string valueSoFar = string.Empty;
+
+                for (int i = 0; i < resultTextArray.Length; i++)
+                {
+                    if (this.SearchMatchesInTitle.Contains(i) != wasLastPieceAMatch)
+                    {
+                        result.Add(
+                        new ResultTextPiece(
+                            valueSoFar,
+                            this.SearchResultMatchType == SearchType.Fuzzy,
+                            this.SearchResultMatchType == SearchType.Shortcut));
+                        
+                        valueSoFar = resultTextArray[i].ToString();
+                        wasLastPieceAMatch = !wasLastPieceAMatch;
+                    }
+                    else
+                    {
+                        valueSoFar += resultTextArray[i].ToString();
+                    }
+                }
+
+                result.Add(
+                       new ResultTextPiece(
+                           valueSoFar,
+                           this.SearchResultMatchType == SearchType.Fuzzy,
+                           this.SearchResultMatchType == SearchType.Shortcut));
+
+                return result;
+            }
+        }
+
+
+        public List<ResultTextPiece> ProcessNameAsCharStringCollection
+        {
+            get
+            {
+                var resultTextArray = this.ResultWindow.ProcessName.ToCharArray();
+                var result = new List<ResultTextPiece>();
+
+                for (int i = 0; i < resultTextArray.Length; i++)
+                {
+                    result.Add(
+                        new ResultTextPiece(
+                            $"{resultTextArray[i]}",
+                            this.SearchResultMatchType == SearchType.Fuzzy,
+                            this.SearchResultMatchType == SearchType.Shortcut));
+                }
+
+                return result;
+            }
+        }
+
         /// <summary>
         /// The list of indexes of the matching characters for the search in the title window
         /// </summary>
@@ -129,6 +189,20 @@ namespace WindowWalker.Components
             /// and the shortcut is now being searched
             /// </summary>
             Shortcut
+        }
+    }
+
+    public class ResultTextPiece
+    {
+        public string ResultStringPiece { get; set; }
+        public bool FuzzyHighlighted { get; set; }
+        public bool shortcutHighlighted { get; set; }
+
+        public ResultTextPiece(string result, bool fuzzyHighlighted, bool shortcutHighlighted)
+        {
+            this.ResultStringPiece = result;
+            this.FuzzyHighlighted = fuzzyHighlighted;
+            this.shortcutHighlighted = shortcutHighlighted;
         }
     }
 }
