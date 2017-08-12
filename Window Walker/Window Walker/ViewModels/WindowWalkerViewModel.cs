@@ -48,9 +48,12 @@ namespace WindowWalker.ViewModels
 
             set
             {
-                _searchText = value;
-                WindowSearchController.Instance.SearchText = value;
-                NotifyPropertyChanged("SearchText");
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    WindowSearchController.Instance.SearchText = value;
+                    NotifyPropertyChanged("SearchText");
+                }
             }
         }
 
@@ -87,9 +90,12 @@ namespace WindowWalker.ViewModels
             get => _selectedWindow;
             set
             {
-                _selectedWindow = value;
-                this.WindowResultSelected();
-                NotifyPropertyChanged("SelectedWindowResult");
+                if (_selectedWindow != value)
+                {
+                    _selectedWindow = value;
+                    this.WindowResultSelected();
+                    NotifyPropertyChanged("SelectedWindowResult");
+                }
             }
         }
 
