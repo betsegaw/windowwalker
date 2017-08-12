@@ -109,7 +109,7 @@ namespace WindowWalker
 
     }
 
-    public class IntToDoubleRightValueConverter : IMultiValueConverter
+    public class IntToDoubleWidthValueConverter : IMultiValueConverter
     {
         public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -129,7 +129,9 @@ namespace WindowWalker
 
             var left = textBox.GetRectFromCharacterIndex(index).Left;
 
-            return System.Convert.ToDouble(left - 2);
+            var right = textBox.GetRectFromCharacterIndex(index,true).Left;
+
+            return System.Convert.ToDouble(right - left);
         }
 
         public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)

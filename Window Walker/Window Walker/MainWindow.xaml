@@ -13,9 +13,10 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
     
     <Window.Resources>
-        <ResourceDictionary>    
+        <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
             <windowwalker:IntToDoubleLeftValueConverter x:Key="IntToDoubleLeftValueConverter"/>
+            <windowwalker:IntToDoubleWidthValueConverter x:Key="IntToDoubleWidthValueConverter"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -35,7 +36,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Canvas>
-                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" Width="10"
+                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25"
                                                            Canvas.Top="0">
                                                     <Canvas.Left>
                                                         <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="title">
@@ -43,6 +44,12 @@
                                                             <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
                                                         </MultiBinding>
                                                     </Canvas.Left>
+                                                    <Rectangle.Width>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleWidthValueConverter}" ConverterParameter="title">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Rectangle.Width>
                                                 </Rectangle>
                                             </Canvas>
                                         </DataTemplate>
@@ -55,7 +62,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Canvas>
-                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" Width="10"
+                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" 
                                                            Canvas.Top="0">
                                                     <Canvas.Left>
                                                         <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="process">
@@ -63,6 +70,12 @@
                                                             <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
                                                         </MultiBinding>
                                                     </Canvas.Left>
+                                                    <Rectangle.Width>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleWidthValueConverter}" ConverterParameter="process">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Rectangle.Width>
                                                 </Rectangle>
                                             </Canvas>
                                         </DataTemplate>
