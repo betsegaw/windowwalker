@@ -78,4 +78,35 @@ namespace WindowWalker
             }
         }
     }
+
+    public class IntToDoubleValueConverter : IValueConverter
+    {
+        private static IntToDoubleValueConverter _instance;
+
+        public IntToDoubleValueConverter Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new IntToDoubleValueConverter();
+                }
+
+                return _instance;
+            }
+        }
+
+        public object Convert(object value, Type targetType, object parameter,
+              System.Globalization.CultureInfo culture)
+        {
+            return System.Convert.ToDouble(value) * 8;
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
 }
