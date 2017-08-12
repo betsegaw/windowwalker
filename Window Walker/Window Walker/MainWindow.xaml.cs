@@ -79,31 +79,42 @@ namespace WindowWalker
         }
     }
 
-    public class IntToDoubleValueConverter : IValueConverter
+    public class IntToDoubleLeftValueConverter : IMultiValueConverter
     {
-        private static IntToDoubleValueConverter _instance;
-
-        public IntToDoubleValueConverter Instance
+        public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new IntToDoubleValueConverter();
-                }
+            var rectangle = values[0] as Rectangle;
+            var grid = values[1] as Grid;
+            var textBox = ((TextBox)grid.Children[0]);
+            var index = (int)rectangle.DataContext;
 
-                return _instance;
-            }
+            var left = textBox.GetRectFromCharacterIndex(index).Left;
+
+            return System.Convert.ToDouble(left - 2);
         }
 
-        public object Convert(object value, Type targetType, object parameter,
-              System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
-            return System.Convert.ToDouble(value) * 8;
+            throw new NotImplementedException();
         }
 
-        public object ConvertBack(object value, Type targetType,
-            object parameter, System.Globalization.CultureInfo culture)
+    }
+
+    public class IntToDoubleRightValueConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var rectangle = values[0] as Rectangle;
+            var grid = values[1] as Grid;
+            var textBox = ((TextBox)grid.Children[0]);
+            var index = (int)rectangle.DataContext;
+
+            var left = textBox.GetRectFromCharacterIndex(index).Left;
+
+            return System.Convert.ToDouble(left - 2);
+        }
+
+        public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

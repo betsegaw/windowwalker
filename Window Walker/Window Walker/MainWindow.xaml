@@ -15,7 +15,7 @@
     <Window.Resources>
         <ResourceDictionary>    
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
-            <windowwalker:IntToDoubleValueConverter x:Key="IntToDoubleValueConverter"/>
+            <windowwalker:IntToDoubleLeftValueConverter x:Key="IntToDoubleLeftValueConverter"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -29,13 +29,21 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding ResultWindow.Title}"/>
+                            <TextBox Grid.Column="0" Text="{Binding ResultWindow.Title, Mode=OneWay}" IsReadOnly="True"/>
                             <Canvas Grid.Column="0">
                                 <ItemsControl ItemsSource="{Binding SearchMatchesInTitle}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Canvas>
-                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" Width="10" Canvas.Left="{Binding  Converter={StaticResource IntToDoubleValueConverter}}" Canvas.Top="0"/>
+                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" Width="10"
+                                                           Canvas.Top="0">
+                                                    <Canvas.Left>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Left>
+                                                </Rectangle>
                                             </Canvas>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
