@@ -85,7 +85,16 @@ namespace WindowWalker
         {
             var rectangle = values[0] as Rectangle;
             var grid = values[1] as Grid;
-            var textBox = ((TextBox)grid.Children[0]);
+
+            TextBox textBox;
+            if ((parameter as string) == "title")
+            {
+                textBox = ((TextBox)grid.Children[0]);
+            }
+            else
+            {
+                textBox = ((TextBox)grid.Children[2]);
+            }
             var index = (int)rectangle.DataContext;
 
             var left = textBox.GetRectFromCharacterIndex(index).Left;
@@ -106,7 +115,16 @@ namespace WindowWalker
         {
             var rectangle = values[0] as Rectangle;
             var grid = values[1] as Grid;
-            var textBox = ((TextBox)grid.Children[0]);
+
+            TextBox textBox;
+            if ((parameter as string) == "title")
+            {
+                textBox = ((TextBox)grid.Children[0]);
+            }
+            else
+            {
+                textBox = ((TextBox)grid.Children[2]);
+            }
             var index = (int)rectangle.DataContext;
 
             var left = textBox.GetRectFromCharacterIndex(index).Left;

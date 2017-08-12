@@ -38,7 +38,7 @@
                                                 <Rectangle Fill="#000000" Opacity="0.4" Height="25" Width="10"
                                                            Canvas.Top="0">
                                                     <Canvas.Left>
-                                                        <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}">
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="title">
                                                             <Binding RelativeSource="{RelativeSource Self}"/>
                                                             <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
                                                         </MultiBinding>
@@ -49,8 +49,27 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </Canvas>
-                            <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding ResultWindow.ProcessName}"/>
-                            <Canvas Grid.Column="1"/>
+                            <TextBox Grid.Column="1" TextAlignment="Left" Text="{Binding ResultWindow.ProcessName, Mode=OneWay}" IsReadOnly="True"/>
+                            <Canvas Grid.Column="1">
+                                <ItemsControl ItemsSource="{Binding SearchMatchesInProcessName}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Canvas>
+                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" Width="10"
+                                                           Canvas.Top="0">
+                                                    <Canvas.Left>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="process">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Left>
+                                                </Rectangle>
+                                            </Canvas>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Canvas>
+                            
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
