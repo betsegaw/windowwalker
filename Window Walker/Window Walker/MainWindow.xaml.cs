@@ -67,5 +67,15 @@ namespace WindowWalker
                 }
             }
         }
+
+        private void results_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var viewModel = ((ViewModels.WindowWalkerViewModel)this.DataContext);
+
+            if (viewModel.SwitchToSelectedWindowCommand.CanExecute(null))
+            {
+                viewModel.SwitchToSelectedWindowCommand.Execute(null);
+            }
+        }
     }
 }

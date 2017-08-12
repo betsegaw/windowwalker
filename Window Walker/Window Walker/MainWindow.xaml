@@ -19,7 +19,7 @@
     <Grid>
         <StackPanel Margin="1" Orientation="Vertical">
             <TextBox x:Name="searchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="40" Margin="10" KeyUp="SearchBoxKeyUp" materialDesign:HintAssist.Hint="{Binding Hint}" materialDesign:HintAssist.HintOpacity="0.2"/>
-            <ListBox x:Name="results" ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedWindowResult}" HorizontalContentAlignment="Stretch">
+            <ListBox x:Name="results" ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedWindowResult}" HorizontalContentAlignment="Stretch" MouseDoubleClick="results_MouseDoubleClick">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
