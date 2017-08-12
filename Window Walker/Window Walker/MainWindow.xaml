@@ -36,7 +36,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Canvas>
-                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25"
+                                                <Rectangle Fill="{DynamicResource PrimaryHueLightBrush}" Opacity="0.4" Height="25"
                                                            Canvas.Top="0">
                                                     <Canvas.Left>
                                                         <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="title">
@@ -62,7 +62,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Canvas>
-                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" 
+                                                <Rectangle Fill="{DynamicResource PrimaryHueLightBrush}" Opacity="0.4" Height="25" 
                                                            Canvas.Top="0">
                                                     <Canvas.Left>
                                                         <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="process">
