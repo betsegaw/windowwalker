@@ -78,4 +78,66 @@ namespace WindowWalker
             }
         }
     }
+
+    public class IntToDoubleLeftValueConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var rectangle = values[0] as Rectangle;
+            var grid = values[1] as Grid;
+
+            TextBox textBox;
+            if ((parameter as string) == "title")
+            {
+                textBox = ((TextBox)grid.Children[0]);
+            }
+            else
+            {
+                textBox = ((TextBox)grid.Children[2]);
+            }
+            var index = (int)rectangle.DataContext;
+
+            var left = textBox.GetRectFromCharacterIndex(index).Left;
+
+            return System.Convert.ToDouble(left - 2);
+        }
+
+        public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class IntToDoubleWidthValueConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var rectangle = values[0] as Rectangle;
+            var grid = values[1] as Grid;
+
+            TextBox textBox;
+            if ((parameter as string) == "title")
+            {
+                textBox = ((TextBox)grid.Children[0]);
+            }
+            else
+            {
+                textBox = ((TextBox)grid.Children[2]);
+            }
+            var index = (int)rectangle.DataContext;
+
+            var left = textBox.GetRectFromCharacterIndex(index).Left;
+
+            var right = textBox.GetRectFromCharacterIndex(index,true).Left;
+
+            return System.Convert.ToDouble(right - left);
+        }
+
+        public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
 }

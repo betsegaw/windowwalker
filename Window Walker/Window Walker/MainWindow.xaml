@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:windowwalker="clr-namespace:WindowWalker"
         Title="MainWindow" Width="1000" MinHeight="10" Height="85" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" SizeToContent="Height" Visibility="{Binding WindowVisibility, Mode=TwoWay, Converter={StaticResource BoolToVis}}"
         BorderBrush="{DynamicResource PrimaryHueDarkBrush}"
         BorderThickness="2"        
@@ -12,8 +13,10 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
     
     <Window.Resources>
-        <ResourceDictionary>    
+        <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <windowwalker:IntToDoubleLeftValueConverter x:Key="IntToDoubleLeftValueConverter"/>
+            <windowwalker:IntToDoubleWidthValueConverter x:Key="IntToDoubleWidthValueConverter"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -27,8 +30,59 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding ResultWindow.Title}"/>
-                            <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding ResultWindow.ProcessName}"/>
+                            <TextBox Grid.Column="0" Text="{Binding ResultWindow.Title, Mode=OneWay}" IsReadOnly="True"/>
+                            <Canvas Grid.Column="0">
+                                <ItemsControl ItemsSource="{Binding SearchMatchesInTitle}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Canvas>
+                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25"
+                                                           Canvas.Top="0">
+                                                    <Canvas.Left>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="title">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Left>
+                                                    <Rectangle.Width>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleWidthValueConverter}" ConverterParameter="title">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Rectangle.Width>
+                                                </Rectangle>
+                                            </Canvas>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Canvas>
+                            <TextBox Grid.Column="1" TextAlignment="Left" Text="{Binding ResultWindow.ProcessName, Mode=OneWay}" IsReadOnly="True"/>
+                            <Canvas Grid.Column="1">
+                                <ItemsControl ItemsSource="{Binding SearchMatchesInProcessName}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Canvas>
+                                                <Rectangle Fill="#000000" Opacity="0.4" Height="25" 
+                                                           Canvas.Top="0">
+                                                    <Canvas.Left>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleLeftValueConverter}" ConverterParameter="process">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Left>
+                                                    <Rectangle.Width>
+                                                        <MultiBinding Converter="{StaticResource IntToDoubleWidthValueConverter}" ConverterParameter="process">
+                                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                        </MultiBinding>
+                                                    </Rectangle.Width>
+                                                </Rectangle>
+                                            </Canvas>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Canvas>
+                            
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
