@@ -30,14 +30,7 @@
                             <ListBox ItemsSource="{Binding TitleAsCharStringCollection}" Grid.Column="0">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <StackPanel.Resources>
-                                                <Style TargetType="{x:Type ItemsControl}">
-                                                    <Setter Property="Margin" Value="0" />
-                                                    <Setter Property="Padding" Value="0" />
-                                                </Style>
-                                            </StackPanel.Resources>
-                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"/>
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
