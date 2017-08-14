@@ -77,6 +77,15 @@ namespace WindowWalker
                 viewModel.SwitchToSelectedWindowCommand.Execute(null);
             }
         }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            var viewModel = ((ViewModels.WindowWalkerViewModel)this.DataContext);
+            if (viewModel.WindowHideCommand.CanExecute(null))
+            {
+                viewModel.WindowHideCommand.Execute(null);
+            }
+        }
     }
 
     public class IntToDoubleLeftValueConverter : IMultiValueConverter
