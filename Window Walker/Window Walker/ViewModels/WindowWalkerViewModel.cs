@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Interop;
 using WindowWalker.Components;
 using WindowWalker.MVVMHelpers;
@@ -217,6 +215,7 @@ namespace WindowWalker.ViewModels
         {
             Components.LivePreview.DeactivateLivePreview();
             this.WindowVisibility = false;
+            ApplicationUpdates.InstallUpdateSyncWithInfo();
         }
 
         private void WindowShow()
