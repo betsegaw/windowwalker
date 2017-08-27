@@ -90,8 +90,6 @@ namespace WindowWalker
 
     public class IntToDoubleLeftValueConverter : IMultiValueConverter
     {
-        private static Dictionary<string, Dictionary<int,double>> cache = new Dictionary<string, Dictionary<int, double>> ();
-
         public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var rectangle = values[0] as Rectangle;
@@ -108,19 +106,9 @@ namespace WindowWalker
             }
             var index = (int)rectangle.DataContext;
 
-            if (!cache.Keys.Contains(textBox.Text) || !cache[textBox.Text].Keys.Contains(index))
-            {
-                var left = textBox.GetRectFromCharacterIndex(index).Left;
+            var left = textBox.GetRectFromCharacterIndex(index).Left;
 
-                if (!cache.Keys.Contains(textBox.Text))
-                {
-                    cache[textBox.Text] = new Dictionary<int, double>();
-                }
-
-                cache[textBox.Text][index] = System.Convert.ToDouble(left - 2);
-            }
-
-            return cache[textBox.Text][index];    
+            return System.Convert.ToDouble(left - 2);
         }
 
         public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
@@ -132,8 +120,6 @@ namespace WindowWalker
 
     public class IntToDoubleWidthValueConverter : IMultiValueConverter
     {
-        private static Dictionary<string, Dictionary<int, double>> cache = new Dictionary<string, Dictionary<int, double>>();
-
         public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var rectangle = values[0] as Rectangle;
@@ -150,21 +136,11 @@ namespace WindowWalker
             }
             var index = (int)rectangle.DataContext;
 
-            if (!cache.Keys.Contains(textBox.Text) || !cache[textBox.Text].Keys.Contains(index))
-            {
-                var left = textBox.GetRectFromCharacterIndex(index).Left;
+            var left = textBox.GetRectFromCharacterIndex(index).Left;
 
-                var right = textBox.GetRectFromCharacterIndex(index, true).Left;
+            var right = textBox.GetRectFromCharacterIndex(index,true).Left;
 
-                if (!cache.Keys.Contains(textBox.Text))
-                {
-                    cache[textBox.Text] = new Dictionary<int, double>();
-                }
-
-                cache[textBox.Text][index] = System.Convert.ToDouble(right - left);
-            }
-
-            return cache[textBox.Text][index];
+            return System.Convert.ToDouble(right - left);
         }
 
         public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
