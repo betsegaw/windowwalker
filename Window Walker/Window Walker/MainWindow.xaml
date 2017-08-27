@@ -31,8 +31,9 @@
                                 <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
                             <!--<TextBlock Grid.Column="0" Text="{Binding ResultWindow.Title}"/>-->
-                            <ContentControl Grid.Column="0"  Content="{Binding ResultWindow, Converter={StaticResource windowSearchResultToXamlConverter}, Mode=OneTime}"/>
+                            <ContentControl Grid.Column="0"  Content="{Binding Converter={StaticResource windowSearchResultToXamlConverter}, Mode=OneTime}"/>
                             <!--<TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding ResultWindow.ProcessName}"/>-->
+                            
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

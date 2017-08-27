@@ -111,10 +111,13 @@ namespace WindowWalker
             WindowSearchResult input = value as WindowSearchResult;
             if (input != null)
             {
-                string escapedXml = SecurityElement.Escape(input.ResultWindow.Title);
+                string escapedTitleXml = SecurityElement.Escape(input.ResultWindow.Title);
+                string escapedProcessXml = SecurityElement.Escape(input.ResultWindow.ProcessName);
                 //string withTags = escapedXml.Replace("|~S~|", "<Run Style=\"{DynamicResource PrimaryHueLightBrush}\">");
                 //withTags = withTags.Replace("|~E~|", "</Run>");
-                string withTags = "Hello";
+
+                string withTags = InsertHighlightTags(escapedTitleXml, input.SearchMatchesInTitle);
+                withTags += InsertHighlightTags(escapedProcessXml, input.SearchMatchesInProcessName);
 
                 string wrappedInput = string.Format("<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\">{0}</TextBlock>", withTags);
 
@@ -141,6 +144,25 @@ namespace WindowWalker
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("This converter cannot be used in two-way binding.");
+        }
+
+        private string InsertHighlightTags(string content, List<int> indexes)
+        {
+            int offset = 0;
+            var result = content;
+
+            string startTag = "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">";
+            string stopTag = "</Run>";
+
+            foreach (var index in indexes)
+            {
+                result = result.Insert(index + offset, startTag);
+                result = result.Insert(index + offset + startTag.Length + 1, stopTag);
+
+                offset += startTag.Length + stopTag.Length;
+            }
+
+            return result;
         }
     }
 }
