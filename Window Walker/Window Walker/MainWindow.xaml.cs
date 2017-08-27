@@ -96,7 +96,7 @@ namespace WindowWalker
     /// Converts a string containing valid XAML into WPF objects.
     /// </summary>
     [ValueConversion(typeof(WindowSearchResult), typeof(object))]
-    public sealed class StringToXamlConverter : IValueConverter
+    public sealed class WindowSearchResultToXamlConverter : IValueConverter
     {
         /// <summary>
         /// Converts a string containing valid XAML into WPF objects.
@@ -108,12 +108,13 @@ namespace WindowWalker
         /// <returns>A WPF object.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string input = value as string;
+            WindowSearchResult input = value as WindowSearchResult;
             if (input != null)
             {
-                string escapedXml = SecurityElement.Escape(input);
-                string withTags = escapedXml.Replace("|~S~|", "<Run Style=\"{DynamicResource highlight}\">");
-                withTags = withTags.Replace("|~E~|", "</Run>");
+                string escapedXml = SecurityElement.Escape(input.ResultWindow.Title);
+                //string withTags = escapedXml.Replace("|~S~|", "<Run Style=\"{DynamicResource PrimaryHueLightBrush}\">");
+                //withTags = withTags.Replace("|~E~|", "</Run>");
+                string withTags = "Hello";
 
                 string wrappedInput = string.Format("<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\">{0}</TextBlock>", withTags);
 
