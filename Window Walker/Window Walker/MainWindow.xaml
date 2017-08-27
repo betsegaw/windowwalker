@@ -29,7 +29,7 @@
                                 <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding ResultWindow.Title}"/>
-                            <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding ResultWindow.ProcessName}"/>
+                            <!--<TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding ResultWindow.ProcessName}"/>-->
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
