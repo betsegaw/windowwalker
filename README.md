@@ -1,6 +1,6 @@
 Window Walker
 ============
-![](screenshot.png)
+![](Window-Walker.gif)
 
 > **"Why walk your dog when you can walk your Window?"** -Yuki
 
