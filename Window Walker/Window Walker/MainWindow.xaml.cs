@@ -112,7 +112,7 @@ namespace WindowWalker
             if (input != null)
             {
                 string withTags = InsertHighlightTags(input.ResultWindow.Title, input.SearchMatchesInTitle);
-                withTags += InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName);
+                withTags += $" ({InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName)})";
 
                 withTags = SecurityElement.Escape(withTags);
 
