@@ -111,13 +111,13 @@ namespace WindowWalker
             WindowSearchResult input = value as WindowSearchResult;
             if (input != null)
             {
-                string escapedTitleXml = SecurityElement.Escape(input.ResultWindow.Title);
-                string escapedProcessXml = SecurityElement.Escape(input.ResultWindow.ProcessName);
-                //string withTags = escapedXml.Replace("|~S~|", "<Run Style=\"{DynamicResource PrimaryHueLightBrush}\">");
-                //withTags = withTags.Replace("|~E~|", "</Run>");
+                string withTags = InsertHighlightTags(input.ResultWindow.Title, input.SearchMatchesInTitle);
+                withTags += InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName);
 
-                string withTags = InsertHighlightTags(escapedTitleXml, input.SearchMatchesInTitle);
-                withTags += InsertHighlightTags(escapedProcessXml, input.SearchMatchesInProcessName);
+                withTags = SecurityElement.Escape(withTags);
+
+                withTags = withTags.Replace("[[", "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">").
+                                    Replace("]]", "</Run>");
 
                 string wrappedInput = string.Format("<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\">{0}</TextBlock>", withTags);
 
@@ -151,8 +151,10 @@ namespace WindowWalker
             int offset = 0;
             var result = content;
 
-            string startTag = "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">";
-            string stopTag = "</Run>";
+            //string startTag = "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">";
+            //string stopTag = "</Run>";
+            string startTag = "[[";
+            string stopTag = "]]";
 
             foreach (var index in indexes)
             {
