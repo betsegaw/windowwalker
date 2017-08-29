@@ -116,7 +116,7 @@ namespace WindowWalker
 
                 withTags = SecurityElement.Escape(withTags);
 
-                withTags = withTags.Replace("[[", "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">").
+                withTags = withTags.Replace("[[", "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" FontSize=\"18\" FontWeight=\"Bold\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">").
                                     Replace("]]", "</Run>");
 
                 string wrappedInput = string.Format("<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\">{0}</TextBlock>", withTags);
