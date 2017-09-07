@@ -11,11 +11,7 @@ namespace WindowWalker.Components
     /// </summary>
     class OpenWindows
     {
-        IEnumerable<Tuple<string,string>> Blacklist = (new List<Tuple<string, string>> () { 
-            new Tuple<string, string> ( null, "ShellExperienceHost.EXE".ToUpper() ),
-            new Tuple<string, string> ( null, "ApplicationFrameHost.EXE".ToUpper() ),
-            new Tuple<string, string> ( "Program Manager".ToUpper(), "Explorer.EXE".ToUpper() )
-            }).AsEnumerable();
+     
 
         #region Delegates
 
@@ -115,9 +111,18 @@ namespace WindowWalker.Components
         {
             Window newWindow = new Window(hwnd);
 
-            if (Blacklist.Any(x => (x.Item1 == newWindow.Title.ToUpper()) && (x.Item2 == newWindow.ProcessName.ToUpper()) ))
+            if (windows.Select(x => x.Title).Contains(newWindow.Title))
             {
-                return true;
+                if (newWindow.ProcessName.ToLower().Equals("applicationframehost.exe"))
+                {
+                    windows.Remove(windows.Where(x => x.Title == newWindow.Title).First());
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+
             }
 
             if (newWindow.Visible && !newWindow.ProcessName.ToLower().Equals("iexplore.exe") ||
