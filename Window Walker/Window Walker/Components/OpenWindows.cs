@@ -11,11 +11,7 @@ namespace WindowWalker.Components
     /// </summary>
     class OpenWindows
     {
-        IEnumerable<Tuple<string,string>> Blacklist = (new List<Tuple<string, string>> () { 
-            new Tuple<string, string> ( null, "ShellExperienceHost.EXE".ToUpper() ),
-            new Tuple<string, string> ( null, "ApplicationFrameHost.EXE".ToUpper() ),
-            new Tuple<string, string> ( "Program Manager".ToUpper(), "Explorer.EXE".ToUpper() )
-            }).AsEnumerable();
+     
 
         #region Delegates
 
