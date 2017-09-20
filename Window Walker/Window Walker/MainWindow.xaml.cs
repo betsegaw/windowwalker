@@ -149,10 +149,8 @@ namespace WindowWalker
         private string InsertHighlightTags(string content, List<int> indexes)
         {
             int offset = 0;
-            var result = content;
-
-            //string startTag = "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">";
-            //string stopTag = "</Run>";
+            var result = content.Replace("[[", "**").Replace("]]", "**");
+        
             string startTag = "[[";
             string stopTag = "]]";
 
