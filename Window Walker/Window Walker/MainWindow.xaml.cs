@@ -111,8 +111,22 @@ namespace WindowWalker
             WindowSearchResult input = value as WindowSearchResult;
             if (input != null)
             {
-                string withTags = InsertHighlightTags(input.ResultWindow.Title, input.SearchMatchesInTitle);
-                withTags += $" ({InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName)})";
+                string withTags;
+                
+                if ( input.BestScoreSource== WindowSearchResult.TextType.ProcessName)
+                {
+                    withTags = input.ResultWindow.Title;
+
+                    withTags += $" ({InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName)})";
+                }
+                else {
+                    withTags = InsertHighlightTags(input.ResultWindow.Title, input.SearchMatchesInTitle);
+
+                    withTags += $" ({input.ResultWindow.ProcessName})";
+                }
+                    
+                
+                
 
                 withTags = SecurityElement.Escape(withTags);
 
