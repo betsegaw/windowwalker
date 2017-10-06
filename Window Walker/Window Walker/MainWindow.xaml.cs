@@ -111,13 +111,20 @@ namespace WindowWalker
             WindowSearchResult input = value as WindowSearchResult;
             if (input != null)
             {
-                string withTags = InsertHighlightTags(input.ResultWindow.Title, input.SearchMatchesInTitle);
-                withTags += $" ({InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName)})";
+                string withTags;
 
-                withTags = SecurityElement.Escape(withTags);
+                if (input.BestScoreSource == WindowSearchResult.TextType.ProcessName)
+                {
+                    withTags = input.ResultWindow.Title;
 
-                withTags = withTags.Replace("[[", "<Run Background=\"{DynamicResource SecondaryAccentBrush}\" FontSize=\"18\" FontWeight=\"Bold\" Foreground=\"{DynamicResource SecondaryAccentForegroundBrush}\">").
-                                    Replace("]]", "</Run>");
+                    withTags += $" ({InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName)})";
+                }
+                else
+                {
+                    withTags = InsertHighlightTags(input.ResultWindow.Title, input.SearchMatchesInTitle);
+
+                    withTags += $" ({input.ResultWindow.ProcessName})";
+                }
 
                 string wrappedInput = string.Format("<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\">{0}</TextBlock>", withTags);
 
