@@ -12,6 +12,12 @@ Have you ever wasted a good 15 seconds trying to find a window you know you have
 
 Window walker is an app that lets you search and switch between windows that you have open, all from the comfort of your keyboard. As you are searching for an app, you can use the keyboard up and down arrows to see an Alt-Tab style preview of the windows.
 
+## Installation
+
+You can install window walker by running the installer from this location. 
+
+[https://download.windowwalker.com/WindowWalker.application](https://download.windowwalker.com/WindowWalker.application)
+
 **To Invoke** :   `CTRL + WIN`
 
 **To Quit Window Walker** : type `:quit` and press `Enter`
