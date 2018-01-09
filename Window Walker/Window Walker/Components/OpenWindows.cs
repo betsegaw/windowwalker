@@ -116,13 +116,9 @@ namespace WindowWalker.Components
                 if (newWindow.ProcessName.ToLower().Equals("applicationframehost.exe"))
                 {
                     windows.Remove(windows.Where(x => x.Title == newWindow.Title).First());
-                    return false;
-                }
-                else
-                {
-                    return true;
                 }
 
+                return true;
             }
 
             if (newWindow.Visible && !newWindow.ProcessName.ToLower().Equals("iexplore.exe") ||
