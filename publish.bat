@@ -14,7 +14,16 @@ set /p VERSION="Enter new version number you would like to publish:"
 
 cd "Window Walker"
 
-msbuild /target:publish /p:Configuration=Release /property:ApplicationVersion=%VERSION% /p:Platform="Any CPU"
+msbuild /target:publish /p:Configuration=Release /property:ApplicationVersion=%VERSION% /p:Platform="Any CPU" /property:PublishUrl=".\..\Deployment\Deployment\"
 
 cd ..
+
+IF EXIST .\Deployment\Deployment ( 
+	rmdir /s .\Deployment\Deployment /Q
+)
+
+mkdir .\Deployment\Deployment
+
+xcopy ".\Window Walker\Window Walker\bin\Release\app.publish\*" ".\Deployment\Deployment\" /y /s
+
 
