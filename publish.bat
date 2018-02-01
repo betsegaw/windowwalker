@@ -26,4 +26,5 @@ mkdir .\Deployment\Deployment
 
 xcopy ".\Window Walker\Window Walker\bin\Release\app.publish\*" ".\Deployment\Deployment\" /y /s
 
+echo %VERSION%>.\Deployment\Deployment\version.txt
 
