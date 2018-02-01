@@ -38,5 +38,9 @@ del temp.txt
 
 now alias %uniqueurl% download.windowwalker.com
 
+git tag v%VERSION%
+
+git push origin v%VERSION%
+
 cd ..
 
