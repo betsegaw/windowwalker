@@ -28,3 +28,7 @@ xcopy ".\Window Walker\Window Walker\bin\Release\app.publish\*" ".\Deployment\De
 
 echo %VERSION%>.\Deployment\Deployment\version.txt
 
+cd .\Deployment
+
+now .
+
