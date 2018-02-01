@@ -30,5 +30,13 @@ echo %VERSION%>.\Deployment\Deployment\version.txt
 
 cd .\Deployment
 
-now .
+now .>temp.txt
+
+set /p uniqueurl=<temp.txt
+
+del temp.txt
+
+now alias %uniqueurl% download.windowwalker.com
+
+cd ..
 
