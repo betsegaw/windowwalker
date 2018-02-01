@@ -30,6 +30,8 @@ echo %VERSION%>.\Deployment\Deployment\version.txt
 
 cd .\Deployment
 
+REM for /f %%i in ('now') do set uniqueurl=%%i
+
 now .>temp.txt
 
 set /p uniqueurl=<temp.txt
