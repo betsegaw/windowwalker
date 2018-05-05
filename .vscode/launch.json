@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Full .Net Debug",
+            "type": "clr",
+            "request": "launch",
+            "program": "${workspaceRoot}/Window Walker/Window Walker/bin/Debug/WindowWalker.exe",
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "preLaunchTask": "build"
+        }
+    ]
+}
