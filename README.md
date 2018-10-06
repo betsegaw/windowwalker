@@ -1,5 +1,7 @@
 Window Walker
 ============
+[![Build status](https://ci.appveyor.com/api/projects/status/fjhu1233w47jd7e0/branch/master?svg=true)](https://ci.appveyor.com/project/betsegaw/windowwalker/branch/master)
+
 ![](Window-Walker.gif)
 
 > **"Why walk your dog when you can walk your Window?"** -Yuki
