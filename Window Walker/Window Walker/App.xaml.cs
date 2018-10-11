@@ -11,7 +11,7 @@ namespace WindowWalker
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partidal class App : Application
     {
     }
 }
