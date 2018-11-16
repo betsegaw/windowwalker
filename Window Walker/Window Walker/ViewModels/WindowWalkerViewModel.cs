@@ -175,7 +175,14 @@ namespace WindowWalker.ViewModels
 
         private void HotKeyPressedHandler(object sender, EventArgs e)
         {
-            this.WindowShow();
+            if(this.SearchText == string.Empty && this.WindowVisibility)
+            {
+                this.WindowHide();
+            }
+            else
+            {
+                this.WindowShow();
+            }
         }
 
         private void WindowResultSelected()
