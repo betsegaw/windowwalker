@@ -40,17 +40,7 @@ REM for /f %%i in ('now') do set uniqueurl=%%i
 
 powershell -Command "npm i -g now"
 
-now --token %token% .>temp.txt
-
-set /p uniqueurl=<temp.txt
-
-del temp.txt
-
-now --token %token% alias %uniqueurl% download.windowwalker.com
-
-git tag v%VERSION%
-
-git push origin v%VERSION%
+FOR /F %A IN ('now --token %token% .') DO now --token %token% alias %uniqueurl% download.windowwalker.com %~A
 
 cd ..
 
