@@ -38,7 +38,7 @@ cd .\Deployment
 
 REM for /f %%i in ('now') do set uniqueurl=%%i
 
-npm i -g now
+powershell -Command "npm i -g now"
 
 now --token %token% .>temp.txt
 
