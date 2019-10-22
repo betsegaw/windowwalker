@@ -12,7 +12,7 @@ echo 'The current version on the server is '
 
 Powershell.exe -executionpolicy remotesigned -File Deployment\GetVersion.ps1
 
-set /p VERSION="Enter new version number you would like to publish:"
+set VERSION="1.0.0.25"
 
 cd "Window Walker"
 
