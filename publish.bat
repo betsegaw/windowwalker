@@ -14,11 +14,9 @@ set /p VERSION="Enter new version number you would like to publish:"
 
 cd "Window Walker"
 
-cd "Window Walker"
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile(\"https://dist.nuget.org/win-x86-commandline/latest/nuget.exe\", \".\archive.zip\")"
 
-nuget restore
-
-cd ..
+.\nuget.exe restore "Window Walker.sln"
 
 msbuild /target:publish /p:Configuration=Release /property:ApplicationVersion=%VERSION% /p:Platform="Any CPU" /property:PublishUrl=".\..\Deployment\Deployment\"
 
