@@ -12,7 +12,7 @@ echo 'The current version on the server is '
 
 Powershell.exe -executionpolicy remotesigned -File Deployment\GetVersion.ps1
 
-set VERSION="1.0.0.25"
+set VERSION="1.0.0.26"
 
 cd "Window Walker"
 
