@@ -1,5 +1,7 @@
 @echo off
 
+set token=%1
+
 pushd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build"
 
 call vcvarsall x86
@@ -36,13 +38,13 @@ cd .\Deployment
 
 REM for /f %%i in ('now') do set uniqueurl=%%i
 
-now .>temp.txt
+now --token %token% .>temp.txt
 
 set /p uniqueurl=<temp.txt
 
 del temp.txt
 
-now alias %uniqueurl% download.windowwalker.com
+now --token %token% alias %uniqueurl% download.windowwalker.com
 
 git tag v%VERSION%
 
