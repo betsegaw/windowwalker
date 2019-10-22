@@ -16,7 +16,7 @@ cd "Window Walker"
 
 cd "Window Walker"
 
-msbuild -t:restore /p:Configuration=Release /p:Platform="Any CPU"
+nuget restore
 
 cd ..
 
