@@ -40,7 +40,7 @@ REM for /f %%i in ('now') do set uniqueurl=%%i
 
 powershell -Command "npm i -g now"
 
-FOR /F %A IN ('now --token %token% .') DO now --token %token% alias %~A download.windowwalker.com
+FOR /F %A IN ('now --token %token% .') DO now --token %token% alias %A download.windowwalker.com
 
 cd ..
 
