@@ -16,7 +16,7 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
 
 
 
-$version=(Invoke-WebRequest -Uri "https://download.windowwalker.com/version.txt").Content.Split('.');
-$version[3]=[int]$version[3]+1;
-$NewVersion=[string]::Join(".",$version);
-Write-Host -NoNewLine "$NewVersion";
+# $version=(Invoke-WebRequest -Uri "https://download.windowwalker.com/version.txt").Content.Split('.');
+# $version[3]=[int]$version[3]+1;
+# $NewVersion=[string]::Join(".",$version);
+Write-Host -NoNewLine "1.0.0.28";
