@@ -1,8 +1,9 @@
 Window Walker
 ============
-![](Window-Walker.gif)
 
 ![](https://github.com/betsegaw/windowwalker/workflows/CI/badge.svg)
+
+![](Window-Walker.gif)
 
 > **"Why walk your dog when you can walk your Window?"** -Yuki
 
