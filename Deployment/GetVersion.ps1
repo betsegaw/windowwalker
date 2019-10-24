@@ -14,4 +14,9 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
 
-(Invoke-WebRequest -Uri "https://download.windowwalker.com/version.txt").Content
+
+
+$version=(Invoke-WebRequest -Uri "https://download.windowwalker.com/version.txt").Content.Split('.');
+$version[3]=[int]$version[3]+1;
+$NewVersion=[string]::Join(".",$version);
+Write-Host –NoNewLine "$NewVersion"
