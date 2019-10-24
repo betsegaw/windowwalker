@@ -1,6 +1,6 @@
 Window Walker
 ============
-[![Build status](https://ci.appveyor.com/api/projects/status/fjhu1233w47jd7e0/branch/master?svg=true)](https://ci.appveyor.com/project/betsegaw/windowwalker/branch/master)
+(https://github.com/actions/hello-world/workflows/Greet%20Everyone/badge.svg)
 
 ![](Window-Walker.gif)
 
