@@ -10,9 +10,9 @@ popd
 
 echo 'The current version on the server is '
 
-Powershell.exe -executionpolicy remotesigned -File Deployment\GetVersion.ps1
 
-set VERSION=1.0.0.27
+
+FOR /F %%H IN ('Powershell.exe -executionpolicy remotesigned -File Deployment\GetVersion.ps1') DO set VERSION=%%H
 
 cd "Window Walker"
 
