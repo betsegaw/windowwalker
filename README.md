@@ -1,7 +1,7 @@
 Window Walker
 ============
 
-![](https://github.com/betsegaw/windowwalker/workflows/CI/badge.svg)
+![](https://github.com/betsegaw/windowwalker/workflows/Build/badge.svg)
 
 ![](Window-Walker.gif)
 
