@@ -42,13 +42,13 @@ namespace WindowWalker
                 if (ApplicationDeployment.IsNetworkDeployed)
                     ApplicationVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion;
                 
-                if (ApplicationDeployment.CurrentDeployment.UpdateLocation.AbsolutePath.Contains("develop"))
+                if (ApplicationDeployment.CurrentDeployment.UpdateLocation.Host.Contains("develop"))
                 {
                     this.versionDisplay.Text = "(develop) " + ApplicationVersion.ToString();
                 }
                 else
                 {
-                    this.versionDisplay.Text = ApplicationDeployment.CurrentDeployment.UpdateLocation.Host + " " + ApplicationVersion.ToString();
+                    this.versionDisplay.Text = ApplicationVersion.ToString();
                 }
             }
             catch { }
