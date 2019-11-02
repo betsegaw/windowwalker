@@ -41,8 +41,15 @@ namespace WindowWalker
                 Version ApplicationVersion = new Version("0.0.0.0");
                 if (ApplicationDeployment.IsNetworkDeployed)
                     ApplicationVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion;
-
-                this.versionDisplay.Text = ApplicationVersion.ToString();
+                
+                if (ApplicationDeployment.CurrentDeployment.UpdateLocation.AbsolutePath.Contains("develop"))
+                {
+                    this.versionDisplay.Text = "(develop) " + ApplicationVersion.ToString();
+                }
+                else
+                {
+                    this.versionDisplay.Text = ApplicationVersion.ToString();
+                }
             }
             catch { }
         }

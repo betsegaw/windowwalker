@@ -1,0 +1,20 @@
+name: Develop
+
+on:
+  push:
+    branches: 
+      - develop
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Swtich project to point to look for internal location
+      run: |
+        Powershell -Command ".\TargetDevelopPublish.ps1"
+    - name: Run a multi-line script
+      run: |
+        .\publish.bat ${{ secrets.Token }} develop.windowwalker.com
