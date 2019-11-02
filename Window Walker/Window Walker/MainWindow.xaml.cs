@@ -48,7 +48,7 @@ namespace WindowWalker
                 }
                 else
                 {
-                    this.versionDisplay.Text = ApplicationVersion.ToString();
+                    this.versionDisplay.Text = ApplicationDeployment.CurrentDeployment.UpdateLocation.AbsolutePath + " " + ApplicationVersion.ToString();
                 }
             }
             catch { }
