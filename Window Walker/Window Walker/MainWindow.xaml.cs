@@ -32,10 +32,27 @@ namespace WindowWalker
             InitializeComponent();
         }
 
+        private void UpdateDisplayedVersionNumber()
+        {
+            // Since displaying version number is not critical to functionality, we don't need to do anything if it fails.
+            try
+            {
+                string manifestFilePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\WindowWalker.exe.manifest";
+                string manifestContent = File.ReadAllText(manifestFilePath);
+
+                string version = manifestContent.Split(new string[] { "<asmv1:assemblyIdentity name=\"WindowWalker.exe\" version=\"" }, StringSplitOptions.None)[1].Split('\"')[0];
+
+                this.versionDisplay.Text = version;
+            }
+            catch { }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = new ViewModels.WindowWalkerViewModel(this);
             this.searchBox.Focus();
+            
+            UpdateDisplayedVersionNumber();
         }
 
         private void SearchBoxKeyUp(object sender, KeyEventArgs e)

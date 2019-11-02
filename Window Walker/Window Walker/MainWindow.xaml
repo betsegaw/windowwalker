@@ -33,11 +33,12 @@
                             <!--<TextBlock Grid.Column="0" Text="{Binding ResultWindow.Title}"/>-->
                             <ContentControl Grid.Column="0"  Content="{Binding Converter={StaticResource windowSearchResultToXamlConverter}, Mode=OneTime}"/>
                             <!--<TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding ResultWindow.ProcessName}"/>-->
-                            
+
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
+        <TextBox x:Name="versionDisplay" HorizontalAlignment="Right" Foreground="White" Opacity="0.1" VerticalAlignment="Top" BorderThickness="0" Margin="0,0,14,0"/>
     </Grid>
 </Window>
