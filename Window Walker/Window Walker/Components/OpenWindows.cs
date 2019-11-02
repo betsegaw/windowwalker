@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Automation;
 
 namespace WindowWalker.Components
 {
@@ -119,6 +120,30 @@ namespace WindowWalker.Components
                 }
 
                 return true;
+            }
+
+            if (newWindow.Visible && newWindow.ProcessName.ToLower().Equals("chrome.exe"))
+            {
+                AutomationElement root = AutomationElement.FromHandle(newWindow.Hwnd);
+                Condition condNewTab = new PropertyCondition(AutomationElement.NameProperty, "New Tab");
+                AutomationElement elmNewTab = root.FindFirst(TreeScope.Descendants, condNewTab);
+
+                if (elmNewTab != null)
+                {
+                    // get the tabstrip by getting the parent of the 'new tab' button 
+                    TreeWalker treewalker = TreeWalker.ControlViewWalker;
+                    AutomationElement elmTabStrip = treewalker.GetParent(elmNewTab); // <- Error on this line
+
+                    // loop through all the tabs and get the names which is the page title 
+                    Condition condTabItem = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
+                    foreach (AutomationElement tabitem in elmTabStrip.FindAll(TreeScope.Children, condTabItem))
+                    {
+                        //ret.Add(tabitem.Current.Name);
+                        System.Diagnostics.Debug.WriteLine(tabitem.Current.Name);
+
+
+                    }
+                }
             }
 
             if (newWindow.Visible && !newWindow.ProcessName.ToLower().Equals("iexplore.exe") ||
