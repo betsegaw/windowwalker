@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -37,12 +38,11 @@ namespace WindowWalker
             // Since displaying version number is not critical to functionality, we don't need to do anything if it fails.
             try
             {
-                string manifestFilePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\WindowWalker.exe.manifest";
-                string manifestContent = File.ReadAllText(manifestFilePath);
+                Version ApplicationVersion = new Version("0.0.0.0");
+                if (ApplicationDeployment.IsNetworkDeployed)
+                    ApplicationVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion;
 
-                string version = manifestContent.Split(new string[] { "<asmv1:assemblyIdentity name=\"WindowWalker.exe\" version=\"" }, StringSplitOptions.None)[1].Split('\"')[0];
-
-                this.versionDisplay.Text = version;
+                this.versionDisplay.Text = ApplicationVersion.ToString();
             }
             catch { }
         }
