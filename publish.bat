@@ -13,7 +13,7 @@ echo 'The current version on the server is '
 
 
 
-FOR /F %%H IN ('Powershell.exe -executionpolicy remotesigned -File Deployment\GetVersion.ps1') DO set VERSION=%%H
+FOR /F %%H IN ('Powershell.exe -executionpolicy remotesigned -Command ".\Deployment\GetVersion.ps1 %targetURL%"') DO set VERSION=%%H
 
 cd "Window Walker"
 
