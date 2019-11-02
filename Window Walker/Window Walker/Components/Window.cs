@@ -56,7 +56,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// Gets the title of the window (the string displayed at the top of the window)
         /// </summary>
-        public string Title
+        public virtual string Title
         {
             get 
             {

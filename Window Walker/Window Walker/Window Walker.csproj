@@ -108,6 +108,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Components\ApplicationUpdates.cs" />
+    <Compile Include="Components\ChromeWindow.cs" />
     <Compile Include="Components\Settings.cs" />
     <Compile Include="Components\SettingsManager.cs" />
     <Compile Include="MVVMHelpers\PropertyChangedBase.cs" />

@@ -139,10 +139,12 @@ namespace WindowWalker.Components
                     foreach (AutomationElement tabitem in elmTabStrip.FindAll(TreeScope.Children, condTabItem))
                     {
                         //ret.Add(tabitem.Current.Name);
-                        System.Diagnostics.Debug.WriteLine(tabitem.Current.Name);
+                        //System.Diagnostics.Debug.WriteLine(tabitem.Current.Name);
 
-
+                        this.windows.Add(new ChromeWindow(newWindow.Hwnd, tabitem.Current.Name));
                     }
+
+                    return true;
                 }
             }
 
