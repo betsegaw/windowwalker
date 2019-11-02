@@ -23,6 +23,15 @@
         <StackPanel Margin="1" Orientation="Vertical">
             <TextBox x:Name="searchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="40" Margin="10" KeyUp="SearchBoxKeyUp" materialDesign:HintAssist.Hint="{Binding Hint}" materialDesign:HintAssist.HintOpacity="0.2"/>
             <ListBox x:Name="results" ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedWindowResult}" HorizontalContentAlignment="Stretch" MouseDoubleClick="results_MouseDoubleClick">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
