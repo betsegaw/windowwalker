@@ -1,6 +1,7 @@
 @echo off
 
 set token=%1
+set targetURL=%2
 
 pushd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build"
 
@@ -40,7 +41,7 @@ REM for /f %%i in ('now') do set uniqueurl=%%i
 
 powershell -Command "npm i -g now"
 
-FOR /F %%G IN ('now --token %token% .') DO now --token %token% alias %%G download.windowwalker.com
+FOR /F %%G IN ('now --token %token% .') DO now --token %token% alias %%G %targetURL%
 
 cd ..
 

@@ -14,4 +14,4 @@ jobs:
     - uses: actions/checkout@v1
     - name: Run a multi-line script
       run: |
-        .\publish.bat ${{ secrets.Token }}
+        .\publish.bat ${{ secrets.Token }} download.windowwalker.com
