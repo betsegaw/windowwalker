@@ -17,15 +17,6 @@ namespace WindowWalker.ViewModels
         private bool _windowVisibility = true;
         private HotKeyHandler hotKeyHandler;
 
-        private string QuitCommand = ":quit";
-        private string[] TerminalLaunchCommands = new string[] 
-        {
-            ":lterminal",
-            ":lcmd",
-            ":lterm",
-            ":lt"
-        };
-
         private string _hint = string.Empty;
         private int hintCounter = 0;
         private string[] hints = new string[]
@@ -247,17 +238,11 @@ namespace WindowWalker.ViewModels
 
         public void SwitchToSelectedWindow()
         {
-            if (this.SearchText == QuitCommand)
-            {
-                System.Windows.Application.Current.Shutdown();
-            }
-            else if (this.TerminalLaunchCommands.Contains(this.SearchText))
+            if (this.SearchText.StartsWith(":"))
             {
                 Components.LivePreview.DeactivateLivePreview();
-
-                Process.Start(new ProcessStartInfo("cmd.exe") 
-                    { WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) });
                 this.WindowHide();
+                WindowWalker.Components.Commands.ProcessCommand(this.SearchText);
             }
             else if (this.SelectedWindowResult != null)
             {
