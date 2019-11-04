@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Interop;
 using WindowWalker.Components;
@@ -16,7 +17,14 @@ namespace WindowWalker.ViewModels
         private bool _windowVisibility = true;
         private HotKeyHandler hotKeyHandler;
 
-        const string QuitCommand = ":quit";
+        private string QuitCommand = ":quit";
+        private string[] TerminalLaunchCommands = new string[] 
+        {
+            ":lterminal",
+            ":lcmd",
+            ":lterm",
+            ":lt"
+        };
 
         private string _hint = string.Empty;
         private int hintCounter = 0;
@@ -242,6 +250,14 @@ namespace WindowWalker.ViewModels
             if (this.SearchText == QuitCommand)
             {
                 System.Windows.Application.Current.Shutdown();
+            }
+            else if (this.TerminalLaunchCommands.Contains(this.SearchText))
+            {
+                Components.LivePreview.DeactivateLivePreview();
+
+                Process.Start(new ProcessStartInfo("cmd.exe") 
+                    { WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) });
+                this.WindowHide();
             }
             else if (this.SelectedWindowResult != null)
             {
