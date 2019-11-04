@@ -13,6 +13,10 @@ namespace WindowWalker.Components
     /// </summary>
     class Commands
     {
+        /// <summary>
+        /// Constructor primarily used to enforce the creation of tips
+        /// and populate the enabled commands list
+        /// </summary>
         static Commands()
         {
             EnabledCommands = new Dictionary<string, Command>();
@@ -41,8 +45,15 @@ namespace WindowWalker.Components
             );
         }
 
+        /// <summary>
+        /// Dictionary containing all the enabled commands
+        /// </summary>
         private static Dictionary<string, Command> EnabledCommands;
 
+        /// <summary>
+        /// Primary method which executes on the commands that are passed to it
+        /// </summary>
+        /// <param name="commandText">The search text the user has entered</param>
         public static void ProcessCommand(string commandText)
         {
             if (EnabledCommands["quit"].SearchTexts.Contains(commandText))
@@ -58,14 +69,28 @@ namespace WindowWalker.Components
             }
         }
 
+        /// <summary>
+        /// Gets the tips for all the enabled commands
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<string> GetTips()
         {
             return EnabledCommands.Select(x => x.Value.Tip);
         }
 
+        /// <summary>
+        /// Command class representing a single command
+        /// </summary>
         public class Command
         {
+            /// <summary>
+            /// The set of substrings to search for in the search text to figure out if the user wants this command
+            /// </summary>
             public string[] SearchTexts { get; set; }
+
+            /// <summary>
+            /// The help tip to get displayed in the cycling display
+            /// </summary>
             public string Tip { get; set; }
         }
     }
