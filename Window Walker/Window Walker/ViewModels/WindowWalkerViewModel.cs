@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Interop;
 using WindowWalker.Components;
@@ -16,14 +17,11 @@ namespace WindowWalker.ViewModels
         private bool _windowVisibility = true;
         private HotKeyHandler hotKeyHandler;
 
-        const string QuitCommand = ":quit";
-
         private string _hint = string.Empty;
         private int hintCounter = 0;
-        private string[] hints = new string[]
+        private List<string> hints = new List<string>()
         {
             "search...",
-            "type \":quit\" to exit",
             "you can reinvoke this app using CTRL + WIN"
         };
 
@@ -168,6 +166,7 @@ namespace WindowWalker.ViewModels
             this.hotKeyHandler = new HotKeyHandler(mainWindow);
             this.hotKeyHandler.OnHotKeyPressed += this.HotKeyPressedHandler;
 
+            this.hints.AddRange(Commands.GetTips());
             this.Hint = hints[hintCounter];
 
             WireCommands();
@@ -227,7 +226,7 @@ namespace WindowWalker.ViewModels
 
         private void WindowShow()
         {
-            hintCounter = (hintCounter + 1) % hints.Length;
+            hintCounter = (hintCounter + 1) % hints.Count;
             this.Hint = hints[hintCounter];
 
             this.SearchText = string.Empty;
@@ -239,9 +238,11 @@ namespace WindowWalker.ViewModels
 
         public void SwitchToSelectedWindow()
         {
-            if (this.SearchText == QuitCommand)
+            if (this.SearchText.StartsWith(":"))
             {
-                System.Windows.Application.Current.Shutdown();
+                Components.LivePreview.DeactivateLivePreview();
+                this.WindowHide();
+                WindowWalker.Components.Commands.ProcessCommand(this.SearchText);
             }
             else if (this.SelectedWindowResult != null)
             {
