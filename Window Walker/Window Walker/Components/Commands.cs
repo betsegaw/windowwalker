@@ -25,7 +25,8 @@ namespace WindowWalker.Components
                 new Command()
                 {
                     SearchTexts = new string[] {
-                        ":quit"
+                        ":quit",
+                        ":q"
                     },
                     Tip = "type \":quit\" to exit"
                 }
