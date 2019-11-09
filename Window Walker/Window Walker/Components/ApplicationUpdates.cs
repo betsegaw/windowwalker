@@ -15,7 +15,7 @@ namespace WindowWalker.Components
 
             var daysSinceLastUpdate = (DateTime.Now - _lastUpdateCheck).Days;
 
-            if (ApplicationDeployment.IsNetworkDeployed)
+            if (ApplicationDeployment.IsNetworkDeployed && (daysSinceLastUpdate > numberOfDaysBetweenCheck))
             {
                 ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
 
