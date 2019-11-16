@@ -28,38 +28,25 @@ namespace WindowWalker.Components
             {
                 ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
 
-                try
-                {
-                    ad.CheckForUpdateCompleted += new CheckForUpdateCompletedEventHandler(CheckForUpdateCompleted); 
-                    ad.CheckForUpdateAsync();
-                }
-                catch {
-                    alreadyCheckingForUpdate = false;
-                    return;
-                }
-                finally
-                {
-                    _lastUpdateCheck = DateTime.Now;
-                }
+                ad.CheckForUpdateCompleted += new CheckForUpdateCompletedEventHandler(CheckForUpdateCompleted);
+                ad.CheckForUpdateAsync();
+
+                _lastUpdateCheck = DateTime.Now;
             }
         }
 
         private static void CheckForUpdateCompleted(object sender, CheckForUpdateCompletedEventArgs e)
         {
-            if (e.Error != null)
+            if (e.Error != null || !(e.UpdateAvailable))
             {
                 alreadyCheckingForUpdate = false;
                 return;
             }
-            else if (e.UpdateAvailable)
+            else
             {
                 ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
                 ad.UpdateCompleted += new AsyncCompletedEventHandler(UpdateCompleted);
                 ad.UpdateAsync();
-            }
-            else
-            {
-                alreadyCheckingForUpdate = false;
             }
         }
 
@@ -71,8 +58,8 @@ namespace WindowWalker.Components
                 return;
             }
             alreadyCheckingForUpdate = false;
-            System.Windows.Forms.Application.Restart();
             System.Windows.Application.Current.Shutdown();
+            System.Windows.Forms.Application.Restart();
         }
     }
 }
