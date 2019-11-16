@@ -218,7 +218,7 @@ namespace WindowWalker.ViewModels
             }
         }
 
-        private async void WindowHide()
+        private void WindowHide()
         {
             Components.LivePreview.DeactivateLivePreview();
             this.WindowVisibility = false;
