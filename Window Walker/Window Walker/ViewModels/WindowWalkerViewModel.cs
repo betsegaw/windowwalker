@@ -222,10 +222,8 @@ namespace WindowWalker.ViewModels
         {
             Components.LivePreview.DeactivateLivePreview();
             this.WindowVisibility = false;
-            Task.Run(
-                () =>
-                    ApplicationUpdates.InstallUpdateSyncWithInfo()
-                ); 
+            System.Threading.Thread.Sleep(0);
+            ApplicationUpdates.InstallUpdateSyncWithInfo(); 
         }
 
         private void WindowShow()
