@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Deployment.Application;
-using System.Windows.Forms;
 
 namespace WindowWalker.Components
 {
