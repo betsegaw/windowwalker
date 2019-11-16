@@ -218,11 +218,15 @@ namespace WindowWalker.ViewModels
             }
         }
 
-        private void WindowHide()
+        private async void WindowHide()
         {
             Components.LivePreview.DeactivateLivePreview();
             this.WindowVisibility = false;
-            System.Threading.Thread.Sleep(0);
+            
+            await Task.Run(() => {
+                System.Threading.Thread.Sleep(10);
+            });
+
             ApplicationUpdates.InstallUpdateSyncWithInfo(); 
         }
 
