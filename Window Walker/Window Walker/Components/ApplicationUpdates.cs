@@ -57,6 +57,7 @@ namespace WindowWalker.Components
                 alreadyCheckingForUpdate = false;
                 return;
             }
+            
             alreadyCheckingForUpdate = false;
             System.Windows.Application.Current.Shutdown();
             System.Windows.Forms.Application.Restart();
