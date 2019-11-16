@@ -11,8 +11,19 @@ namespace WindowWalker.Components
         static DateTime _lastUpdateCheck = DateTime.Now;
         static int numberOfDaysBetweenCheck = 1;
 
+        static bool alreadyCheckingForUpdate = false;
+
         public static void InstallUpdateSyncWithInfo()
         {
+            if (alreadyCheckingForUpdate)
+            {
+                return;
+            }
+            else 
+            {
+                alreadyCheckingForUpdate = true;
+            }
+
             var daysSinceLastUpdate = (DateTime.Now - _lastUpdateCheck).Days;
 
             if (ApplicationDeployment.IsNetworkDeployed)
@@ -25,6 +36,7 @@ namespace WindowWalker.Components
                     ad.CheckForUpdateAsync();
                 }
                 catch {
+                    alreadyCheckingForUpdate = false;
                     return;
                 }
                 finally
@@ -38,6 +50,7 @@ namespace WindowWalker.Components
         {
             if (e.Error != null)
             {
+                alreadyCheckingForUpdate = false;
                 return;
             }
             else if (e.UpdateAvailable)
@@ -52,9 +65,10 @@ namespace WindowWalker.Components
         {
             if (e.Error != null)
             {
+                alreadyCheckingForUpdate = false;
                 return;
             }
-
+            alreadyCheckingForUpdate = false;
             System.Windows.Forms.Application.Restart();
         }
     }
