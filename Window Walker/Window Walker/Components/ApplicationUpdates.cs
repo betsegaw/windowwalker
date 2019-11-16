@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Deployment.Application;
+using System.Windows.Forms;
 
 namespace WindowWalker.Components
 {
@@ -56,6 +57,10 @@ namespace WindowWalker.Components
                 ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
                 ad.UpdateCompleted += new AsyncCompletedEventHandler(UpdateCompleted);
                 ad.UpdateAsync();
+            }
+            else
+            {
+                alreadyCheckingForUpdate = false;
             }
         }
 
