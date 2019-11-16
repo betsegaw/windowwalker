@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Deployment.Application;
+using System.Windows.Forms;
 
 namespace WindowWalker.Components
 {
@@ -11,8 +13,6 @@ namespace WindowWalker.Components
 
         public static void InstallUpdateSyncWithInfo()
         {
-            UpdateCheckInfo info = null;
-
             var daysSinceLastUpdate = (DateTime.Now - _lastUpdateCheck).Days;
 
             if (ApplicationDeployment.IsNetworkDeployed)
@@ -21,7 +21,8 @@ namespace WindowWalker.Components
 
                 try
                 {
-                    info = ad.CheckForDetailedUpdate();
+                    ad.CheckForUpdateCompleted += new CheckForUpdateCompletedEventHandler(CheckForUpdateCompleted); 
+                    ad.CheckForUpdateAsync();
                 }
                 catch {
                     return;
@@ -30,20 +31,32 @@ namespace WindowWalker.Components
                 {
                     _lastUpdateCheck = DateTime.Now;
                 }
-
-                if (info.UpdateAvailable || true)
-                {
-                    try
-                    {
-                        ad.Update();
-                        System.Windows.Application.Current.Shutdown();
-                        System.Windows.Forms.Application.Restart();
-                    }
-                    catch {
-                        return;
-                    }
-                }
             }
+        }
+
+        private static void CheckForUpdateCompleted(object sender, CheckForUpdateCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                return;
+            }
+            else if (e.UpdateAvailable)
+            {
+                ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
+                ad.UpdateCompleted += new AsyncCompletedEventHandler(UpdateCompleted);
+                ad.UpdateAsync();
+            }
+        }
+
+        private static void UpdateCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                return;
+            }
+
+            System.Windows.Application.Current.Shutdown();
+            System.Windows.Forms.Application.Restart();
         }
     }
 }
