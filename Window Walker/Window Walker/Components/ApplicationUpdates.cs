@@ -54,8 +54,7 @@ namespace WindowWalker.Components
             {
                 return;
             }
-
-            System.Windows.Application.Current.Shutdown();
+            
             System.Windows.Forms.Application.Restart();
         }
     }
