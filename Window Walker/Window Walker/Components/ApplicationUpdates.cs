@@ -5,7 +5,6 @@ using System.Windows.Forms;
 
 namespace WindowWalker.Components
 {
-
     public class ApplicationUpdates
     {
         static DateTime _lastUpdateCheck = DateTime.Now;
