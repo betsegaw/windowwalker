@@ -11,6 +11,8 @@ namespace WindowWalker.Components
 
         static bool alreadyCheckingForUpdate = false;
 
+        static bool updateAvailable = false;
+
         public static void InstallUpdateSyncWithInfo()
         {
             if (alreadyCheckingForUpdate)
@@ -26,12 +28,45 @@ namespace WindowWalker.Components
 
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
+                if (updateAvailable)
+                {
+                    UpdateCheckInfo info = null;
+                    ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
 
-                ad.CheckForUpdateCompleted += new CheckForUpdateCompletedEventHandler(CheckForUpdateCompleted);
-                ad.CheckForUpdateAsync();
+                    try
+                    {
+                        info = ad.CheckForDetailedUpdate();
+                    }
+                    catch {
+                        return;
+                    }
+                    finally
+                    {
+                        _lastUpdateCheck = DateTime.Now;
+                    }
 
-                _lastUpdateCheck = DateTime.Now;
+                    if (info.UpdateAvailable || true)
+                    {
+                        try
+                        {
+                            ad.Update();
+                            System.Windows.Application.Current.Shutdown();
+                            System.Windows.Forms.Application.Restart();
+                        }
+                        catch {
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
+
+                    ad.CheckForUpdateCompleted += new CheckForUpdateCompletedEventHandler(CheckForUpdateCompleted);
+                    ad.CheckForUpdateAsync();
+
+                    _lastUpdateCheck = DateTime.Now;
+                }
             }
         }
 
@@ -44,23 +79,9 @@ namespace WindowWalker.Components
             }
             else
             {
-                ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
-                ad.UpdateCompleted += new AsyncCompletedEventHandler(UpdateCompleted);
-                ad.UpdateAsync();
-            }
-        }
-
-        private static void UpdateCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
+                updateAvailable = true;
                 alreadyCheckingForUpdate = false;
-                return;
             }
-            
-            alreadyCheckingForUpdate = false;
-            System.Windows.Application.Current.Shutdown();
-            System.Windows.Forms.Application.Restart();
         }
     }
 }
