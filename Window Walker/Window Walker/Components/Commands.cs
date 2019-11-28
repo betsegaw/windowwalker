@@ -25,7 +25,8 @@ namespace WindowWalker.Components
                 new Command()
                 {
                     SearchTexts = new string[] {
-                        ":quit"
+                        ":quit",
+                        ":q"
                     },
                     Tip = "type \":quit\" to exit"
                 }
@@ -43,6 +44,17 @@ namespace WindowWalker.Components
                     Tip = "type \":lt\" or \":lcmd\"to launch a new terminal window"
                 }
             );
+
+            EnabledCommands.Add("launchVSCode",
+                new Command()
+                {
+                    SearchTexts = new string[] {
+                        ":lvscode",
+                        ":lcode"
+                    },
+                    Tip = "type \":lvscode\" or \":lcode\"to launch a new instance of VSCode"
+                }
+            );
         }
 
         /// <summary>
@@ -56,16 +68,20 @@ namespace WindowWalker.Components
         /// <param name="commandText">The search text the user has entered</param>
         public static void ProcessCommand(string commandText)
         {
+            Components.LivePreview.DeactivateLivePreview();
+
             if (EnabledCommands["quit"].SearchTexts.Contains(commandText))
             {
                 System.Windows.Application.Current.Shutdown();
             }
             else if (EnabledCommands["launchTerminal"].SearchTexts.Contains(commandText))
             {
-                Components.LivePreview.DeactivateLivePreview();
-
                 Process.Start(new ProcessStartInfo("cmd.exe")
                 { WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) });
+            }
+            else if (EnabledCommands["launchVSCode"].SearchTexts.Contains(commandText))
+            {
+                Process.Start("code");
             }
         }
 
