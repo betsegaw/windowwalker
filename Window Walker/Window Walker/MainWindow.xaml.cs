@@ -139,13 +139,13 @@ namespace WindowWalker
 
                 if (input.BestScoreSource == SearchResult.TextType.ProcessName)
                 {
-                    withTags = input.ResultWindow.Title;
-                    withTags += $" ({InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName)})";
+                    withTags = input.Result.Title;
+                    withTags += $" ({InsertHighlightTags(input.Result.ProcessName, input.SearchMatchesInProcessName)})";
                 }
                 else
                 {
-                    withTags = InsertHighlightTags(input.ResultWindow.Title, input.SearchMatchesInTitle);
-                    withTags += $" ({input.ResultWindow.ProcessName})";
+                    withTags = InsertHighlightTags(input.Result.Title, input.SearchMatchesInTitle);
+                    withTags += $" ({input.Result.ProcessName})";
                 }
 
                 withTags = SecurityElement.Escape(withTags);

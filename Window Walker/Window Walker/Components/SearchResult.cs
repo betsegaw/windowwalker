@@ -14,7 +14,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// The actual window reference for the search result
         /// </summary>
-        public Window ResultWindow
+        public Window Result
         {
             get;
             private set;
@@ -71,7 +71,7 @@ namespace WindowWalker.Components
         /// </summary>
         public SearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName, SearchType matchType)
         {
-            this.ResultWindow = window;
+            this.Result = window;
             this.SearchMatchesInTitle = matchesInTitle;
             this.SearchMatchesInProcessName = matchesInProcessName;
             this.SearchResultMatchType = matchType;

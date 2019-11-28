@@ -187,7 +187,7 @@ namespace WindowWalker.ViewModels
 
         private void WindowResultSelected()
         {
-            Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.ResultWindow.Hwnd, this.Hwnd);
+            Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.Result.Hwnd, this.Hwnd);
         }
 
         private void WindowNavigateToPreviousResult()
@@ -248,13 +248,13 @@ namespace WindowWalker.ViewModels
             else if (this.SelectedWindowResult != null)
             {
                 Components.LivePreview.DeactivateLivePreview();
-                this.SelectedWindowResult.ResultWindow.SwitchToWindow();
+                this.SelectedWindowResult.Result.SwitchToWindow();
                 this.WindowHide();
             }
             else if (this.Results != null && this.Results.Count > 0)
             {
                 Components.LivePreview.DeactivateLivePreview();
-                this.Results.First().ResultWindow.SwitchToWindow();
+                this.Results.First().Result.SwitchToWindow();
                 this.WindowHide();
             }
         }
