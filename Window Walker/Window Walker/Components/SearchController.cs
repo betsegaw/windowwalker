@@ -37,7 +37,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// Delegate handler for open windows updates
         /// </summary>
-        public delegate void SearchResultUpdateHandler(object sender, Window.WindowListUpdateEventArgs e);
+        public delegate void SearchResultUpdateHandler(object sender, WindowListUpdateEventArgs e);
 
         /// <summary>
         /// Event raised when there is an update to the list of open windows
@@ -112,7 +112,7 @@ namespace WindowWalker.Components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e)
+        public void OpenWindowsUpdateHandler(object sender, WindowListUpdateEventArgs e)
         {
             this.SyncOpenWindowsWithModelAsync();
         }
@@ -137,7 +137,7 @@ namespace WindowWalker.Components
 
             if (this.OnSearchResultUpdate != null)
             {
-                this.OnSearchResultUpdate(this, new Window.WindowListUpdateEventArgs());
+                this.OnSearchResultUpdate(this, new WindowListUpdateEventArgs());
             }
         }
 
@@ -231,6 +231,18 @@ namespace WindowWalker.Components
                 this.SearchType = searchType;
             }
         }
+        #endregion
+
+        #region Classes
+
+        /// <summary>
+        /// Event args for a window list update event
+        /// </summary>
+        public class WindowListUpdateEventArgs : EventArgs
+        {
+
+        }
+
         #endregion
     }
 }

@@ -274,18 +274,6 @@ namespace WindowWalker.Components
 
         #endregion
 
-        #region Classes
-
-        /// <summary>
-        /// Event args for a window list update event
-        /// </summary>
-        public class WindowListUpdateEventArgs : EventArgs
-        {
-
-        }
-
-        #endregion
-
         #region Enums
 
         /// <summary>

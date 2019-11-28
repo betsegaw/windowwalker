@@ -18,7 +18,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// Delegate handler for open windows updates
         /// </summary>
-        public delegate void OpenWindowsUpdateHandler(object sender, Window.WindowListUpdateEventArgs e);
+        public delegate void OpenWindowsUpdateHandler(object sender, SearchController.WindowListUpdateEventArgs e);
 
         /// <summary>
         /// Event raised when there is an update to the list of open windows
@@ -128,7 +128,7 @@ namespace WindowWalker.Components
 
                 if (OnOpenWindowsUpdate != null)
                 {
-                    this.OnOpenWindowsUpdate(this, new Window.WindowListUpdateEventArgs());
+                    this.OnOpenWindowsUpdate(this, new SearchController.WindowListUpdateEventArgs());
                 }
             }
 
