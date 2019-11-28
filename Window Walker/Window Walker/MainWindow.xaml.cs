@@ -119,7 +119,7 @@ namespace WindowWalker
     /// <summary>
     /// Converts a string containing valid XAML into WPF objects.
     /// </summary>
-    [ValueConversion(typeof(WindowSearchResult), typeof(object))]
+    [ValueConversion(typeof(SearchResult), typeof(object))]
     public sealed class WindowSearchResultToXamlConverter : IValueConverter
     {
         /// <summary>
@@ -132,12 +132,12 @@ namespace WindowWalker
         /// <returns>A WPF object.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            WindowSearchResult input = value as WindowSearchResult;
+            SearchResult input = value as SearchResult;
             if (input != null)
             {
                 string withTags;
 
-                if (input.BestScoreSource == WindowSearchResult.TextType.ProcessName)
+                if (input.BestScoreSource == SearchResult.TextType.ProcessName)
                 {
                     withTags = input.ResultWindow.Title;
                     withTags += $" ({InsertHighlightTags(input.ResultWindow.ProcessName, input.SearchMatchesInProcessName)})";

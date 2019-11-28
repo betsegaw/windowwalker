@@ -9,7 +9,7 @@ namespace WindowWalker.Components
     /// <summary>
     /// Contains search result windows with each window including the reason why the result was included
     /// </summary>
-    public class WindowSearchResult
+    public class SearchResult
     {
         /// <summary>
         /// The actual window reference for the search result
@@ -69,7 +69,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        public WindowSearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName, SearchType matchType)
+        public SearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName, SearchType matchType)
         {
             this.ResultWindow = window;
             this.SearchMatchesInTitle = matchesInTitle;

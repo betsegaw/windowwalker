@@ -23,7 +23,7 @@ namespace WindowWalker.Components
         /// <summary>
         /// Open window search results
         /// </summary
-        private List<WindowSearchResult> searchMatches;
+        private List<SearchResult> searchMatches;
 
         /// <summary>
         /// Singleton pattern
@@ -64,10 +64,10 @@ namespace WindowWalker.Components
         /// <summary>
         /// Gets the open window search results
         /// </summary>
-        public List<WindowSearchResult> SearchMatches
+        public List<SearchResult> SearchMatches
         {
             get 
-            { return (new List<WindowSearchResult>(searchMatches)).OrderByDescending(x => x.Score).ToList(); }
+            { return (new List<SearchResult>(searchMatches)).OrderByDescending(x => x.Score).ToList(); }
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace WindowWalker.Components
 
             if (this.SearchText == string.Empty)
             {
-                this.searchMatches = new List<WindowSearchResult>();
+                this.searchMatches = new List<SearchResult>();
             }
             else
             {
@@ -146,7 +146,7 @@ namespace WindowWalker.Components
         /// </summary>
         /// <param name="openWindows"></param>
         /// <returns></returns>
-        private Task<List<WindowSearchResult>> FuzzySearchOpenWindowsAsync(List<Window> openWindows)
+        private Task<List<SearchResult>> FuzzySearchOpenWindowsAsync(List<Window> openWindows)
         {
             return Task.Run(
                 () =>
@@ -159,19 +159,19 @@ namespace WindowWalker.Components
         /// </summary>
         /// <param name="openWindows"></param>
         /// <returns></returns>
-        private List<WindowSearchResult> FuzzySearchOpenWindows(List<Window> openWindows)
+        private List<SearchResult> FuzzySearchOpenWindows(List<Window> openWindows)
         {
-            List<WindowSearchResult> result = new List<WindowSearchResult>();
+            List<SearchResult> result = new List<SearchResult>();
             List<SearchString> searchStrings = new List<SearchString>();
 
             List<string> shortcuts = SettingsManager.Instance.GetShortcut(this.SearchText);
 
             foreach(var shortcut in shortcuts)
             {
-                searchStrings.Add(new SearchString(shortcut, WindowSearchResult.SearchType.Shortcut));
+                searchStrings.Add(new SearchString(shortcut, SearchResult.SearchType.Shortcut));
             }
 
-            searchStrings.Add(new SearchString(this.searchText, WindowSearchResult.SearchType.Fuzzy));
+            searchStrings.Add(new SearchString(this.searchText, SearchResult.SearchType.Fuzzy));
 
             foreach (var searchString in searchStrings)
             {
@@ -183,7 +183,7 @@ namespace WindowWalker.Components
                     if ((titleMatch.Count != 0 || processMatch.Count != 0) &&
                                 window.Title.Length != 0)
                     {
-                        var temp = new WindowSearchResult(window, titleMatch, processMatch, searchString.SearchType);
+                        var temp = new SearchResult(window, titleMatch, processMatch, searchString.SearchType);
                         result.Add(temp);
                     }
                 }
@@ -205,7 +205,7 @@ namespace WindowWalker.Components
             /// Where is the search string coming from (is it a shortcut
             /// or direct string, etc...)
             /// </summary>
-            public WindowSearchResult.SearchType SearchType
+            public SearchResult.SearchType SearchType
             {
                 get;
                 private set;
@@ -225,7 +225,7 @@ namespace WindowWalker.Components
             /// </summary>
             /// <param name="searchText"></param>
             /// <param name="searchType"></param>
-            public SearchString(string searchText, WindowSearchResult.SearchType searchType)
+            public SearchString(string searchText, SearchResult.SearchType searchType)
             {
                 this.SearchText = searchText;
                 this.SearchType = searchType;

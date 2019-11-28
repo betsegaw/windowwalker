@@ -13,8 +13,8 @@ namespace WindowWalker.ViewModels
     class WindowWalkerViewModel: MVVMHelpers.PropertyChangedBase
     {
         private string _searchText = string.Empty;
-        private List<WindowSearchResult> _results = new List<WindowSearchResult>();
-        private WindowSearchResult _selectedWindow;
+        private List<SearchResult> _results = new List<SearchResult>();
+        private SearchResult _selectedWindow;
         private bool _windowVisibility = true;
         private HotKeyHandler hotKeyHandler;
 
@@ -69,7 +69,7 @@ namespace WindowWalker.ViewModels
             }
         }
 
-        public List<WindowSearchResult> Results
+        public List<SearchResult> Results
         {
             get => _results;
 
@@ -83,7 +83,7 @@ namespace WindowWalker.ViewModels
             }
         }
 
-        public WindowSearchResult SelectedWindowResult
+        public SearchResult SelectedWindowResult
         {
             get => _selectedWindow;
             set

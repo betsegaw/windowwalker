@@ -126,7 +126,7 @@
     <Compile Include="Components\OpenWindows.cs" />
     <Compile Include="Components\Window.cs" />
     <Compile Include="Components\WindowSearchController.cs" />
-    <Compile Include="Components\WindowSearchResult.cs" />
+    <Compile Include="Components\SearchResult.cs" />
     <Compile Include="HotKeyHandler.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
