@@ -49,7 +49,7 @@ namespace WindowWalker.ViewModels
                 if (_searchText != value)
                 {
                     _searchText = value;
-                    WindowSearchController.Instance.SearchText = value;
+                    SearchController.Instance.SearchText = value;
                     NotifyPropertyChanged("SearchText");
                 }
             }
@@ -159,7 +159,7 @@ namespace WindowWalker.ViewModels
 
             rkApp.Close();
 
-            WindowSearchController.Instance.OnSearchResultUpdate += SearchResultUpdated;
+            SearchController.Instance.OnSearchResultUpdate += SearchResultUpdated;
             OpenWindows.Instance.UpdateOpenWindowsList();
             this.Hwnd = new WindowInteropHelper(mainWindow).Handle;
             LivePreview.SetWindowExlusionFromLivePreview(this.Hwnd);
@@ -261,7 +261,7 @@ namespace WindowWalker.ViewModels
 
         private void SearchResultUpdated(object sender, Window.WindowListUpdateEventArgs e)
         {
-            this.Results = WindowSearchController.Instance.SearchMatches;
+            this.Results = SearchController.Instance.SearchMatches;
         }
     }
 }
