@@ -259,7 +259,7 @@ namespace WindowWalker.ViewModels
             }
         }
 
-        private void SearchResultUpdated(object sender, SearchController.WindowListUpdateEventArgs e)
+        private void SearchResultUpdated(object sender, SearchController.SearchResultUpdateEventArgs e)
         {
             this.Results = SearchController.Instance.SearchMatches;
         }
