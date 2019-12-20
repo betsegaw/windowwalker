@@ -1,9 +1,11 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 
 namespace WindowWalker.Components
 {
@@ -11,10 +13,8 @@ namespace WindowWalker.Components
     /// Responsible for searching and finding matches for the strings provided.
     /// Essentially the UI independent model of the application
     /// </summary>
-    class SearchController
+    internal class SearchController
     {
-        #region Members
-
         /// <summary>
         /// the current search text
         /// </summary>
@@ -30,10 +30,6 @@ namespace WindowWalker.Components
         /// </summary>
         private static SearchController instance;
 
-        #endregion
-
-        #region Events
-
         /// <summary>
         /// Delegate handler for open windows updates
         /// </summary>
@@ -44,20 +40,20 @@ namespace WindowWalker.Components
         /// </summary>
         public event SearchResultUpdateHandler OnSearchResultUpdate;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets the current search text
         /// </summary>
         public string SearchText
         {
-            get { return searchText; }
-            set 
-            { 
+            get
+            {
+                return searchText;
+            }
+
+            set
+            {
                 searchText = value.ToLower().Trim();
-                this.SearchTextUpdated();
+                SearchTextUpdated();
             }
         }
 
@@ -66,35 +62,32 @@ namespace WindowWalker.Components
         /// </summary>
         public List<SearchResult> SearchMatches
         {
-            get 
-            { return (new List<SearchResult>(searchMatches)).OrderByDescending(x => x.Score).ToList(); }
+            get { return new List<SearchResult>(searchMatches).OrderByDescending(x => x.Score).ToList(); }
         }
 
         /// <summary>
-        /// Singleton Pattern
+        /// Gets singleton Pattern
         /// </summary>
         public static SearchController Instance
         {
             get
             {
-                if (SearchController.instance == null)
+                if (instance == null)
                 {
-                    SearchController.instance = new SearchController();
+                    instance = new SearchController();
                 }
 
-                return SearchController.instance;
+                return instance;
             }
-
         }
 
-        #endregion
-
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchController"/> class.
         /// Initializes the search controller object
         /// </summary>
         private SearchController()
         {
-            this.searchText = string.Empty;
+            searchText = string.Empty;
             OpenWindows.Instance.OnOpenWindowsUpdate += OpenWindowsUpdateHandler;
         }
 
@@ -103,10 +96,9 @@ namespace WindowWalker.Components
         /// </summary>
         public void SearchTextUpdated()
         {
-            this.SyncOpenWindowsWithModelAsync();
+            SyncOpenWindowsWithModelAsync();
         }
 
-        #region Event Handlers
         /// <summary>
         /// Event handler called when the OpenWindows list changes
         /// </summary>
@@ -114,7 +106,7 @@ namespace WindowWalker.Components
         /// <param name="e"></param>
         public void OpenWindowsUpdateHandler(object sender, SearchResultUpdateEventArgs e)
         {
-            this.SyncOpenWindowsWithModelAsync();
+            SyncOpenWindowsWithModelAsync();
         }
 
         /// <summary>
@@ -126,52 +118,48 @@ namespace WindowWalker.Components
 
             List<Window> snapshotOfOpenWindows = OpenWindows.Instance.Windows;
 
-            if (this.SearchText == string.Empty)
+            if (SearchText == string.Empty)
             {
-                this.searchMatches = new List<SearchResult>();
+                searchMatches = new List<SearchResult>();
             }
             else
             {
-                this.searchMatches = await FuzzySearchOpenWindowsAsync(snapshotOfOpenWindows);                    
+                searchMatches = await FuzzySearchOpenWindowsAsync(snapshotOfOpenWindows);
             }
 
-            if (this.OnSearchResultUpdate != null)
-            {
-                this.OnSearchResultUpdate(this, new SearchResultUpdateEventArgs());
-            }
+            OnSearchResultUpdate?.Invoke(this, new SearchResultUpdateEventArgs());
         }
 
         /// <summary>
         /// Redirecting method for Fuzzy searching
         /// </summary>
         /// <param name="openWindows"></param>
-        /// <returns></returns>
+        /// <returns>Returns search results</returns>
         private Task<List<SearchResult>> FuzzySearchOpenWindowsAsync(List<Window> openWindows)
         {
             return Task.Run(
                 () =>
-                    this.FuzzySearchOpenWindows(openWindows)
-                );
+                    FuzzySearchOpenWindows(openWindows));
         }
 
         /// <summary>
         /// Search method that matches the title of windows with the user search text
         /// </summary>
         /// <param name="openWindows"></param>
-        /// <returns></returns>
+        /// <returns>Returns search results</returns>
         private List<SearchResult> FuzzySearchOpenWindows(List<Window> openWindows)
         {
             List<SearchResult> result = new List<SearchResult>();
             List<SearchString> searchStrings = new List<SearchString>();
 
-            List<string> shortcuts = SettingsManager.Instance.GetShortcut(this.SearchText);
+            List<string> shortcuts = SettingsManager.Instance.GetShortcut(SearchText);
 
-            foreach(var shortcut in shortcuts)
+            foreach (var shortcut in shortcuts)
             {
                 searchStrings.Add(new SearchString(shortcut, SearchResult.SearchType.Shortcut));
             }
 
-            searchStrings.Add(new SearchString(this.searchText, SearchResult.SearchType.Fuzzy));
+            searchStrings.Add(new SearchString(searchText, SearchResult.SearchType.Fuzzy));
 
             foreach (var searchString in searchStrings)
             {
@@ -195,54 +183,10 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// A class to represent a search string
-        /// </summary>
-        /// <remarks>Class was added inorder to be able to attach various context data to
-        /// a search string</remarks>
-        class SearchString
-        {
-            /// <summary>
-            /// Where is the search string coming from (is it a shortcut
-            /// or direct string, etc...)
-            /// </summary>
-            public SearchResult.SearchType SearchType
-            {
-                get;
-                private set;
-            }
-
-            /// <summary>
-            /// The actual text we are searching for
-            /// </summary>
-            public string SearchText
-            {
-                get;
-                private set;
-            }
-            
-            /// <summary>
-            /// Constructor 
-            /// </summary>
-            /// <param name="searchText"></param>
-            /// <param name="searchType"></param>
-            public SearchString(string searchText, SearchResult.SearchType searchType)
-            {
-                this.SearchText = searchText;
-                this.SearchType = searchType;
-            }
-        }
-        #endregion
-
-        #region Classes
-
-        /// <summary>
         /// Event args for a window list update event
         /// </summary>
         public class SearchResultUpdateEventArgs : EventArgs
         {
-
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WindowWalker.Components
 {
@@ -12,7 +12,7 @@ namespace WindowWalker.Components
     public class SearchResult
     {
         /// <summary>
-        /// The actual window reference for the search result
+        /// Gets the actual window reference for the search result
         /// </summary>
         public Window Result
         {
@@ -21,7 +21,7 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// The list of indexes of the matching characters for the search in the title window
+        /// Gets the list of indexes of the matching characters for the search in the title window
         /// </summary>
         public List<int> SearchMatchesInTitle
         {
@@ -30,7 +30,7 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// The list of indexes of the matching characters for the search in the 
+        /// Gets the list of indexes of the matching characters for the search in the
         /// name of the process
         /// </summary>
         public List<int> SearchMatchesInProcessName
@@ -40,7 +40,7 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// The type of match (shortcut, fuzzy or nothing)
+        /// Gets the type of match (shortcut, fuzzy or nothing)
         /// </summary>
         public SearchType SearchResultMatchType
         {
@@ -49,7 +49,7 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// A score indicating how well this matches what we are looking for
+        /// Gets a score indicating how well this matches what we are looking for
         /// </summary>
         public int Score
         {
@@ -58,7 +58,7 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// The source of where the best score was found
+        /// Gets the source of where the best score was found
         /// </summary>
         public TextType BestScoreSource
         {
@@ -67,15 +67,16 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResult"/> class.
         /// Constructor
         /// </summary>
         public SearchResult(Window window, List<int> matchesInTitle, List<int> matchesInProcessName, SearchType matchType)
         {
-            this.Result = window;
-            this.SearchMatchesInTitle = matchesInTitle;
-            this.SearchMatchesInProcessName = matchesInProcessName;
-            this.SearchResultMatchType = matchType;
-            this.CalculateScore();
+            Result = window;
+            SearchMatchesInTitle = matchesInTitle;
+            SearchMatchesInProcessName = matchesInProcessName;
+            SearchResultMatchType = matchType;
+            CalculateScore();
         }
 
         /// <summary>
@@ -86,16 +87,16 @@ namespace WindowWalker.Components
         /// </remarks>
         private void CalculateScore()
         {
-            if (FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName) >
-                FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle))
+            if (FuzzyMatching.CalculateScoreForMatches(SearchMatchesInProcessName) >
+                FuzzyMatching.CalculateScoreForMatches(SearchMatchesInTitle))
             {
-                this.Score = FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInProcessName);
-                this.BestScoreSource = TextType.ProcessName;
+                Score = FuzzyMatching.CalculateScoreForMatches(SearchMatchesInProcessName);
+                BestScoreSource = TextType.ProcessName;
             }
             else
             {
-                this.Score = FuzzyMatching.CalculateScoreForMatches(this.SearchMatchesInTitle);
-                this.BestScoreSource = TextType.WindowTitle;
+                Score = FuzzyMatching.CalculateScoreForMatches(SearchMatchesInTitle);
+                BestScoreSource = TextType.WindowTitle;
             }
         }
 
@@ -105,7 +106,7 @@ namespace WindowWalker.Components
         public enum TextType
         {
             ProcessName,
-            WindowTitle
+            WindowTitle,
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace WindowWalker.Components
             /// The user has entered text that has been matched to a shortcut
             /// and the shortcut is now being searched
             /// </summary>
-            Shortcut
+            Shortcut,
         }
     }
 }

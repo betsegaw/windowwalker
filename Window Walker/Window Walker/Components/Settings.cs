@@ -1,8 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace WindowWalker.Components
@@ -11,25 +11,25 @@ namespace WindowWalker.Components
     /// Class that represents all the settings and
     /// can be serialized into JSON for easy saving
     /// </summary>
-    class Settings
+    internal class Settings
     {
         /// <summary>
-        /// The version of the settings file
+        /// Gets or sets the version of the settings file
         /// </summary>
         public string Version { get; set; }
 
         /// <summary>
-        /// A list of all the shortcuts
+        /// Gets or sets a list of all the shortcuts
         /// </summary>
         public Dictionary<string, List<string>> Shortcuts { get; set; }
 
         /// <summary>
-        /// A list of saved window locations catagorized by number of screens
+        /// Gets or sets a list of saved window locations catagorized by number of screens
         /// </summary>
         public Dictionary<string, Point> WindowLocations { get; set; }
 
         /// <summary>
-        /// The location of the search windows  (the top left point)
+        /// Gets or sets the location of the search windows  (the top left point)
         /// </summary>
         [ScriptIgnore]
         public Point WindowLocation
@@ -50,31 +50,23 @@ namespace WindowWalker.Components
             {
                 if (WindowLocations == null)
                 {
-                    WindowLocations = new Dictionary<String, Point>();
+                    WindowLocations = new Dictionary<string, Point>();
                 }
+
                 WindowLocations[System.Windows.Forms.Screen.AllScreens.Length.ToString()] = value;
-                
             }
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Settings"/> class.
         /// Constructer to initialize some default values
         /// </summary>
         public Settings()
         {
-            this.Version = string.Empty;
-            this.Shortcuts = new Dictionary<string,List<string>>();
-            this.WindowLocation = new Point() { X = 0, Y = 0 };
-            this.WindowLocations = new Dictionary<String, Point>(); 
-        }
-
-        /// <summary>
-        /// Custom point class to ease storing a point
-        /// </summary>
-        public class Point
-        {
-            public double X { get; set; }
-            public double Y { get; set; }
+            Version = string.Empty;
+            Shortcuts = new Dictionary<string, List<string>>();
+            WindowLocation = new Point() { X = 0, Y = 0 };
+            WindowLocations = new Dictionary<string, Point>();
         }
     }
 }

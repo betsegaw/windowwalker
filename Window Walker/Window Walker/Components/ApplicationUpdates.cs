@@ -1,17 +1,18 @@
-﻿using System;
-using System.ComponentModel;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
+using System;
 using System.Deployment.Application;
 
 namespace WindowWalker.Components
 {
     public class ApplicationUpdates
     {
-        static DateTime _lastUpdateCheck = DateTime.Now;
-        static int numberOfDaysBetweenCheck = 1;
+        private static DateTime _lastUpdateCheck = DateTime.Now;
+        private static bool alreadyCheckingForUpdate = false;
 
-        static bool alreadyCheckingForUpdate = false;
-
-        static bool updateAvailable = false;
+        private static bool updateAvailable = false;
 
         public static void InstallUpdateSyncWithInfo()
         {
@@ -19,7 +20,7 @@ namespace WindowWalker.Components
             {
                 return;
             }
-            else 
+            else
             {
                 alreadyCheckingForUpdate = true;
             }
@@ -37,7 +38,8 @@ namespace WindowWalker.Components
                     {
                         info = ad.CheckForDetailedUpdate();
                     }
-                    catch {
+                    catch
+                    {
                         return;
                     }
                     finally
@@ -53,7 +55,8 @@ namespace WindowWalker.Components
                             System.Windows.Application.Current.Shutdown();
                             System.Windows.Forms.Application.Restart();
                         }
-                        catch {
+                        catch
+                        {
                             return;
                         }
                     }
@@ -72,7 +75,7 @@ namespace WindowWalker.Components
 
         private static void CheckForUpdateCompleted(object sender, CheckForUpdateCompletedEventArgs e)
         {
-            if (e.Error != null || !(e.UpdateAvailable))
+            if (e.Error != null || !e.UpdateAvailable)
             {
                 alreadyCheckingForUpdate = false;
                 return;

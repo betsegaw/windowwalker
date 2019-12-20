@@ -1,9 +1,9 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace WindowWalker.Components
@@ -12,45 +12,46 @@ namespace WindowWalker.Components
     /// Class for managing shortcuts
     /// Example: When you type "i" we actually search for "internet"
     /// </summary>
-    class SettingsManager
+    internal class SettingsManager
     {
         /// <summary>
         /// The path to the shortcut file
         /// </summary>
-        private static readonly string ShortcutsFile = Path.GetTempPath() + "WindowWalkerShortcuts.ini";
+        private static readonly string _shortcutsFile = Path.GetTempPath() + "WindowWalkerShortcuts.ini";
 
         /// <summary>
-        /// Reference to a serializer for saving the settings 
+        /// Reference to a serializer for saving the settings
         /// </summary>
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly JavaScriptSerializer _serializer = new JavaScriptSerializer();
 
         /// <summary>
         /// An instance of the settings class representing the current settings
         /// </summary>
-        public static Settings SettingsInstance = new Settings();
+        private static readonly Settings _settingsInstance = new Settings();
 
         /// <summary>
         /// Instance of the manager itself
         /// </summary>
-        private static SettingsManager instance;
-        
+        private static SettingsManager _instance;
+
         /// <summary>
-        /// Implements Singlton pattern
+        /// Gets implements Singlton pattern
         /// </summary>
         public static SettingsManager Instance
         {
-            get 
+            get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new SettingsManager();
+                    _instance = new SettingsManager();
                 }
 
-                return instance;
+                return _instance;
             }
         }
 
         /// <summary>
+        /// Initializes static members of the <see cref="SettingsManager"/> class.
         /// Static constructor
         /// </summary>
         /// <remarks>Not sure why we have this AND a singlton pattern</remarks>
@@ -58,19 +59,22 @@ namespace WindowWalker.Components
         {
             try
             {
-                if (File.Exists(ShortcutsFile))
+                if (File.Exists(_shortcutsFile))
                 {
-                    using (StreamReader reader = new StreamReader(ShortcutsFile))
+                    using (StreamReader reader = new StreamReader(_shortcutsFile))
                     {
                         string jsonString = reader.ReadToEnd();
-                        SettingsManager.SettingsInstance = (Settings)SettingsManager.Serializer.Deserialize(jsonString, typeof(Settings));
+                        _settingsInstance = (Settings)_serializer.Deserialize(jsonString, typeof(Settings));
                     }
                 }
             }
-            catch {}
+            catch
+            {
+            }
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
         /// Contructor that does nothing?
         /// </summary>
         private SettingsManager()
@@ -88,16 +92,16 @@ namespace WindowWalker.Components
         /// we can now have multiple shortcuts</remarks>
         public bool AddShortcut(string before, string after)
         {
-            if (!SettingsManager.SettingsInstance.Shortcuts.ContainsKey(before))
+            if (!_settingsInstance.Shortcuts.ContainsKey(before))
             {
-                SettingsManager.SettingsInstance.Shortcuts.Add(before, new List<string>());
+                _settingsInstance.Shortcuts.Add(before, new List<string>());
             }
 
-            SettingsManager.SettingsInstance.Shortcuts[before].Add(after);
-            
+            _settingsInstance.Shortcuts[before].Add(after);
+
             // Write the updated shortcuts list to a file
             SaveSettings();
-            
+
             return true;
         }
 
@@ -110,12 +114,12 @@ namespace WindowWalker.Components
         /// mapping to multiple outputs</remarks>
         public bool RemoveShortcut(string input)
         {
-            if (!SettingsManager.SettingsInstance.Shortcuts.ContainsKey(input))
+            if (!_settingsInstance.Shortcuts.ContainsKey(input))
             {
                 return false;
             }
 
-            SettingsManager.SettingsInstance.Shortcuts.Remove(input);
+            _settingsInstance.Shortcuts.Remove(input);
 
             // Write the updated shortcuts list to a file
             SaveSettings();
@@ -127,12 +131,12 @@ namespace WindowWalker.Components
         /// Retrieves a shortcut and returns all possible mappings
         /// </summary>
         /// <param name="input">the input string for the shortcuts</param>
-        /// <returns>A list of all the shortcut strings that result from the user input</returns> 
+        /// <returns>A list of all the shortcut strings that result from the user input</returns>
         public List<string> GetShortcut(string input)
         {
-            return (SettingsManager.SettingsInstance.Shortcuts.ContainsKey(input) ? SettingsManager.SettingsInstance.Shortcuts[input] : new List<string>());
+            return _settingsInstance.Shortcuts.ContainsKey(input) ? _settingsInstance.Shortcuts[input] : new List<string>();
         }
-       
+
         /// <summary>
         /// Writes the current shortcuts to the shortcuts file.
         /// Note: We are writing the file even if there are no shortcuts. This handles
@@ -140,9 +144,9 @@ namespace WindowWalker.Components
         /// </summary>
         public void SaveSettings()
         {
-            using (StreamWriter writer = new StreamWriter(ShortcutsFile, false))
+            using (StreamWriter writer = new StreamWriter(_shortcutsFile, false))
             {
-                writer.Write(SettingsManager.Serializer.Serialize(SettingsManager.SettingsInstance));
+                writer.Write(_serializer.Serialize(_settingsInstance));
             }
         }
     }

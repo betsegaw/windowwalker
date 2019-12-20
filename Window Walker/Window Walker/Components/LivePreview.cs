@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
+using System;
 
 namespace WindowWalker.Components
 {
     /// <summary>
     /// Class containg methods to control the live preview
     /// </summary>
-    class LivePreview
+    internal class LivePreview
     {
         /// <summary>
         /// Makes sure that a window is excluded from the live preview
@@ -23,8 +23,7 @@ namespace WindowWalker.Components
                 hwnd,
                 12,
                 ref renderPolicy,
-                sizeof(int)
-                );
+                sizeof(int));
         }
 
         /// <summary>

@@ -1,7 +1,10 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WindowWalker.Components
@@ -9,12 +12,8 @@ namespace WindowWalker.Components
     /// <summary>
     /// Class that represents the state of the desktops windows
     /// </summary>
-    class OpenWindows
+    internal class OpenWindows
     {
-     
-
-        #region Delegates
-
         /// <summary>
         /// Delegate handler for open windows updates
         /// </summary>
@@ -25,24 +24,15 @@ namespace WindowWalker.Components
         /// </summary>
         public event OpenWindowsUpdateHandler OnOpenWindowsUpdate;
 
-        #endregion
-
-
-        #region Members
-
         /// <summary>
         /// List of all the open windows
         /// </summary>
-        private List<Window> windows = new List<Window>();
+        private readonly List<Window> windows = new List<Window>();
 
         /// <summary>
         /// An instance of the class OpenWindows
         /// </summary>
         private static OpenWindows instance;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the list of all open windows
@@ -53,14 +43,14 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// An instance property of this class that makes sure that
+        /// Gets an instance property of this class that makes sure that
         /// the first instance gets created and that all the requests
         /// end up at that one instance
         /// </summary>
         public static OpenWindows Instance
         {
-            get 
-            { 
+            get
+            {
                 if (instance == null)
                 {
                     instance = new OpenWindows();
@@ -70,34 +60,27 @@ namespace WindowWalker.Components
             }
         }
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
+        /// Initializes a new instance of the <see cref="OpenWindows"/> class.
         /// Private constructor to make sure there is never
         /// more than one instance of this class
         /// </summary>
         private OpenWindows()
         {
-
         }
-        
-        #endregion
 
         /// <summary>
         /// Updates the list of open windows
         /// </summary>
         public void UpdateOpenWindowsList()
         {
-            this.windows.Clear();
-            
+            windows.Clear();
+
             new Task(() =>
                 {
                     InteropAndHelpers.CallBackPtr callbackptr = new InteropAndHelpers.CallBackPtr(WindowEnumerationCallBack);
                     InteropAndHelpers.EnumWindows(callbackptr, 0);
-                }
-            ).Start();
+                }).Start();
         }
 
         /// <summary>
@@ -121,15 +104,12 @@ namespace WindowWalker.Components
                 return true;
             }
 
-            if (newWindow.Visible && !newWindow.ProcessName.ToLower().Equals("iexplore.exe") ||
-                (newWindow.ProcessName.ToLower().Equals("iexplore.exe") && newWindow.ClassName == "TabThumbnailWindow")) 
+            if ((newWindow.Visible && !newWindow.ProcessName.ToLower().Equals("iexplore.exe")) ||
+                (newWindow.ProcessName.ToLower().Equals("iexplore.exe") && newWindow.ClassName == "TabThumbnailWindow"))
             {
-                this.windows.Add(newWindow);
+                windows.Add(newWindow);
 
-                if (OnOpenWindowsUpdate != null)
-                {
-                    this.OnOpenWindowsUpdate(this, new SearchController.SearchResultUpdateEventArgs());
-                }
+                OnOpenWindowsUpdate?.Invoke(this, new SearchController.SearchResultUpdateEventArgs());
             }
 
             return true;

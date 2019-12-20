@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
+using System;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
@@ -13,12 +13,12 @@ namespace WindowWalker
     /// <summary>
     /// This class handles all hotkey related activities
     /// </summary>
-    /// <remarks>Large pieces of this class were retrived from 
+    /// <remarks>Large pieces of this class were retrived from
     /// http://www.dreamincode.net/forums/topic/323708-global-hotkeys-for-wpf-applications-c%23/
     /// </remarks>
-    class HotKeyHandler
+    internal class HotKeyHandler
     {
-        private IntPtr hwnd;
+        private readonly IntPtr hwnd;
 
         /// <summary>
         /// Delegate handler for Hotkey being called
@@ -31,25 +31,24 @@ namespace WindowWalker
         public event HotKeyPressedHandler OnHotKeyPressed;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="HotKeyHandler"/> class.
         /// Constructor for the class
         /// </summary>
         /// <param name="hwnd">The handle to the window we are registering the key for</param>
         public HotKeyHandler(Visual window)
         {
-            this.hwnd = new WindowInteropHelper((System.Windows.Window)window).Handle;
+            hwnd = new WindowInteropHelper((Window)window).Handle;
 
-            var source = PresentationSource.FromVisual(window) as HwndSource;  
-
-            if (source == null)
-            { 
-                throw new Exception("Could not create hWnd source from window.");  
+            if (!(PresentationSource.FromVisual(window) is HwndSource source))
+            {
+                throw new Exception("Could not create hWnd source from window.");
             }
 
             source.AddHook(WndProc);
 
             bool result = Components.InteropAndHelpers.RegisterHotKey(
-                this.hwnd, 
-                1, 
+                hwnd,
+                1,
                 (int)Components.InteropAndHelpers.Modifiers.Ctrl | (int)Components.InteropAndHelpers.Modifiers.Win,
                 (int)Keys.None);
         }
@@ -61,17 +60,16 @@ namespace WindowWalker
         /// <param name="msg"></param>
         /// <param name="wParam"></param>
         /// <param name="lParam"></param>
-        /// <param name="handled"></param>
-        /// <returns></returns>
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)  
+        /// <param name="handled">if a key was called</param>
+        /// <returns>if a key was called</returns>
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == 0x0312 && OnHotKeyPressed != null)
             {
-                OnHotKeyPressed(this, new EventArgs()); 
+                OnHotKeyPressed(this, new EventArgs());
             }
 
-            return IntPtr.Zero;  
-        } 
-
+            return IntPtr.Zero;
+        }
     }
 }

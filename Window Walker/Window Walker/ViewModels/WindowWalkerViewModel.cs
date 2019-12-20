@@ -1,43 +1,55 @@
-﻿using Microsoft.Win32;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Interop;
+using Microsoft.Win32;
 using WindowWalker.Components;
 using WindowWalker.MVVMHelpers;
 
 namespace WindowWalker.ViewModels
 {
-    class WindowWalkerViewModel: MVVMHelpers.PropertyChangedBase
+    internal class WindowWalkerViewModel : PropertyChangedBase
     {
+        private readonly HotKeyHandler _hotKeyHandler;
+        private readonly List<string> _hints = new List<string>()
+        {
+            "search...",
+            "you can reinvoke this app using CTRL + WIN",
+        };
+
         private string _searchText = string.Empty;
         private List<SearchResult> _results = new List<SearchResult>();
         private SearchResult _selectedWindow;
         private bool _windowVisibility = true;
-        private HotKeyHandler hotKeyHandler;
-
         private string _hint = string.Empty;
-        private int hintCounter = 0;
-        private List<string> hints = new List<string>()
-        {
-            "search...",
-            "you can reinvoke this app using CTRL + WIN"
-        };
+        private int _hintCounter = 0;
 
         private void WireCommands()
         {
-            SwitchToSelectedWindowCommand = new RelayCommand(SwitchToSelectedWindow);
-            SwitchToSelectedWindowCommand.IsEnabled = true;
-            WindowNavigateToNextResultCommand = new RelayCommand(WindowNavigateToNextResult);
-            WindowNavigateToNextResultCommand.IsEnabled = true;
-            WindowNavigateToPreviousResultCommand = new RelayCommand(WindowNavigateToPreviousResult);
-            WindowNavigateToPreviousResultCommand.IsEnabled = true;
-            WindowHideCommand = new RelayCommand(WindowHide);
-            WindowHideCommand.IsEnabled = true;
-            WindowShowCommand = new RelayCommand(WindowShow);
-            WindowShowCommand.IsEnabled = true;
+            SwitchToSelectedWindowCommand = new RelayCommand(SwitchToSelectedWindow)
+            {
+                IsEnabled = true,
+            };
+            WindowNavigateToNextResultCommand = new RelayCommand(WindowNavigateToNextResult)
+            {
+                IsEnabled = true,
+            };
+            WindowNavigateToPreviousResultCommand = new RelayCommand(WindowNavigateToPreviousResult)
+            {
+                IsEnabled = true,
+            };
+            WindowHideCommand = new RelayCommand(WindowHide)
+            {
+                IsEnabled = true,
+            };
+            WindowShowCommand = new RelayCommand(WindowShow)
+            {
+                IsEnabled = true,
+            };
         }
 
         public string SearchText
@@ -91,7 +103,7 @@ namespace WindowWalker.ViewModels
                 if (_selectedWindow != value)
                 {
                     _selectedWindow = value;
-                    this.WindowResultSelected();
+                    WindowResultSelected();
                     NotifyPropertyChanged("SelectedWindowResult");
                 }
             }
@@ -105,6 +117,7 @@ namespace WindowWalker.ViewModels
             {
                 return _windowVisibility;
             }
+
             set
             {
                 if (_windowVisibility != value)
@@ -151,7 +164,7 @@ namespace WindowWalker.ViewModels
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey(
                                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
 
-            //Path to launch shortcut
+            // Path to launch shortcut
             string startPath = Environment.GetFolderPath(Environment.SpecialFolder.Programs)
                                + @"\WindowWalker\WindowWalker.appref-ms";
 
@@ -161,107 +174,110 @@ namespace WindowWalker.ViewModels
 
             SearchController.Instance.OnSearchResultUpdate += SearchResultUpdated;
             OpenWindows.Instance.UpdateOpenWindowsList();
-            this.Hwnd = new WindowInteropHelper(mainWindow).Handle;
-            LivePreview.SetWindowExlusionFromLivePreview(this.Hwnd);
+            Hwnd = new WindowInteropHelper(mainWindow).Handle;
+            LivePreview.SetWindowExlusionFromLivePreview(Hwnd);
 
-            this.hotKeyHandler = new HotKeyHandler(mainWindow);
-            this.hotKeyHandler.OnHotKeyPressed += this.HotKeyPressedHandler;
+            _hotKeyHandler = new HotKeyHandler(mainWindow);
+            _hotKeyHandler.OnHotKeyPressed += HotKeyPressedHandler;
 
-            this.hints.AddRange(Commands.GetTips());
-            this.Hint = hints[hintCounter];
+            _hints.AddRange(Commands.GetTips());
+            Hint = _hints[_hintCounter];
 
             WireCommands();
         }
 
         private void HotKeyPressedHandler(object sender, EventArgs e)
         {
-            if(this.SearchText == string.Empty && this.WindowVisibility)
+            if (SearchText == string.Empty && WindowVisibility)
             {
-                this.WindowHide();
+                WindowHide();
             }
             else
             {
-                this.WindowShow();
+                WindowShow();
             }
         }
 
         private void WindowResultSelected()
         {
-            Components.LivePreview.ActivateLivePreview(this.SelectedWindowResult.Result.Hwnd, this.Hwnd);
+            if (SelectedWindowResult != null)
+            {
+                LivePreview.ActivateLivePreview(SelectedWindowResult.Result.Hwnd, Hwnd);
+            }
         }
 
         private void WindowNavigateToPreviousResult()
         {
-            if(this.SelectedWindowResult == null && this.Results.Count > 0)
+            if (SelectedWindowResult == null && Results.Count > 0)
             {
-                this.SelectedWindowResult = this.Results.Last();
+                SelectedWindowResult = Results.Last();
                 return;
             }
 
-            if (this.Results.Count > 0)
+            if (Results.Count > 0)
             {
-                this.SelectedWindowResult = this.Results[(this.Results.IndexOf(this.SelectedWindowResult) + this.Results.Count - 1) % this.Results.Count];
+                SelectedWindowResult = Results[(Results.IndexOf(SelectedWindowResult) + Results.Count - 1) % Results.Count];
             }
         }
 
         private void WindowNavigateToNextResult()
         {
-            if (this.SelectedWindowResult == null && this.Results.Count > 0)
+            if (SelectedWindowResult == null && Results.Count > 0)
             {
-                this.SelectedWindowResult = this.Results.First();
+                SelectedWindowResult = Results.First();
                 return;
             }
 
-            if (this.Results.Count > 0)
+            if (Results.Count > 0)
             {
-                this.SelectedWindowResult = this.Results[(this.Results.IndexOf(this.SelectedWindowResult) + 1) % this.Results.Count];
+                SelectedWindowResult = Results[(Results.IndexOf(SelectedWindowResult) + 1) % Results.Count];
             }
         }
 
         private void WindowHide()
         {
-            Components.LivePreview.DeactivateLivePreview();
-            this.WindowVisibility = false;
-            ApplicationUpdates.InstallUpdateSyncWithInfo(); 
+            LivePreview.DeactivateLivePreview();
+            WindowVisibility = false;
+            ApplicationUpdates.InstallUpdateSyncWithInfo();
         }
 
         private void WindowShow()
         {
-            hintCounter = (hintCounter + 1) % hints.Count;
-            this.Hint = hints[hintCounter];
+            _hintCounter = (_hintCounter + 1) % _hints.Count;
+            Hint = _hints[_hintCounter];
 
-            this.SearchText = string.Empty;
+            SearchText = string.Empty;
             OpenWindows.Instance.UpdateOpenWindowsList();
-            Components.LivePreview.DeactivateLivePreview();
-            this.WindowVisibility = true;
-            InteropAndHelpers.SetForegroundWindow(this.Hwnd);
+            LivePreview.DeactivateLivePreview();
+            WindowVisibility = true;
+            InteropAndHelpers.SetForegroundWindow(Hwnd);
         }
 
         public void SwitchToSelectedWindow()
         {
-            if (this.SearchText.StartsWith(":"))
+            if (SearchText.StartsWith(":"))
             {
-                Components.LivePreview.DeactivateLivePreview();
-                this.WindowHide();
-                WindowWalker.Components.Commands.ProcessCommand(this.SearchText);
+                LivePreview.DeactivateLivePreview();
+                WindowHide();
+                Commands.ProcessCommand(SearchText);
             }
-            else if (this.SelectedWindowResult != null)
+            else if (SelectedWindowResult != null)
             {
-                Components.LivePreview.DeactivateLivePreview();
-                this.SelectedWindowResult.Result.SwitchToWindow();
-                this.WindowHide();
+                LivePreview.DeactivateLivePreview();
+                SelectedWindowResult.Result.SwitchToWindow();
+                WindowHide();
             }
-            else if (this.Results != null && this.Results.Count > 0)
+            else if (Results != null && Results.Count > 0)
             {
-                Components.LivePreview.DeactivateLivePreview();
-                this.Results.First().Result.SwitchToWindow();
-                this.WindowHide();
+                LivePreview.DeactivateLivePreview();
+                Results.First().Result.SwitchToWindow();
+                WindowHide();
             }
         }
 
         private void SearchResultUpdated(object sender, SearchController.SearchResultUpdateEventArgs e)
         {
-            this.Results = SearchController.Instance.SearchMatches;
+            Results = SearchController.Instance.SearchMatches;
         }
     }
 }

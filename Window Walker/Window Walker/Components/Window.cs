@@ -1,10 +1,13 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -17,54 +20,40 @@ namespace WindowWalker.Components
     /// </summary>
     public class Window
     {
-        #region Constants
-
         /// <summary>
         /// Maximum size of a file name
         /// </summary>
         private const int MaximumFileNameLength = 1000;
 
-        #endregion
-
-        #region Static members
-
         /// <summary>
         /// The list of owners of a window so that we don't have to
         /// constantly query for the process owning a specific window
         /// </summary>
-        private static Dictionary<IntPtr,string> handlesToProcessCache = new Dictionary<IntPtr,string>();
+        private static readonly Dictionary<IntPtr, string> _handlesToProcessCache = new Dictionary<IntPtr, string>();
 
         /// <summary>
         /// The list of icons from process so that we don't have to keep
         /// loading them from disk
         /// </summary>
-        private static Dictionary<uint, ImageSource> processIdsToIconsCache = new Dictionary<uint, ImageSource>();
-
-        #endregion
-
-        #region Private Members
+        private static readonly Dictionary<uint, ImageSource> _processIdsToIconsCache = new Dictionary<uint, ImageSource>();
 
         /// <summary>
         /// The handle to the window
         /// </summary>
-        private IntPtr hwnd;
-
-        #endregion
-
-        #region Properties
+        private readonly IntPtr hwnd;
 
         /// <summary>
         /// Gets the title of the window (the string displayed at the top of the window)
         /// </summary>
         public string Title
         {
-            get 
+            get
             {
-                int sizeOfTitle = InteropAndHelpers.GetWindowTextLength(this.hwnd);
+                int sizeOfTitle = InteropAndHelpers.GetWindowTextLength(hwnd);
                 if (sizeOfTitle++ > 0)
                 {
                     StringBuilder titleBuffer = new StringBuilder(sizeOfTitle);
-                    InteropAndHelpers.GetWindowText(this.hwnd, titleBuffer, sizeOfTitle);
+                    InteropAndHelpers.GetWindowText(hwnd, titleBuffer, sizeOfTitle);
                     return titleBuffer.ToString();
                 }
                 else
@@ -83,119 +72,115 @@ namespace WindowWalker.Components
         }
 
         /// <summary>
-        /// Returns the name of the process
+        /// Gets returns the name of the process
         /// </summary>
-        public String ProcessName
+        public string ProcessName
         {
             get
             {
-                lock (Window.handlesToProcessCache)
-                { 
-                    if (Window.handlesToProcessCache.Count > 7000)
+                lock (_handlesToProcessCache)
+                {
+                    if (_handlesToProcessCache.Count > 7000)
                     {
-                        System.Diagnostics.Debug.Print("Clearing Process Cache because it's size is " + Window.handlesToProcessCache.Count);
-                        Window.handlesToProcessCache.Clear();
+                        Debug.Print("Clearing Process Cache because it's size is " + _handlesToProcessCache.Count);
+                        _handlesToProcessCache.Clear();
                     }
-                        
-                    if (!Window.handlesToProcessCache.ContainsKey(this.Hwnd))
-                    {
-                        uint processId = 0;
-                        InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
-                        IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
-                        StringBuilder processName = new StringBuilder(Window.MaximumFileNameLength);
 
-                        if (InteropAndHelpers.GetProcessImageFileName(processHandle, processName, 
-                            Window.MaximumFileNameLength) != 0)
+                    if (!_handlesToProcessCache.ContainsKey(Hwnd))
+                    {
+                        InteropAndHelpers.GetWindowThreadProcessId(Hwnd, out uint processId);
+                        IntPtr processHandle = InteropAndHelpers.OpenProcess(InteropAndHelpers.ProcessAccessFlags.AllAccess, true, (int)processId);
+                        StringBuilder processName = new StringBuilder(MaximumFileNameLength);
+
+                        if (InteropAndHelpers.GetProcessImageFileName(processHandle, processName, MaximumFileNameLength) != 0)
                         {
-                            Window.handlesToProcessCache.Add(this.Hwnd,
+                            _handlesToProcessCache.Add(
+                                Hwnd,
                                 processName.ToString().Split('\\').Reverse().ToArray()[0]);
                         }
                         else
                         {
-                            Window.handlesToProcessCache.Add(this.Hwnd, string.Empty);
+                            _handlesToProcessCache.Add(Hwnd, string.Empty);
                         }
                     }
 
-                    return Window.handlesToProcessCache[this.hwnd];
+                    return _handlesToProcessCache[hwnd];
                 }
             }
         }
 
         /// <summary>
-        /// Returns the name of the class for the window represented
+        /// Gets returns the name of the class for the window represented
         /// </summary>
-        public String ClassName
+        public string ClassName
         {
             get
             {
-                StringBuilder WindowClassName = new StringBuilder(300);
-                InteropAndHelpers.GetClassName(this.Hwnd, WindowClassName, WindowClassName.MaxCapacity);
+                StringBuilder windowClassName = new StringBuilder(300);
+                InteropAndHelpers.GetClassName(Hwnd, windowClassName, windowClassName.MaxCapacity);
 
-                return WindowClassName.ToString();
+                return windowClassName.ToString();
             }
-        }   
+        }
 
         /// <summary>
-        /// Represents the Window Icon for the specified window
+        /// Gets represents the Window Icon for the specified window
         /// </summary>
         public ImageSource WindowIcon
         {
             get
             {
-                lock(Window.processIdsToIconsCache)
+                lock (_processIdsToIconsCache)
                 {
-                    uint processId = 0;
-                    InteropAndHelpers.GetWindowThreadProcessId(this.Hwnd, out processId);
-                
-                    if (!Window.processIdsToIconsCache.ContainsKey(processId))
+                    InteropAndHelpers.GetWindowThreadProcessId(Hwnd, out uint processId);
+
+                    if (!_processIdsToIconsCache.ContainsKey(processId))
                     {
                         try
-                        { 
+                        {
                             Process process = Process.GetProcessById((int)processId);
                             Icon tempIcon = Icon.ExtractAssociatedIcon(process.Modules[0].FileName);
-                            Window.processIdsToIconsCache.Add(processId,Imaging.CreateBitmapSourceFromHIcon(
+                            _processIdsToIconsCache.Add(processId, Imaging.CreateBitmapSourceFromHIcon(
                                 tempIcon.Handle,
                                 Int32Rect.Empty,
                                 BitmapSizeOptions.FromEmptyOptions()));
                         }
                         catch
                         {
-                            BitmapImage failedImage = new BitmapImage(new Uri(@"Images\failedIcon.jpg",UriKind.Relative));
-                            Window.processIdsToIconsCache.Add(processId, failedImage);
+                            BitmapImage failedImage = new BitmapImage(new Uri(@"Images\failedIcon.jpg", UriKind.Relative));
+                            _processIdsToIconsCache.Add(processId, failedImage);
                         }
                     }
 
-                    return Window.processIdsToIconsCache[processId];
+                    return _processIdsToIconsCache[processId];
                 }
             }
         }
 
         /// <summary>
-        /// Is the window visible (might return false if it is a hidden IE tab)
+        /// Gets a value indicating whether is the window visible (might return false if it is a hidden IE tab)
         /// </summary>
         public bool Visible
         {
             get
             {
-                return InteropAndHelpers.IsWindowVisible(this.Hwnd);
+                return InteropAndHelpers.IsWindowVisible(Hwnd);
             }
         }
 
         /// <summary>
-        /// Returns true if the window is minimized
+        /// Gets a value indicating whether returns true if the window is minimized
         /// </summary>
         public bool Minimized
         {
             get
             {
-                return this.GetWindowSizeState() == WindowSizeState.Minimized;
+                return GetWindowSizeState() == WindowSizeState.Minimized;
             }
         }
-        #endregion
 
-        #region Constructors
-        
         /// <summary>
+        /// Initializes a new instance of the <see cref="Window"/> class.
         /// Initializes a new Window representation
         /// </summary>
         /// <param name="hwnd">the handle to the window we are representing</param>
@@ -204,10 +189,6 @@ namespace WindowWalker.Components
             // TODO: Add verification as to whether the window handle is valid
             this.hwnd = hwnd;
         }
-
-        #endregion
-
-        #region Public Interface
 
         /// <summary>
         /// Highlights a window to help the user identify the window that has been selected
@@ -226,17 +207,16 @@ namespace WindowWalker.Components
             // 1) There is a weird flashing behaviour when trying
             //    to use ShowWindow for switching tabs in IE
             // 2) SetForegroundWindow fails on minimized windows
-
-            if (this.ProcessName.ToLower().Equals("iexplore.exe") || !this.Minimized)
+            if (ProcessName.ToLower().Equals("iexplore.exe") || !Minimized)
             {
-                InteropAndHelpers.SetForegroundWindow(this.Hwnd);
+                InteropAndHelpers.SetForegroundWindow(Hwnd);
             }
             else
             {
-                InteropAndHelpers.ShowWindow(this.Hwnd, InteropAndHelpers.ShowWindowCommands.Restore);
+                InteropAndHelpers.ShowWindow(Hwnd, InteropAndHelpers.ShowWindowCommands.Restore);
             }
 
-            InteropAndHelpers.FlashWindow(this.Hwnd, true);
+            InteropAndHelpers.FlashWindow(Hwnd, true);
         }
 
         /// <summary>
@@ -245,7 +225,7 @@ namespace WindowWalker.Components
         /// <returns>The title of the window</returns>
         public override string ToString()
         {
-            return this.Title + " (" + this.ProcessName.ToUpper() + ")";
+            return Title + " (" + ProcessName.ToUpper() + ")";
         }
 
         /// <summary>
@@ -254,8 +234,7 @@ namespace WindowWalker.Components
         /// <returns>The state (minimized, maximized, etc..) of the window</returns>
         public WindowSizeState GetWindowSizeState()
         {
-            InteropAndHelpers.WINDOWPLACEMENT placement = new InteropAndHelpers.WINDOWPLACEMENT();
-            InteropAndHelpers.GetWindowPlacement(this.Hwnd,out placement);
+            InteropAndHelpers.GetWindowPlacement(Hwnd, out InteropAndHelpers.WINDOWPLACEMENT placement);
 
             switch (placement.ShowCmd)
             {
@@ -272,10 +251,6 @@ namespace WindowWalker.Components
             }
         }
 
-        #endregion
-
-        #region Enums
-
         /// <summary>
         /// Enum to simplify the state of the window
         /// </summary>
@@ -284,9 +259,7 @@ namespace WindowWalker.Components
             Normal,
             Minimized,
             Maximized,
-            Unknown
+            Unknown,
         }
-
-        #endregion
     }
 }

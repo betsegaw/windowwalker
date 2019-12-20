@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) Microsoft Corporation
+// The Microsoft Corporation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.  Code forked from Betsegaw Tadele's https://github.com/betsegaw/windowwalker/
+
+using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace WindowWalker.Components
 {
     /// <summary>
-    /// Interop calls with helper layers 
+    /// Interop calls with helper layers
     /// </summary>
-    class InteropAndHelpers
+    internal class InteropAndHelpers
     {
         public delegate bool CallBackPtr(IntPtr hwnd, IntPtr lParam);
-
-        #region Enums
 
         /// <summary>
         /// Some flags for interop calls to SetWindowPosition
@@ -108,7 +107,7 @@ namespace WindowWalker.Components
             Alt = 0x0001,
             Ctrl = 0x0002,
             Shift = 0x0004,
-            Win = 0x0008
+            Win = 0x0008,
         }
 
         /// <summary>
@@ -144,8 +143,8 @@ namespace WindowWalker.Components
             /// <summary>
             /// Press and hold on Show desktop
             /// </summary>
-            ShowDesktopTouch
-        };
+            ShowDesktopTouch,
+        }
 
         /// <summary>
         /// Show Window Enums
@@ -156,70 +155,82 @@ namespace WindowWalker.Components
             /// Hides the window and activates another window.
             /// </summary>
             Hide = 0,
+
             /// <summary>
-            /// Activates and displays a window. If the window is minimized or 
+            /// Activates and displays a window. If the window is minimized or
             /// maximized, the system restores it to its original size and position.
-            /// An application should specify this flag when displaying the window 
+            /// An application should specify this flag when displaying the window
             /// for the first time.
             /// </summary>
             Normal = 1,
+
             /// <summary>
             /// Activates the window and displays it as a minimized window.
             /// </summary>
             ShowMinimized = 2,
+
             /// <summary>
             /// Maximizes the specified window.
             /// </summary>
             Maximize = 3, // is this the right value?
+
             /// <summary>
             /// Activates the window and displays it as a maximized window.
-            /// </summary>       
+            /// </summary>
             ShowMaximized = 3,
+
             /// <summary>
-            /// Displays a window in its most recent size and position. This value 
-            /// is similar to <see cref="Win32.ShowWindowCommand.Normal"/>, except 
+            /// Displays a window in its most recent size and position. This value
+            /// is similar to <see cref="Win32.ShowWindowCommand.Normal"/>, except
             /// the window is not activated.
             /// </summary>
             ShowNoActivate = 4,
+
             /// <summary>
-            /// Activates the window and displays it in its current size and position. 
+            /// Activates the window and displays it in its current size and position.
             /// </summary>
             Show = 5,
+
             /// <summary>
-            /// Minimizes the specified window and activates the next top-level 
+            /// Minimizes the specified window and activates the next top-level
             /// window in the Z order.
             /// </summary>
             Minimize = 6,
+
             /// <summary>
             /// Displays the window as a minimized window. This value is similar to
-            /// <see cref="Win32.ShowWindowCommand.ShowMinimized"/>, except the 
+            /// <see cref="Win32.ShowWindowCommand.ShowMinimized"/>, except the
             /// window is not activated.
             /// </summary>
             ShowMinNoActive = 7,
+
             /// <summary>
-            /// Displays the window in its current size and position. This value is 
-            /// similar to <see cref="Win32.ShowWindowCommand.Show"/>, except the 
+            /// Displays the window in its current size and position. This value is
+            /// similar to <see cref="Win32.ShowWindowCommand.Show"/>, except the
             /// window is not activated.
             /// </summary>
             ShowNA = 8,
+
             /// <summary>
-            /// Activates and displays the window. If the window is minimized or 
-            /// maximized, the system restores it to its original size and position. 
+            /// Activates and displays the window. If the window is minimized or
+            /// maximized, the system restores it to its original size and position.
             /// An application should specify this flag when restoring a minimized window.
             /// </summary>
             Restore = 9,
+
             /// <summary>
-            /// Sets the show state based on the SW_* value specified in the 
-            /// STARTUPINFO structure passed to the CreateProcess function by the 
+            /// Sets the show state based on the SW_* value specified in the
+            /// STARTUPINFO structure passed to the CreateProcess function by the
             /// program that started the application.
             /// </summary>
             ShowDefault = 10,
+
             /// <summary>
-            ///  <b>Windows 2000/XP:</b> Minimizes a window, even if the thread 
-            /// that owns the window is not responding. This flag should only be 
+            ///  <b>Windows 2000/XP:</b> Minimizes a window, even if the thread
+            /// that owns the window is not responding. This flag should only be
             /// used when minimizing windows from a different thread.
             /// </summary>
-            ForceMinimize = 11
+            ForceMinimize = 11,
         }
 
         /// <summary>
@@ -231,7 +242,7 @@ namespace WindowWalker.Components
             UseWindowStyle,
             Disabled,
             Enabled,
-            Last
+            Last,
         }
 
         /// <summary>
@@ -252,7 +263,7 @@ namespace WindowWalker.Components
             HasIconicBitmap,
             DisallowPeek,
             ExcludedFromPeek,
-            Last
+            Last,
         }
 
         /// <summary>
@@ -267,12 +278,12 @@ namespace WindowWalker.Components
             CreateThread = 0x0002,
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             SetSessionId = 0x0004,
 
             /// <summary>
-            /// Required to perform an operation on the address space of a process 
+            /// Required to perform an operation on the address space of a process
             /// </summary>
             VmOperation = 0x0008,
 
@@ -317,7 +328,7 @@ namespace WindowWalker.Components
             SuspendResume = 0x0800,
 
             /// <summary>
-            /// Required to retrieve certain information about a process (see GetExitCodeProcess, GetPriorityClass, IsProcessInJob, QueryFullProcessImageName). 
+            /// Required to retrieve certain information about a process (see GetExitCodeProcess, GetPriorityClass, IsProcessInJob, QueryFullProcessImageName).
             /// A handle that has the PROCESS_QUERY_INFORMATION access right is automatically granted PROCESS_QUERY_LIMITED_INFORMATION.
             /// </summary>
             QueryLimitedInformation = 0x1000,
@@ -333,7 +344,7 @@ namespace WindowWalker.Components
             Delete = 0x00010000,
 
             /// <summary>
-            /// Required to read information in the security descriptor for the object, not including the information in the SACL. 
+            /// Required to read information in the security descriptor for the object, not including the information in the SACL.
             /// To read or write the SACL, you must request the ACCESS_SYSTEM_SECURITY access right. For more information, see SACL Access Right.
             /// </summary>
             ReadControl = 0x00020000,
@@ -353,11 +364,8 @@ namespace WindowWalker.Components
             /// <summary>
             /// All possible access rights for a process object.
             /// </summary>
-            AllAccess = StandardRightsRequired | Synchronize | 0xFFFF
+            AllAccess = StandardRightsRequired | Synchronize | 0xFFFF,
         }
-        #endregion
-
-        #region Structs
 
         /// <summary>
         /// Contains information about the placement of a window on the screen.
@@ -406,7 +414,7 @@ namespace WindowWalker.Components
             {
                 get
                 {
-                    WINDOWPLACEMENT result = new WINDOWPLACEMENT();
+                    WINDOWPLACEMENT result = default;
                     result.Length = Marshal.SizeOf(result);
                     return result;
                 }
@@ -419,7 +427,10 @@ namespace WindowWalker.Components
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
-            public int Left, Top, Right, Bottom;
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
 
             public RECT(int left, int top, int right, int bottom)
             {
@@ -429,18 +440,37 @@ namespace WindowWalker.Components
                 Bottom = bottom;
             }
 
-            public RECT(System.Drawing.Rectangle r) : this(r.Left, r.Top, r.Right, r.Bottom) { }
+            public RECT(System.Drawing.Rectangle r)
+                : this(r.Left, r.Top, r.Right, r.Bottom)
+            {
+            }
 
             public int X
             {
-                get { return Left; }
-                set { Right -= (Left - value); Left = value; }
+                get
+                {
+                    return Left;
+                }
+
+                set
+                {
+                    Right -= Left - value;
+                    Left = value;
+                }
             }
 
             public int Y
             {
-                get { return Top; }
-                set { Bottom -= (Top - value); Top = value; }
+                get
+                {
+                    return Top;
+                }
+
+                set
+                {
+                    Bottom -= Top - value;
+                    Top = value;
+                }
             }
 
             public int Height
@@ -457,14 +487,30 @@ namespace WindowWalker.Components
 
             public System.Drawing.Point Location
             {
-                get { return new System.Drawing.Point(Left, Top); }
-                set { X = value.X; Y = value.Y; }
+                get
+                {
+                    return new System.Drawing.Point(Left, Top);
+                }
+
+                set
+                {
+                    X = value.X;
+                    Y = value.Y;
+                }
             }
 
             public System.Drawing.Size Size
             {
-                get { return new System.Drawing.Size(Width, Height); }
-                set { Width = value.Width; Height = value.Height; }
+                get
+                {
+                    return new System.Drawing.Size(Width, Height);
+                }
+
+                set
+                {
+                    Width = value.Width;
+                    Height = value.Height;
+                }
             }
 
             public static implicit operator System.Drawing.Rectangle(RECT r)
@@ -495,9 +541,14 @@ namespace WindowWalker.Components
             public override bool Equals(object obj)
             {
                 if (obj is RECT)
+                {
                     return Equals((RECT)obj);
+                }
                 else if (obj is System.Drawing.Rectangle)
+                {
                     return Equals(new RECT((System.Drawing.Rectangle)obj));
+                }
+
                 return false;
             }
 
@@ -523,11 +574,14 @@ namespace WindowWalker.Components
 
             public POINT(int x, int y)
             {
-                this.X = x;
-                this.Y = y;
+                X = x;
+                Y = y;
             }
 
-            public POINT(System.Drawing.Point pt) : this(pt.X, pt.Y) { }
+            public POINT(System.Drawing.Point pt)
+                : this(pt.X, pt.Y)
+            {
+            }
 
             public static implicit operator System.Drawing.Point(POINT p)
             {
@@ -540,48 +594,59 @@ namespace WindowWalker.Components
             }
         }
 
-        #endregion
-
-        #region Interop Calls
-
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern int EnumWindows(CallBackPtr callPtr, int lPar);
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern int GetWindowTextLength(IntPtr hWnd);
+
         [DllImport("user32.dll")]
         public static extern bool IsWindowVisible(IntPtr hWnd);
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
+
         [DllImport("user32.dll")]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);  
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommands nCmdShow);
+
         [DllImport("user32.dll")]
         public static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
+
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
         [DllImport("psapi.dll")]
         public static extern uint GetProcessImageFileName(IntPtr hProcess, [Out] StringBuilder lpImageFileName, [In] [MarshalAs(UnmanagedType.U4)] int nSize);
+
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(ProcessAccessFlags dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, int dwProcessId);
-        [DllImport("dwmapi.dll", EntryPoint = "#113",CallingConvention = CallingConvention.StdCall)]
+
+        [DllImport("dwmapi.dll", EntryPoint = "#113", CallingConvention = CallingConvention.StdCall)]
         public static extern int DwmpActivateLivePreview([MarshalAs(UnmanagedType.Bool)]bool fActivate, IntPtr hWndExclude, IntPtr hWndInsertBefore, LivePreviewTrigger lpt, IntPtr prcFinalRect);
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
         [DllImport("user32.dll")]
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
-        #endregion
     }
 }
