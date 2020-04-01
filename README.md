@@ -1,6 +1,10 @@
 Window Walker
 ============
 
+# [Repo Deprecation] Window Walker has a new home with [PowerToys](https://www.github.com/microsoft/PowerToys)
+
+All fixes and updates will now be made in the PowerToys repo. Leaving this repo here for it's git history.
+
 ![](https://github.com/betsegaw/windowwalker/workflows/Build/badge.svg)
 
 ![](Window-Walker.gif)
